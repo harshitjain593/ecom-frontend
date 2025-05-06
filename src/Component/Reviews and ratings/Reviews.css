@@ -1,0 +1,165 @@
+.rev-productbox{
+    box-shadow: 1px 1px 3px gray;
+}
+.rev-productbox div:first-child img{
+    width: 10rem;
+    object-fit: cover;
+    border-radius: 5px;
+
+}
+
+.rev-productbox{
+
+}
+
+.rev-productbox label{
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.rating-cont{
+    background-color: rgb(34, 141, 34);
+    color: white;
+    width: 3rem;
+    padding: 2px 7px;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .9rem;
+}
+
+.px-10{
+    padding:0px 10rem;
+}
+
+@media (max-width:920px) {
+    .px-10{
+        padding: 0px 5rem
+    }
+    
+}
+
+@media (max-width:650px){
+    .px-10{
+        padding: 0px 1rem;
+    }
+}
+.form-area-review{
+    box-shadow: 1px 1px 5px rgb(224, 221, 221);
+    padding: 1rem 1rem;
+    margin: 1rem 0;
+}
+
+.form-area-review div >h4,.ratebox>h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.text-area-cont{
+    box-shadow: 1px 1px 5px gray;
+    border-radius: 5px;
+}
+
+.text-area-cont>textarea{
+    width: 100%;
+    min-height: 9rem;
+    max-height: 9rem;
+    outline: none;
+    border: white;
+    appearance: none;
+    
+}
+
+.text-heading-area{
+    font-size: .9rem;
+
+}
+
+.ratetitle-cont{
+    border-top: solid rgb(220, 218, 218);
+}
+
+.ratetitle-cont input{
+    outline: none;
+    border: white;
+    width: 100%;
+}
+
+.text-heading-area label:last-child{
+    color: red;
+}
+
+.add-photo-cont img{
+    width: 5rem;
+}
+
+.submit-rate-button-cont{
+    
+}
+.submit-rate-button{
+    background-color: #e6b812;
+    padding: 5px 20px ;
+    font-weight: 400;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    justify-self:end;
+}
+
+input[type="file"] {
+    display: none;
+    background-image:url('https://icon-library.com/images/add-photo-icon/add-photo-icon-19.jpg') ;
+    width: 5rem;
+    background-color: black;
+  }
+  .uploadedimages{
+  
+    width: 20rem;
+    padding: 0rem 1rem;
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .uploadedimages::-webkit-scrollbar{
+    display: none;
+  }
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}

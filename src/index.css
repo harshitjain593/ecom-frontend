@@ -1,0 +1,29 @@
+
+
+
+  :root{
+    font-family: "Lato", sans-serif ;
+    --bs-body-font-family:"Lato", sans-serif;
+  }
+
+
+  .cormorant-italic {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+  }
+
+
+  /* HTML:  */
+.spinner {
+  width: 25px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: 
+    radial-gradient(farthest-side,#fffcf6 94%,#0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%,#dbdbdb);
+  -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+  animation: l13 1s infinite linear;
+}
+@keyframes l13{ 
+  100%{transform: rotate(1turn)}
+}

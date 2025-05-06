@@ -1,0 +1,152 @@
+.bgfordiv{
+    background-image: url(https://t3.ftcdn.net/jpg/06/55/48/22/360_F_655482254_1k1yrQACCvforJsBqcLgQgJAuoPSzg3X.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.bgfordiv {
+    display: flex;
+    flex-direction: column;
+    gap: 10rem;
+    padding: 1rem 4rem;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+.popmain{
+    position: absolute;
+    width: 40rem;
+    transform: translateX(-50%);
+    bottom: -25rem;
+    left:50% ;
+    border-radius: 2rem;
+   
+}
+.popmain > section{
+    border-radius: 50% !important;
+}
+
+.popmain > section > div:first-child{
+ 
+}
+
+.popmain >section>div:last-child{
+
+}
+
+
+.popchild1{
+    background-color: goldenrod !important;
+    padding: 2rem 2rem;
+    width: 65%;
+    width: 50%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: goldenrod !important;
+}
+.popchild1 > h1 {
+    font-size: 1.5rem;
+}
+
+.popchild1 > p{
+    text-align: left;
+    text-wrap: wrap;
+    width: 80%;
+}
+
+.popchild1 > div > img {
+    width: 100%;
+}
+
+.linkbox{
+    cursor: pointer;
+}
+.linkbox:hover >a{
+  color: blue;
+  
+
+}
+
+.bgfordiv>div>button{
+    background-color: white;
+    width: 70%;
+}
+
+.alink{
+    color: goldenrod;
+    background-color: rgba(0, 0, 0, 0.68);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.xclose{
+    top: 5px;
+    right: 5px;
+    size: 25px;
+    color: white;
+}
+@media (max-width:680px) {
+    .xclose{
+        top: 5px;
+        right: 30px;
+        color: rgb(255, 253, 253);
+    }
+    
+.popmain{
+    position: absolute;
+    width: 80%;
+    transform: translateX(0%);
+    bottom: -15rem;
+    left:15% ;
+    border-radius: 2rem;
+}
+
+.popchild1{
+    background-color: goldenrod !important;
+    padding: 15px 5px;
+    width: 50%;
+    gap: 22rem;
+}
+.popchild1 > p{
+    font-size: .8rem;
+    text-align: start;
+    text-wrap: wrap;
+    width: 100%;
+}
+.popchild1> div>img{
+    display: none;
+    object-fit: fill;
+
+}
+.bgfordiv{
+    padding: 15px 5px;
+    width: 40%;
+    gap: 2rem;
+}
+.bgfordiv>div{
+    width: 100%;
+}
+
+.bgfordiv>div>p{
+    font-size: .8rem;
+    width: 100%;
+    padding: 0;
+    
+}
+.bgfordiv>div>button{
+    background-color: white;
+    width: 90%;
+}
+
+.alink{
+    color: goldenrod;
+    background-color: rgba(0, 0, 0, 0.68);
+    font-size: .8rem;
+    text-align: start;
+    font-weight: 500;
+}
+
+    
+}

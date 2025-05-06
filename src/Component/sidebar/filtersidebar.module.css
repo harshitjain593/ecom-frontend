@@ -1,0 +1,27 @@
+.filterbarContainer{
+    position: relative;
+    min-width: 230px;
+    max-width: 22%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    max-height: max-content !important;
+    min-height: 28rem !important;
+    /* box-shadow: 1px 1px 3px rgb(111, 109, 109) !important; */
+    background-color: whitesmoke;
+
+}
+
+.colorfiltercontainer{
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 0rem;
+
+}
+
+.filterSec{
+    width: 100%;
+    height: max-content!important;
+    min-height: 30rem;
+}

@@ -1,0 +1,29 @@
+/* termsandconditions.css */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .my-5 {
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .mt-4 {
+    margin-top: 1.5rem !important;
+  }
+  
+
+  .sub{
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .para-t{
+    font-size: .9rem;
+  }

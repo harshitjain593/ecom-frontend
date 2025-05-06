@@ -1,0 +1,253 @@
+.main-container{
+    align-items: center;
+    background-color: #000;
+    background-image: url(https://www.insonsoft.com/assets/images/ecommerce.jpg);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .form {
+    background-color: #15172bf4;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: auto;
+    padding: 20px;
+    width: 30%;
+    box-shadow: 3px 3px 10px black;
+  }
+  
+  .title {
+    color: #eee;
+    font-family: sans-serif;
+    font-size: 140%;
+    font-weight: 600;
+    margin-top: .5rem;
+  }
+  
+  .subtitle {
+    color: #eee;
+    font-family: sans-serif;
+    font-size: 110%;
+    font-weight: 600;
+    margin-top: .2rem;
+  }
+  
+  .input-container {
+    height: 2rem;
+    display: flex;
+    padding: 0px !important;
+    margin-top: 2rem !important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    background-color: rgba(0, 103, 187, 0.005) !important;
+   
+  }
+  
+.input-container label {
+    background-color: rgba(245, 222, 179, 0);
+    color: rgb(255, 221, 0);
+}
+
+ .input-container input {
+    width: 100%;
+    height: 240px !important;
+    border-radius: 5px;
+    padding: .8rem ;
+}
+
+  .ic1 {
+ 
+  }
+  
+  .ic2 {
+   
+  }
+  
+  .input {
+    background-color: #303245;
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: #eee;
+    font-size: 18px;
+    outline: 0;
+    padding: 6px 20px 0;
+    width: 100%;
+  }
+  
+  .cut {
+    background-color: #15172b24;
+    border-radius: 10px;
+    height: 20px;
+    left: 20px;
+    position: absolute;
+    top: -20px;
+    transform: translateY(0);
+    transition: transform 200ms;
+    width: 76px;
+  }
+  
+  .cut-short {
+    width: 50px;
+  }
+  
+  .input:focus ~ .cut,
+  .input:not(:placeholder-shown) ~ .cut {
+    transform: translateY(4px);
+  }
+  
+  .placeholder {
+
+    font-family: sans-serif;
+    left: 20px;
+    line-height: 14px;
+    pointer-events: none;
+    position: absolute;
+    transform-origin: 0 20%;
+    transition: transform 200ms,  color 200ms;
+    top: 10px;
+  }
+  
+  .input:focus ~ .placeholder,
+  .input:not(:placeholder-shown) ~ .placeholder {
+    transform: translateY(-30px) translateX(0px) scale(1);
+  }
+  
+  .input:not(:placeholder-shown) ~ .placeholder {
+  
+   color:white;
+  }
+  
+  .input:focus ~ .placeholder {
+    color: #bcb2b4;
+  }
+  
+  .submit {
+    background-color: rgb(213, 195, 29);
+    border-radius: 12px;
+    border: 0;
+    box-sizing: border-box;
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 38px;
+   
+    text-align: center;
+    width: 100%;
+  }
+  
+  .submit:active {
+    background-color: rgb(157, 168, 11);
+  }
+  
+  .input-check {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    margin-top: 2rem;
+    
+  }
+
+  .input-check .checkbox {
+    padding: 1rem;
+    height: 1.5rem;
+    width: 2rem;
+    background-color: #15172b ;
+    vertical-align: bottom;
+
+  }
+
+  .input-check p{
+    color: rgb(96, 96, 96);
+    
+  }
+
+
+
+
+
+
+  
+  @media (max-width:1300px) {
+    .form {
+      background-color: #15172bf4;
+      border-radius: 20px;
+      box-sizing: border-box;
+      height: auto;
+      padding: 20px;
+      width: 50%;
+    }
+
+    @media (max-width:780px) {
+
+      .main-container{
+        align-items: center;
+        background-color: #000;
+        background-image: url(https://www.insonsoft.com/assets/images/ecommerce.jpg);
+        background-size: cover;
+        background-position: right;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+      }
+      
+
+      .form {
+      
+        width: 70%;
+      }
+      
+    }
+
+  }
+
+
+
+  @media (max-width:780px) {
+  .form{
+    width: 90%;
+  }
+  .main-container{
+    align-items: center;
+    background-color: #000;
+    background-image: url(https://www.insonsoft.com/assets/images/ecommerce.jpg);
+    background-size: cover;
+    background-position: left;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+  }
+  }
+
+
+  .main-modal-cont{
+    width: 25rem;
+    height: auto;
+    top: 20px;
+    background-color: white;
+    border-radius: 20px;
+  }
+
+  .main-modal-cont div{
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: space-around;
+    align-content: center;
+
+  }
+
+  .modal-ul{
+    list-style: disc !important;
+    color: rgb(0, 0, 0);
+  }

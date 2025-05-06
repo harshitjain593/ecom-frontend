@@ -1,0 +1,13 @@
+.check-main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.check-main-container > div:first-child img{
+    width:50%;
+    padding: 3rem 3rem;
+
+}

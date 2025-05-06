@@ -1,0 +1,132 @@
+.register-container {
+    background-image: url('https://static.vecteezy.com/system/resources/previews/004/112/233/non_2x/forgot-password-and-account-login-for-web-page-protection-security-key-access-system-in-smartphone-or-computer-flat-illustration-vector.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(80%);
+    
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+.form-control {
+    position: relative;
+    padding-left: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #6a11cb;
+    border-color: #6a11cb;
+}
+
+.btn-primary:hover {
+    background-color: #2575fc;
+    border-color: #2575fc;
+}
+
+.react-flags-select {
+    max-width: 120px;
+}
+
+
+*{
+    box-sizing: border-box;
+  }
+  
+  .title{
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    h3{
+      font-weight: bold;
+    }
+    p{
+      font-size: 12px;
+      color: #118a44;
+      &.msg{
+        color: initial;
+        text-align: initial;
+        font-weight: bold;
+      }
+    }
+  }
+    
+  .otp-input-fields{
+    margin: auto;
+    background-color: white;
+    box-shadow: 0px 0px 8px 0px #02025044;
+    max-width: 100%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px;
+    
+    input{
+      height: 40px;
+      width: 40px;
+      background-color: transparent;
+      border-radius: 4px;
+      border: 1px solid #2f8f1f;
+      text-align: center;
+      outline: none;
+      font-size: 16px;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+  
+      /* Firefox */
+      &[type=number] {
+        -moz-appearance: textfield;
+      }
+      &:focus{
+        border-width: 2px;
+        border-color: darken(#2f8f1f, 5%);
+        font-size: 20px;
+      }
+    }
+  }
+  
+  .result{
+    max-width: 400px;
+    margin: auto;
+    padding: 24px;
+    text-align: center;
+    p{
+      font-size: 24px;
+      font-family: 'Antonio', sans-serif;
+      opacity: 1;
+      transition: color 0.5s ease;
+      &._ok{
+        color: green;
+      }
+      &._notok{
+        color: red;
+        border-radius: 3px;
+      }
+    }
+  }
+
+  .reset-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .card {
+    border-radius: 10px;
+  }
+  
+  .error-message {
+    margin-top: 10px;
+  }
+  

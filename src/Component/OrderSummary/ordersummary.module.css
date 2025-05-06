@@ -1,0 +1,680 @@
+.maincontainer{
+    display: flex;
+    gap: 2%;
+   padding: 2% 5%;
+
+}
+
+.leftcontainer{
+    flex:3;
+    display: flex;
+    flex-direction: column;
+   align-items: flex-end;
+    gap:1rem ;
+    
+}
+
+.box{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-shadow: 1px 1px 5px gray;
+    padding: 14px 20px;
+}
+
+.box main{
+    display: flex;
+    gap:1.5rem;
+}
+
+.box main div:first-child p {
+    background-color: rgb(232, 232, 232);
+    padding: 5px 7px;
+    font-size: .8rem;
+    font-weight: 700;
+    border-radius: 2px;
+   line-height: 10px;
+    
+}
+
+.textcontent p{
+    display: flex;
+     gap: 10%;
+    justify-content:start;
+    align-items: start;
+    color: black;
+    max-width: fit-content;
+   
+}
+.textcontent h5{
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgb(143, 141, 141);
+}
+
+.textcontent p span{
+    color: black;
+    font-weight: 500;
+    flex-wrap: nowrap;
+ 
+    min-width: max-content;
+}
+
+.buttonContent {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.buttonContent button,.buttonContent a{
+    vertical-align: top;
+    border:1px solid lightgray;
+    color: rgb(232, 228, 8);
+    font-weight: 600;
+    padding: 9px 18px;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.linkbutton{
+    height: max-content;
+    width: max-content;
+    vertical-align: center;
+    border:1px solid lightgray;
+    color: rgb(232, 228, 8);
+    font-weight: 600;
+    padding: 3px 8px;
+    font-size: .9rem;
+    text-transform: uppercase;
+
+}
+
+.addresscontent p{
+    display: flex;
+     gap: 1%;
+    justify-content:start;
+    align-items: start;
+    color: black;
+    max-width: fit-content;
+   
+}
+.addresscontent h5{
+    font-size: 1rem;
+    font-weight: 600;
+    gap: 1%;
+    color: rgb(143, 141, 141);
+}
+
+.addresscontent p span{
+    color: black;
+    font-weight: 500;
+    flex-wrap: nowrap;
+    
+    min-width: max-content;
+}
+.addresscontent p span:last-child{
+    color: black;
+    display: block;
+    width: max-content;
+}
+
+.summarybox,.paymentSummary, 
+.paymentbox{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 2px rgb(131, 129, 129);
+   width: 100%;
+
+}
+
+.paymentSummary > div:first-child {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    color: rgb(146, 142, 142);
+    font-weight: 600;
+    gap: 2%;
+    padding: 5px 20px;
+}
+
+.paymentbox >div:first-child{
+display: flex;
+justify-content: start;
+align-items: center;
+color: rgb(146, 142, 142);
+font-weight: 600;
+gap: 2%;
+padding: 5px 20px;}
+
+.summarybox > div:first-child {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    background-color: #EDB70B;
+    color: white;
+    font-weight: 600;
+    gap: 2%;
+    padding: 5px 20px;
+}
+
+
+
+.summarybox > div:first-child p:first-child , 
+.paymentSummary div:first-child P:first-child,
+.paymentbox > div:first-child p:first-child{
+    background-color: lightgray;
+    padding: 5px 7px;
+    font-size: .8rem;
+    font-weight: 700;
+    border-radius: 2px;
+   line-height: 10px;
+   color: rgb(15, 124, 248);;
+
+}
+
+.summarybox >div:first-child p:last-child, 
+.paymentSummary > div:first-child p:last-child{
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.summarybox main{
+    display: flex;
+    gap: 5%;
+   
+    align-items: stretch;
+    padding: 15px 10px;
+}
+
+
+
+.summarybox main div:first-child {
+    width: 20%;
+    min-width:15%;
+}
+
+.summarybox main div:first-child img {
+    width: 100%;
+
+
+}
+.summarybox main section {
+    display:flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.summarybox main section div:last-child , .summarybox main  section div:nth-child(2){
+    display: flex;
+}
+
+.summarybutns{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    vertical-align: top;
+    width: 100%
+}
+
+.summarybutns > button ,.summarybutns > a {
+    color: black;
+    background-color: rgb(238, 215, 5);
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 2px;
+    width:9rem;
+    
+}
+
+.summarybox main section div:first-child{
+    text-wrap: nowrap;
+    width: 30rem;
+
+}
+
+.toptext{
+    font-size:1rem ;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    min-width: max-content;
+   vertical-align: top;
+   width: max-content;
+  
+}
+
+.toptext > main{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.productnames{
+    display: block !important;
+}
+
+.productnames p{
+    
+    margin: 0;
+    padding: 0;
+    line-height: 18px;
+}
+.productTitlesummary{
+    max-width: 5rem;
+}
+.productnames p:first-child{
+    font-size: 1rem;
+    font-weight: 500;
+    max-width: 45rem !important;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+}
+
+.productnames p:last-child{
+    font-size: .9rem;
+    color: gray;
+
+}
+
+.quantityBox{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+.quantityBox input::-webkit-outer-spin-button, .quantityBox input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+.statQuantity{
+    border: rgb(205, 196, 196) solid;
+    line-height: 15px;
+    padding: 2px 4px;
+    margin: 0;
+    width: 2rem ;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.quantityBox input{
+    width: 2rem;
+    height: 1.5rem;
+}
+
+.priceoffer{
+    display: flex;
+    justify-content:start;
+    align-items: center;
+    gap: 10%;
+    text-wrap: nowrap;
+}
+
+.priceoffer P:nth-child(2){
+    font-size: 1.1rem;
+    font-weight: 500;
+
+}
+.priceoffer P:first-child{
+    color: gray;
+    text-decoration: line-through;
+}
+
+.priceoffer p:last-child{
+    color: green;
+    font-weight: 500;
+}
+
+
+
+
+
+.priceDetails{
+    flex: 1;
+}
+.priceDetails main{
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+
+}
+
+
+
+.continueSec{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    box-shadow: 1px -5px 10px rgb(212, 202, 202);
+    border-radius: 5px;
+    width: 100%;
+}
+.continueSec p{
+    font-size: .8rem;
+    font-weight: 500;
+    color: gray;
+    text-transform: capitalize;
+}
+
+.continueSec >button ,.continueSec a {
+    background-color: rgb(232, 132, 11);
+    padding:6px 14px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color:white;
+    border-radius: 5px;
+}
+
+.priceDetails{
+    position: sticky;
+    top: 100px;
+    box-shadow: 1px 1px 5px gray;
+    height: max-content;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.priceDetails main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.priceDetails > div{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: gray;
+    border-bottom: lightgray solid 1px;
+    width: 100%;
+}
+
+.priceTop{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.priceTop p{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    text-transform: capitalize;
+    color: black;
+    font-weight: 400;
+}
+
+.total{
+    display: flex;
+    font-size: 1.3rem;
+    justify-content: space-between;
+    text-transform: uppercase;
+    border-top: rgb(219, 211, 211) solid 1px;
+    color: black;
+}
+
+.total p {
+    font-weight: 500;
+}
+
+.savings p{
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+.changeuserMain{
+    padding: 10px 17px;
+    position: absolute !important;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px gray;
+    border: rgb(232, 132, 11) solid;
+}
+.mainAddress{
+    box-shadow:1px 1px 1px black ;
+}
+
+.addresscard{
+    display: flex;
+    width: 30rem;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 1rem;
+    border-radius: 10px;
+    border: rgb(235, 232, 232) solid;
+    margin-bottom: .5rem;
+    
+}
+
+.addresscard > div:nth-child(2) > p{
+    font-size: .8rem;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal; 
+    margin: 0;
+
+}
+
+.addresscard > div:nth-child(2) > span{
+    font-size: .8rem;
+    font-weight: 500;
+}
+
+/* .paymentbox{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+} */
+@media (max-width:1450px) {
+
+    .maincontainer{
+        display: flex;
+        gap: 2%;
+       padding: 2% 2%;
+    
+    }
+
+    .priceDetails{
+        position: static;
+        margin-top: 20px;
+        box-shadow: 1px 1px 5px gray;
+        height: max-content;
+        padding: 10px 20px;
+        width: 100%;
+    }
+
+    .leftcontainer{
+        
+        display: flex;
+        flex-direction: column;
+       align-items: flex-end;
+        gap:1rem ;
+    }
+
+    .buttonContent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .buttonContent button{
+        vertical-align: top;
+        border:1px solid lightgray;
+        color: rgb(232, 228, 8);
+        font-weight: 600;
+        padding: 5px 12px;
+        font-size: .9rem;
+        text-transform: uppercase;
+        
+           }
+
+           .addresscontent p{
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Number of lines to show */
+            line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal; 
+            max-width: 40rem;
+            min-width: 18rem;
+           }
+        
+    }
+    
+    
+
+
+@media (max-width:1340px) {
+    .maincontainer{
+        display: flex;
+        flex-direction: column;
+        gap: 2%;
+       padding: 2% 2%;
+    
+    }
+ 
+    .productnames > p:first-child{
+        max-width: 100% !important;
+        text-wrap: wrap;
+    }
+    .addresscontent p{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* Number of lines to show */
+        line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal; 
+       }
+
+       .summarybox main div:first-child {
+        width: 25%;
+        min-width:25%;
+    }
+    .summarybox main section div:first-child{
+        text-wrap: nowrap;
+        width: 100%;
+    
+    }
+    
+    .summarybox main div:first-child img {
+        width: 100%;
+    
+    
+    }
+
+       .summarybutns{
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        vertical-align: top;
+        gap: 2rem;
+        width: 100%
+    }
+
+    .summarybutns > button , .summarybutns > a{
+        font-size: .8rem;
+        font-weight: 500;
+        width: 10rem;
+    }
+
+
+    .toptext{
+        font-size:1rem ;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        min-width:100%;
+       vertical-align: top;
+       width: 100%;
+      
+    }
+
+    .summarybox main section {
+        display:flex;
+        flex-direction: column;
+        align-items: start;
+        width: 100%;
+    }
+    
+}
+
+@media (max-width:600px) {
+    .box{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        box-shadow: 1px 1px 5px gray;
+        padding: 14px 20px;
+    }
+
+    .summarybutns > button ,.summarybutns > a {
+        background-color: rgb(238, 215, 5);
+        font-weight: 500;
+        font-size: .8rem;
+        padding: 2px 4px;
+        border-radius: 2px;
+        width: 5rem;
+        
+    }
+
+    .addresscontent p{
+        font-size: .8rem;
+        width: 90%;
+       }
+    
+.box{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-shadow: 1px 1px 5px gray;
+    padding: 10px 10px;
+}
+
+
+.continueSec{
+    box-shadow: 1px 1px 1px lightgray;
+    padding: 10px 10px;
+  
+}
+.continueSec p{
+    font-size: .7rem;
+    font-weight: 500;
+    text-align: left;
+    color: gray;
+    text-transform: capitalize;
+}
+
+.continueSec >button ,.continueSec a {
+    background-color: rgb(232, 132, 11);
+    padding:6px 8px;
+    font-size: .9rem;
+    font-weight: 500;
+    color:white;
+    border-radius: 5px;
+}
+}

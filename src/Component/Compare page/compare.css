@@ -1,0 +1,275 @@
+.comp-box{
+    display: flex;
+    padding-top: 2rem;
+    flex-direction: column;
+    width: 26%;
+    padding: 2rem 1rem;
+    /* border-bottom: 1px solid lightgray; */
+    border-left:2px solid lightgray;
+    border-bottom:1px solid lightgray;
+
+}
+.comp-index{
+
+    padding: 2rem 2rem;
+    width:22%;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid black;
+}
+
+.rowz{
+   
+}
+
+.skeleton-box{
+    
+    border:none
+}
+
+.comp-index>span, .comp-index>div>span{
+    font-weight: 500;
+    color: gray;
+    text-transform: capitalize;
+}
+
+.comp-box-product-pricebox {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: .5rem;
+
+}
+
+.sticky {
+    position: sticky;
+    position: -webkit-sticky;
+}
+
+.sticky2{
+    position: static;
+}
+
+/* .sticky:has(.noSticky) {
+    position: static;
+    } */
+    .comp-box-product-pricebox span:first-child{
+        font-size: 1.2rem;
+        font-weight: 600;
+    
+    }
+    
+    .comp-box-product-pricebox span:nth-child(2){
+    font-weight: 500;
+    text-decoration: line-through;
+    color: gray;
+
+}
+
+.comp-box-product-pricebox span:last-child{
+    font-size: .8rem;
+    color: rgb(11, 97, 11);
+    font-weight:600;
+}
+
+.comp-delivery{
+    color: black
+}
+.comp-delivery>span{
+    font-weight: 600;
+    font-size: 1rem;
+    color: black;
+
+}
+
+
+.compbox-img{
+    width: 100%;
+    height: auto;
+    
+    border-radius: 5px;
+
+}
+
+.skeleton-img{
+    min-width: 100%;
+    padding: 5% 0;
+    border-radius: 5px;
+    width: max-content;
+   min-height: 13rem;
+   max-height: 18rem;
+   height: auto;
+}
+
+.comp-delete{
+    top: 2px;
+    right: 1%;
+}
+
+
+.comp-buttons{
+    padding: 1rem 2rem ;
+    color: white;
+    width: 90%;
+    margin: 0 auto;
+}
+.comp-btn-buy{
+    background-color: #FB641B;
+}
+
+.comp-btn-cart{
+    background-color: #FF9F00;
+}
+
+section{
+    position: static;
+}
+
+.comp-highlights{
+    padding-left: 2rem;
+}
+.comp-highlights>li{
+    list-style: disc;
+    color: gray;
+   
+}
+
+.skeleton-text,.skeleton-text-bg{
+    background-color: #d1cbcb;
+    height: 1rem;
+    width: 4rem;
+    border-radius: 4px;
+}
+
+.skeleton-text-bg{
+    width: 8rem;
+}
+
+.skeleton-img{
+    background-color: #d1cbcb ;
+    
+}
+
+
+@media (max-width:1130px) {
+   .rowz{
+    display: flex;
+    align-items: stretch;
+
+   }
+   .skeleton-box{
+    flex: 1;
+    margin: 0 auto;
+    
+   }
+   .comp-delete{
+    top: 2px;
+    right: 1%;
+}
+    .comp-box{
+        display: flex;
+        padding-top: 2rem;
+        flex-direction: column;
+        width: 26%;
+        padding: 1rem 1rem;
+        /* border-bottom: 1px solid lightgray; */
+        border-left:2px solid lightgray;
+        border-bottom:1px solid lightgray;
+    
+    }
+    .comp-index{
+         
+        padding: 1rem 1rem;
+        width:22%;
+        border-bottom: 1px solid lightgray;
+        border-right: 1px solid black;
+    }
+   
+    .compbox-img,.skeleton-img{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 5px;
+    
+    }
+    .skeleton-box{
+        border: none;
+        width: 100%;
+    }
+    .skeleton-img{
+        margin: 0 auto;
+        padding: 20% 0;
+       width: 100%;
+       
+    }
+    .kill{
+        display: none;
+    }
+    
+
+    .comp-buttons{
+        padding: .5rem 1rem ;
+        color: white;
+        width: 100px;
+        font-size: .6rem;
+    }
+
+    .comp-box-productdetails{
+        font-size: .8rem;
+    }
+
+    .comp-box-product-pricebox span:first-child{
+        font-size: .8rem;
+        font-weight: 600;
+    
+    }
+    
+    .comp-box-product-pricebox span:nth-child(2){
+    font-weight: 500;
+    font-size: .6rem;
+    text-decoration: line-through;
+    color: gray;
+
+}
+
+.comp-box-product-pricebox span:last-child{
+    font-size: .6rem;
+    color: rgb(11, 97, 11);
+    font-weight:600;
+}
+
+    
+    
+}
+
+@media (max-width:800px) {
+    .comp-page-container{
+        overflow-x: scroll;
+    }
+     .comp-index{
+        position: sticky;
+        left: 0;
+        z-index: 10;
+     }
+    .rowz{
+        width: 700px;
+    }
+   
+    .skeleton-img{
+        margin: 0 auto;
+        padding: 20% 0;
+        min-height: 8rem;
+        max-height: 10rem;
+        max-width: 100%;
+      
+       
+    }
+    .comp-delete{
+        top: 2px;
+        right: 5px;
+    }
+    
+    .comp-page-container::-webkit-scrollbar-track {
+        display: none;
+        background-color: var(--custom-white);
+    }
+}

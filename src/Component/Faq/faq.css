@@ -1,0 +1,38 @@
+.qa-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.qa-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.qa-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.qa-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.qa-item h3 {
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    color: #2e68e6;
+}
+
+.qa-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: #666;
+}

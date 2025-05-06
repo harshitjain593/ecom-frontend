@@ -1,0 +1,135 @@
+.input-container {
+    padding: 2rem;
+    margin-top: 4rem;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.input-group {
+    padding: 2px;
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+}
+
+/* search bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.search-box input[type="text"] {
+    flex-grow: 1;
+    padding: 0px 12px;
+    border: none;
+    outline: none;
+}
+
+.search-box button {
+    border: none;
+    padding: 0px 15px;
+    cursor: pointer;
+    color: white;
+}
+
+/* button hover */
+.slide-sec {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.slide-sec img {
+    display: block;
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+
+.slide-sec .info {
+    background: white;
+    text-align: left;
+}
+
+.slide-sec .info aside {
+    font-size: 14px;
+
+}
+
+.slide-sec .info span {
+    font-size: 16px;
+}
+
+.slide-sec .buttons {
+    display: flex;
+    background-color: white;
+    border-right: 1px solid #E1AB0A;
+    border-bottom: 1px solid #E1AB0A;
+    border-left: 1px solid #E1AB0A;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 54px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.slide-sec .buttons1 {
+    display: flex;
+    background-color: #ecebea;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 83px;
+    padding: 10px 20px;
+    left: 50%;
+    font-size: 12px;
+    transform: translateX(-50%);
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.slide-sec .buttons1 span {
+    border: 1.5px solid rgb(208, 205, 205);
+    padding: 8px 5px;
+}
+
+.slide-sec:hover .buttons {
+    opacity: 1;
+}
+
+.slide-sec:hover .buttons1 {
+    opacity: 1;
+}
+
+.slide-sec button {
+    font-size: 13px;
+    border: none;
+    padding: 4px 44px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slide-sec .button1 {
+    font-size: 13px;
+    border: none;
+    /* padding: 4px 20px; */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}

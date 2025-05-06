@@ -1,0 +1,211 @@
+.inputWrapper {
+    position: relative;
+  }
+
+  .container{
+    margin-top: 2rem;
+    height: 70dvh;
+    display: flex;
+    align-items: top;
+    gap: 1rem;
+  }
+  
+  .plasticselect,
+  input[type="url"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 1.25rem;
+    line-height: normal;
+    padding: 0.75rem;
+    border: 1px solid #c5c5c5;
+    border-radius: 0.25rem;
+    appearance: none;
+    outline: 0;
+    color: #14093e;
+    width: 100%;
+    max-width: 100%;
+    font-family: Slack-Lato, appleLogo, sans-serif;
+    margin: 0 0 0.5rem;
+    transition: box-shadow 70ms ease-out, border-color 70ms ease-out;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-shadow: none;
+    height: auto;
+  }
+  
+  .noTouchPlasticSelect:hover,
+  .noTouch input:hover,
+  .noTouch select:hover,
+  .noTouch textarea:hover {
+    border-color: #2780f8;
+  }
+  
+  .focus,
+  .plasticSelectActive:focus,
+  input:active,
+  input:focus,
+  select:active,
+  select:focus,
+  textarea:active,
+  textarea:focus {
+    border-color: #2780f8;
+    box-shadow: 0 0 7px rgba(39, 128, 248, 0.15);
+    outline-offset: 0;
+    outline: 0;
+  }
+  
+  .largeBottomMargin {
+    margin-bottom: 2rem !important;
+  }
+  
+  .splitInput {
+    display: table;
+    width: 30%;
+    margin: 0 auto;
+    border-spacing: 0;
+  }
+  
+  .splitInputItem {
+    display: table-cell;
+    border: 1px solid #9e9ea6;
+  }
+  
+  .splitInputItem:not(:first-child) {
+    border-left: none;
+  }
+  
+  .splitInputItem:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  
+  .splitInputItem:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  
+  .splitInputItemFocused {
+    border: 1px double #2780f8;
+    box-shadow: 0 0 7px rgba(39, 128, 248, 0.3);
+  }
+  
+  .splitInputItem input {
+    height: 5rem;
+    text-align: center;
+    font-size: 2.5rem;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  .splitInputItem input:active,
+  .splitInputItem input:focus,
+  .splitInputItem input:hover {
+    box-shadow: none;
+  }
+  
+  .fsSplit {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #e8e8e8;
+    transition: background-color 0.2s ease-out;
+  }
+  
+  .fsSplit h1 {
+    font-size: 2.625rem;
+    line-height: 3rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  
+  .fsSplit label {
+    margin-bottom: 0.5rem;
+  }
+  
+  .fsSplitDesc {
+    font-size: 1.25rem;
+    color: #9e9ea6;
+    margin-bottom: 2rem;
+  }
+  
+  .fsSplitEmail {
+    color: #555459;
+    font-weight: 700;
+  }
+  
+  .headerErrorMessage {
+    margin: 0 11%;
+    padding: 1rem 2rem;
+    background: #fff1e1;
+    border: none;
+    border-left: 0.5rem solid #ffa940;
+    border-radius: 0.25rem;
+  }
+  
+  .headerErrorMessage h3 {
+    margin: 0;
+  }
+  
+  .errorMessage {
+    display: none;
+    font-weight: 700;
+    color: #ffa940;
+  }
+  
+  .error input,
+  .error textarea {
+    border: 1px solid #ffa940;
+    background: #fff1e1;
+  }
+  
+  .error input:focus,
+  .error textarea:focus {
+    border-color: #fff1e1;
+    box-shadow: 0 0 7px rgba(255, 185, 100, 0.15);
+  }
+  
+  .error .errorMessage {
+    display: inline;
+  }
+  
+  .confirmationCodeSpanCell {
+    display: table-cell;
+    font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
+    padding: 0 0.5rem;
+    width: 2rem;
+  }
+  
+  .confirmationCodeStateMessage {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.
+  }  
+
+  .colSmOffset2{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .submitButton{
+    background-color: #edb70b;
+    color: black;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 4px 8px;
+  }

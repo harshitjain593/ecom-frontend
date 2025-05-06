@@ -1,0 +1,220 @@
+.od-main{
+    padding: 2% 10%;
+    background-color: whitesmoke;
+}
+
+.od-topBox{
+    background-color: white;
+    box-shadow: 1px 1px 5px rgb(205, 204, 204);
+    border-radius: 5px;
+    
+}
+
+.od-addressbox{
+  
+
+}
+
+.od-addressbox p{
+    font-size: .8rem !important;
+    margin: 0;
+}
+
+.od-addressbox >h5{
+    font-size: 1.2rem;
+    text-transform: capitalize;
+}
+
+.od-productbox{
+    background-color: white;
+    box-shadow: 1px 1px 5px rgb(205, 204, 204);
+    border-radius: 5px;
+
+
+
+}
+
+
+.od-productsecbox p{
+  font-size: .8rem !important;
+
+}
+
+.od-productsecbox {
+	display: flex;
+	justify-content: start;
+}
+
+.od-product-imgcontainer > img{
+    width: 8rem;
+    border-radius: 5px;
+}
+
+.od-product-textbox>h6{
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+	text-wrap: nowrap;
+}
+
+.od-product-textbox p{
+    margin: 0;
+}
+
+.od-product-textbox label{
+    align-self: baseline;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+
+@media (max-width:1140px){
+	.od-productsecbox{
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		
+	}
+
+	
+.hh-grayBox {
+  margin-top: 10px !important;
+}
+
+.od-main{
+    padding: 1.5% 4%;
+    background-color: whitesmoke;
+}
+
+
+
+	
+}
+
+@media (max-width:1060px) {
+	
+	.od-returnpolicy > ul{
+		font-size: .65rem;
+		width: 90% !important;
+		line-height: 15px;
+		color: gray;
+		padding: 0 15px;
+	
+	}
+}
+
+.od-returnpolicy > ul{
+	font-size: .65rem;
+	width: 50%;
+	line-height: 15px;
+	color: gray;
+	padding: 0 15px;
+
+}
+
+.od-returnpolicy > ul >li{
+	list-style: disc;
+}
+
+.hh-grayBox {
+	background-color: white;
+	margin-bottom: 0px;
+	padding: 0px 10px;
+  margin-top: 0px;
+}
+.pt45{padding-top:0px;}
+.order-tracking{
+	text-align: center;
+	width: 33.33%;
+	position: relative;
+	display: block;
+	
+}
+
+.order-tracking {
+	position: relative;
+	text-align: center;
+  }
+  
+  .order-tracking .is-complete {
+	display: block;
+	position: relative;
+	border-radius: 50%;
+	height: 30px;
+	width: 30px;
+	background-color: #f7be16;
+	margin: 0 auto;
+	transition: background 0.25s linear;
+	z-index: 2;
+  }
+  
+  .order-tracking .is-complete:after {
+	display: block;
+	position: absolute;
+	content: '';
+	height: 14px;
+	width: 7px;
+	top: -2px;
+	left: 11px;
+	border: 2px solid #AFAFAF;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+	opacity: 0;
+  }
+  
+  .order-tracking.completed .is-complete {
+	background-color: #27aa80;
+  }
+  
+  .order-tracking.completed .is-complete:after {
+	border-color: #fff;
+	opacity: 1;
+  }
+  
+  .order-tracking p {
+	color: #A4A4A4;
+	font-size: .8rem !important;
+	margin-top: 8px;
+	margin-bottom: 0;
+	font-weight: 400;
+	line-height: 20px;
+  }
+  
+  .order-tracking p span {
+	font-size: .6rem !important;
+  }
+  
+  .order-tracking.completed p {
+	color: #000;
+  }
+  
+  .order-tracking::before {
+	content: '';
+	display: block;
+	height: 3px;
+	width: calc(100% - 40px);
+	background-color: #f7be16;
+	top: 13px;
+	position: absolute;
+	left: calc(-50% + 20px);
+	z-index: 0;
+  }
+  
+  .order-tracking:first-child::before {
+	display: none;
+  }
+  
+  .order-tracking.completed::before {
+	background-color: #27aa80;
+  }
+  
+  .ratinglink {
+	background-color: #27aa80;
+	color: white;
+	border-radius: 5px;
+	padding: 3px 10px;
+	text-transform: capitalize;
+	margin-top: 5px;
+	text-decoration: none;
+  }
+  

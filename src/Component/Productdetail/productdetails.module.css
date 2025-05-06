@@ -1,0 +1,339 @@
+.p{
+    line-height: 20px;
+    font-size: 1rem;
+}
+
+.pdetailRow{
+  display: flex;
+  flex-direction: row;
+
+
+}
+.moblieheartContianer{
+  top: 1% !important;
+  transform: translateX(-5%) !important;
+  right: 20% !important;
+}
+
+.mobilePicContainer{
+  width: 70%;
+  /* width: min-content; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+  /* max-width: 30rem; */
+
+  
+}
+
+.mobileImg {
+  width: 100%;
+ object-fit: contain;
+}
+
+.moblilepDetailButtonContainer{
+  width: 100%;
+  display: flex;
+  margin-top: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.moblilepDetailButtonContainer button ,.moblilepDetailButtonContainer a{
+  width: 100%;
+}
+
+@media (min-width:991px){
+  .moblieheartContianer{
+    top: 2% !important;
+    transform: translateX(0%) !important;
+    right: 63% !important;
+  }
+  
+}
+
+@media (max-width:1263px) {
+  .pdetailRow{
+    flex-direction: column;
+  }
+  .picGrid{
+    display: none !important;
+  }
+
+  .picsMainContainer{
+    display: none !important;
+  }
+
+  .pDetailButtonContainer{
+    display: none !important;
+  }
+ 
+  
+}
+
+@media (min-width:1264px) {
+  .mobilePicContainer{
+    display: none;
+  }
+
+  
+}
+
+.pDetailButtonContainer{
+  width: 100%;
+}
+.pDetailButtonContainer >button{
+  width: 181.3px;
+}
+
+.pdetailscolorOptions{
+display: flex;
+justify-content: start;
+align-items: center;
+gap: .8rem;
+width: 25rem;
+overflow-x: auto;
+scroll-snap-type: proximity !important;
+}
+
+.pdetailscolorOptions::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.pdetailscolorOptions{
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+.pdetailscolorOptions >div{
+  width: max-content !important;
+  object-fit: cover !important;
+  border: lightgray solid !important;
+  
+}
+
+.colorOptionsimgContainer  :hover{
+  
+  border: 3px black solid!important;
+  
+}
+
+
+.colorOptionsimgContainer{
+  display: block;
+  width: max-content;
+  border:solid gray;
+}
+.colorOptionsimgContainer> img {
+  width: 5rem !important;
+  height: 4rem !important;
+ 
+  object-fit: cover;
+}
+
+
+.colorOptionsimgContainer > span{
+  width: 5rem;
+  display: block;
+  text-align: center;
+  text-overflow: ellipsis;
+  line-clamp: 1;
+  overflow: hidden;
+  white-space: nowrap;
+
+}
+
+
+
+.imageMagnifyContainer > div > img{
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+
+}
+
+
+
+
+@media (max-width:1230px) {
+  .imageMagnifyContainer >div>img{
+    object-fit: cover;
+    height: min-content;
+  }
+  
+}
+
+.mainPicDet{
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+  min-width: 100%;
+}
+.pbutton{
+    border: solid rgba(20, 98, 223, 0) 2px ;
+    cursor: pointer;;
+    transition: all .5s;
+    border-radius: 1px;
+    padding: 5px 7px;
+}
+.pbutton:hover{
+    border: solid rgb(20, 98, 223) 2px ;
+   
+}
+
+.highlightul>li{
+  list-style: inside;
+  color: gray;   
+}
+
+.pbutton .pbuttonSelected{
+    border: rgb(20, 98, 223) 2px  ;
+}
+
+.highlights{
+    font-size:.9rem;
+ 
+}
+
+.highlights > li{
+    list-style: disc;
+   color: gray;
+}
+
+
+.SubHeads{
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.picodeInput{
+  width: 50% !important;
+}
+
+@media (max-width: 995px) {
+    .image-magnify-container {
+      display: none;
+    }
+  }
+
+
+
+  .buttons{
+    width: max-content;
+    text-wrap: nowrap;
+    padding: .7rem 3%;
+    font-size: 1rem;
+   
+  }
+
+
+.deliveryinfo{
+  margin: 0;
+  padding: 0;
+  line-height: 15px;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.picGrid{
+  overflow-y: scroll !important;
+  max-height: 369px !important;
+  /* height: 430px !important; */
+}
+
+.picGrid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.picGrid {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* productdetails.module.css */
+
+.imageMagnifyContainer {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  border: 1px solid #d0cece;
+  width: 80%;
+  height:auto;
+  
+}
+
+.picGrid{
+  overflow-y: scroll !important;
+  height:100% !important;
+  /* height: 430px !important; */
+}
+
+.picsMainContainer{
+  width: 35rem;
+  height: max-content;
+  display: flex;
+  justify-content: start;
+  align-items: stretch;
+  gap: 1rem;
+
+}
+
+.pDetailsImageSectionwithButton{
+  width: 40rem;
+}
+
+
+
+@media (max-width: 768px) {
+  .buttons{
+    width: min-content;
+    font-size: .8rem;
+  }
+  .imageMagnifyContainer {
+    height: 300px;
+    width: 300px;
+  }
+
+  .imageMagnifyContainer >div >div:nth-child(2){
+    display: none;
+  }
+
+  .pdetailRow{
+    
+  }
+}
+
+.specificationTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.specificationTable th,
+.specificationTable td {
+  border: 1px solid #d0cece;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.specificationTable th {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
