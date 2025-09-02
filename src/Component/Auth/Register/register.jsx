@@ -202,8 +202,8 @@ function Register() {
         {!otpVerify ? (
           <form className="form" onSubmit={handleSubmit} autoComplete="true">
             <img
-              src="/img/shinedecoration-logo.png"
-              alt=""
+              src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png"
+              alt="Oluxe logo"
               style={{ objectFit: "contain", height: "3rem", margin: "0" }}
             />
             <div className="title">Welcome</div>
@@ -281,7 +281,7 @@ function Register() {
                 placeholder=" "
               />
               <p>
-                By continuing, you agree to Shine Decoration's{" "}
+                By continuing, you agree to Oluxe's{" "}
                 <Link to="#">Terms of Service</Link> and{" "}
                 <Link to="#">Privacy Policy.</Link>
               </p>

@@ -5,12 +5,35 @@ import { NextArrow, PrevArrow } from "./Arrow";
 import HeartButton from "./HeartButton";
 
 const Sliders = ({ products }) => {
+    // Debug logging to understand the product data
+    console.log('Sliders component - products:', products);
+    console.log('Sliders component - products length:', products?.length);
+    console.log('Sliders component - products type:', typeof products);
+    
+    // Calculate dynamic slidesToShow based on actual product count
+    const getSlidesToShow = (breakpoint) => {
+        if (!products || products.length === 0) return 1;
+        
+        const breakpointSettings = {
+            1440: 4,
+            1294: 3,
+            900: 3,
+            675: 3,
+            480: 2
+        };
+        
+        const maxSlides = breakpointSettings[breakpoint] || 4;
+        const actualSlides = Math.min(maxSlides, products.length);
+        console.log(`Breakpoint ${breakpoint}: maxSlides=${maxSlides}, actualSlides=${actualSlides}, products.length=${products.length}`);
+        return actualSlides;
+    };
+
     const setting = {
-        infinite: true,
+        infinite: products && products.length > 4, // Only enable infinite if we have more than 4 products
         speed: 400,
         autoplay: false,
-        slidesToShow: 4,
-        arrows: true,
+        slidesToShow: getSlidesToShow(1440), // Default for large screens
+        arrows: products && products.length > 4, // Only show arrows if we have more products than slides
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         slidesToScroll: 1,
@@ -18,47 +41,71 @@ const Sliders = ({ products }) => {
             {
                 breakpoint: 1440,
                 settings: {
-                    slidesToShow: 4,
+                    slidesToShow: getSlidesToShow(1440),
                     slidesToScroll: 1,
+                    infinite: products && products.length > 4,
+                    arrows: products && products.length > 4,
                 }
             },
             {
                 breakpoint: 1294,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: getSlidesToShow(1294),
                     slidesToScroll: 1,
+                    infinite: products && products.length > 3,
+                    arrows: products && products.length > 3,
                 }
             },
             {
                 breakpoint: 900,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: getSlidesToShow(900),
                     slidesToScroll: 1,
+                    infinite: products && products.length > 3,
+                    arrows: products && products.length > 3,
                 }
             },
             {
                 breakpoint: 675,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: getSlidesToShow(675),
                     slidesToScroll: 1,
+                    infinite: products && products.length > 3,
+                    arrows: products && products.length > 3,
                 }
             },
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: getSlidesToShow(480),
                     slidesToScroll: 1,
+                    infinite: products && products.length > 2,
+                    arrows: products && products.length > 2,
                 }
             }
         ]
     };
 
     return (
-        <Slider {...setting}>
-            {products && products.map((product, index) => (
-                <ProductCard key={index} product={product} />
-            ))}
-        </Slider>
+        <>
+            {!products || products.length === 0 ? (
+                <div className="text-center py-4">
+                    <p className="text-muted">No products available</p>
+                </div>
+            ) : products.length === 1 ? (
+                // If only one product, render it without carousel
+                <div className="d-flex justify-content-center">
+                    <ProductCard product={products[0]} />
+                </div>
+            ) : (
+                // If multiple products, render carousel
+                <Slider {...setting}>
+                    {products.map((product, index) => (
+                        <ProductCard key={product._id || index} product={product} />
+                    ))}
+                </Slider>
+            )}
+        </>
     );
 };
 

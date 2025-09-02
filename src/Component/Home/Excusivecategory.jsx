@@ -77,12 +77,24 @@ function Excusivecategory() {
             <div>
                 <h3 className='h3Tag'>Products</h3>
             </div>
-            <Slider ref={slider} {...setting} className="sliders ">
-                {products && products.result.products &&
-                    products.result.products.map((product, index) => (
-                        <ProductCard key={index} product={product} />
+            {!products || !products.result || !products.result.products || products.result.products.length === 0 ? (
+                <div className="text-center py-4">
+                    <p className="text-muted">No products available</p>
+                </div>
+            ) : products.result.products.length === 1 ? (
+                // If only one product, render it without carousel
+                <div className="d-flex justify-content-center">
+                    <ProductCard product={products.result.products[0]} />
+                </div>
+            ) : (
+                // If multiple products, render carousel
+                <Slider ref={slider} {...setting} className="sliders ">
+                    {console.log('Excusivecategory - Rendering Slider with products:', products.result.products)}
+                    {products.result.products.map((product, index) => (
+                        <ProductCard key={product._id || index} product={product} />
                     ))}
-            </Slider>
+                </Slider>
+            )}
         </section>
     );
 }

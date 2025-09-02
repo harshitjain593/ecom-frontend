@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
 // import PopularCategory from './PopularCategory';
-import { fetchImages, fetchProduct } from '../../action/index';
+import { fetchImages } from '../../action/index';
 import Excusivecategory from './Excusivecategory';
 import About from './About';
 import Offer from './Offer';
@@ -20,7 +20,6 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { API_URL } from '../../service/api';
 import MainCarousel from './MainCarousal';
-import { useLocation } from 'react-router-dom';
 import PopularProducts from './PopularProducts';
 import BestSellerProducts from './BestSellerProducts';
 
@@ -119,7 +118,7 @@ useEffect(() => {
       <section>
         <div className="why-shine">
           <div className="container">
-            <h2 className="text-center">Why Shine Decoration</h2>
+            <h2 className="text-center">Why Oluxe</h2>
           </div>
           <div className="container">
             <div className="row pt-4">

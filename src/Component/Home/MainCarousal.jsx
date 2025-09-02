@@ -26,7 +26,12 @@ const MainCarousel = ({ data }) => {
             <img
               src={item.image}
               alt={`Banner ${index + 1}`}
-              style={{ width: '100%', height: 'auto', objectFit: 'cover' }} // Cover the entire slide area
+              style={{ 
+                width: '100%', 
+                height: '500px', // Fixed height
+                objectFit: 'cover', // Changed from 'contain' back to 'cover'
+                objectPosition: 'center' // Center the image
+              }}
             />
           </SwiperSlide>
         ))

@@ -1,9 +1,38 @@
 *:root{
     font-family: 'Lato',sans-serif;
 }
+
+/* Main Carousel Banner - Fixed Heights */
+.slider-container.home-slider-bottom {
+    height: 500px !important;
+    max-height: 500px !important;
+    min-height: 500px !important;
+    overflow: hidden;
+}
+
+.slider-container.home-slider-bottom .swiper {
+    height: 500px !important;
+    max-height: 500px !important;
+    min-height: 500px !important;
+}
+
+.slider-container.home-slider-bottom .swiper-slide {
+    height: 500px !important;
+    max-height: 500px !important;
+    min-height: 500px !important;
+}
+
+.slider-container.home-slider-bottom .swiper-slide img {
+    height: 500px !important;
+    max-height: 500px !important;
+    min-height: 500px !important;
+    object-fit: cover;
+    object-position: center;
+}
+
 .slide-sec {
     position: relative;
-}g
+}
 
 .slick-slider > .arrow {
     transition: all 5s !important;
@@ -797,4 +826,41 @@
         font-size: .65rem;
     }
     
+}
+
+/* Responsive rules for main carousel */
+@media (max-width: 760px) {
+    .slider-container.home-slider-bottom {
+        height: 400px !important;
+        max-height: 400px !important;
+        min-height: 400px !important;
+    }
+
+    .slider-container.home-slider-bottom .swiper,
+    .slider-container.home-slider-bottom .swiper-slide,
+    .slider-container.home-slider-bottom .swiper-slide img {
+        height: 400px !important;
+        max-height: 400px !important;
+        min-height: 400px !important;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-container.home-slider-bottom {
+        height: 300px !important;
+        max-height: 300px !important;
+        min-height: 300px !important;
+    }
+
+    .slider-container.home-slider-bottom .swiper,
+    .slider-container.home-slider-bottom .swiper-slide,
+    .slider-container.home-slider-bottom .swiper-slide img {
+        height: 300px !important;
+        max-height: 300px !important;
+        min-height: 300px !important;
+        object-fit: cover;
+        object-position: center;
+    }
 }

@@ -34,7 +34,7 @@ const LoginPOP = () => {
             </div>
             <div className="text-center linkbox "> 
               <Link to={'/register'} className="rounded alink ">
-              New to shine Decoration? Create an account
+                              New to Oluxe? Create an account
               </Link>
             </div>
 

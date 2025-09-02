@@ -473,3 +473,136 @@ right:7px;
     
     
 }
+.gi-header-bottom {
+    height: 80px;
+    max-height: 80px;
+    min-height: 80px;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.gi-header-bottom > div,
+.gi-header-bottom > div > div,
+.gi-header-bottom > div > div > div {
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+    .header-top {
+        padding: 6px 0;
+    }
+    
+    .header-top .header-top-message {
+        font-size: 12px;
+    }
+    
+    .gi-header-bottom {
+        padding: 10px 0;
+    }
+    
+    .header-logo img {
+        width: 120px;
+    }
+    
+    .gi-header-search {
+        margin: 0 20px;
+    }
+    
+    .gi-header-bottons {
+        gap: 10px;
+    }
+    
+    .gi-header-bottons .gi-header-btn {
+        min-width: 60px;
+        padding: 6px 8px;
+    }
+    
+    .gi-header-bottons .gi-header-btn .gi-btn-stitle {
+        font-size: 10px;
+    }
+    
+    .gi-header-bottons .gi-header-btn i {
+        font-size: 18px;
+    }
+    
+    .header-slider {
+        width: 95vw;
+        margin-top: 1rem;
+        padding: 15px 0;
+        border-radius: 8px;
+    }
+    
+    .nav-headend-img {
+        height: 45px !important;
+        width: 45px !important;
+    }
+    
+    .cat-title {
+        font-size: 0.8rem;
+        margin-top: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-top {
+        padding: 5px 0;
+    }
+    
+    .header-top .header-top-message {
+        font-size: 11px;
+    }
+    
+    .gi-header-bottom {
+        padding: 8px 0;
+    }
+    
+    .header-logo img {
+        width: 100px;
+    }
+    
+    .gi-header-search {
+        margin: 0 15px;
+    }
+    
+    .gi-header-bottons {
+        gap: 8px;
+    }
+    
+    .gi-header-bottons .gi-header-btn {
+        min-width: 50px;
+        padding: 5px 6px;
+    }
+    
+    .gi-header-bottons .gi-header-btn .gi-btn-stitle {
+        font-size: 9px;
+    }
+    
+    .gi-header-bottons .gi-header-btn i {
+        font-size: 16px;
+    }
+    
+    .header-slider {
+        width: 98vw;
+        margin-top: 0.8rem;
+        padding: 12px 0;
+        border-radius: 6px;
+    }
+    
+    .nav-headend-img {
+        height: 40px !important;
+        width: 40px !important;
+    }
+    
+    .cat-title {
+        font-size: 0.75rem;
+        margin-top: 5px;
+    }
+    
+    .badge-ab {
+        font-size: 9px;
+        padding: 3px 5px;
+        min-width: 16px;
+        height: 16px;
+    }
+}

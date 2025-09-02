@@ -22,9 +22,9 @@ function Footer() {
               <div className="row m-minus-991">
                 <div className="col-sm-12 col-lg-3 gi-footer-cat wow fadeInUp">
                   <div className="gi-footer-widget gi-footer-company">
-                    <img src="/img/shinedecoration-logo.png" className="gi-footer-logo" alt="footer logo" />
-                    <p className="gi-footer-detail">Shine Lure is the biggest market of grocery products. Get your
-                      daily
+                    <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png" className="gi-footer-logo" alt="Oluxe footer logo" />
+                                          <p className="gi-footer-detail">Oluxe is the biggest market of home decoration products. Get your
+                        daily
                       needs from our store.</p>
                     {/* <div className="gi-app-store">
                       <Link to="#" className="app-img"><img src="assets/img/app/android.png" className="adroid"

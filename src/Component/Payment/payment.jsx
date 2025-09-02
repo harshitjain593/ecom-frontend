@@ -183,9 +183,9 @@ function Payment() {
       key: process.env.REACT_APP_RAZORPAY_ID_KEY, // Replace with your Razorpay key ID
       amount: parseInt(orderedList.amount),
       currency: orderedList.currency,
-      name: "Shine Decorations",
+      name: "Oluxe",
       description: "Test Transaction",
-      image:'/img/shinedecoration-logo.png',
+      image:'https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png',
       order_id: orderedList.id,
       handler: (response) => {
         console.log("succeeded");
@@ -329,7 +329,7 @@ function Payment() {
         style={{ margin: "10% 0", fontSize: "1.3rem", fontWeight: 600 }}
       >
         <div>
-          Thank you for your choosing shine Decoration your order placed{" "}
+          Thank you for choosing Oluxe, your order has been placed{" "}
           <MdVerifiedUser color="green" size={30} />
         </div>
         <p style={{ fontSize: ".7rem" }}>you will be redirected shortly</p>

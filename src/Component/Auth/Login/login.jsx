@@ -35,11 +35,11 @@ function Login() {
             <div className="brand-wrapper d-flex justify-content-sm-center">
              
                <Link className='mx-auto' to={'/'}>
-                  <img src="/img/shinedecoration-logo.png" alt='logo' />
+                  <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png" alt='Oluxe logo' />
                </Link> 
             </div>
             <div className="intro-content-wrapper">
-              <h1 className="intro-title hh">Welcome to Shine Decoration!</h1>
+              <h1 className="intro-title hh">Welcome to Oluxe!</h1>
               <p className="intro-text">
                 Welcome back! Login to access your personalized wishlist and rediscover a world of handcrafted beauty, waiting just for you. Explore the latest creations from our artisans and continue crafting your own unique collection.
               </p>
@@ -78,7 +78,7 @@ function Login() {
                   <Link to={'/forgot'} className="forgot-password-link">Forgot Password?</Link>
                 </div>
                 <small className='text-center' style={{ width: '100%' }}>
-                  By continuing, you agree to Shine Decoration's <Link to={'/termsandcondition'}>Terms of Service</Link> and <Link to={'/Privacy'}>Privacy Policy.</Link>
+                  By continuing, you agree to Oluxe's <Link to={'/termsandcondition'}>Terms of Service</Link> and <Link to={'/Privacy'}>Privacy Policy.</Link>
                 </small>
               </form>
               <p className="login-wrapper-footer-text mt-2">

@@ -8,12 +8,12 @@ const PrivacyPolicy = () => {
         <div className="col-12">
           <h3 className="mb-4">Privacy Policy</h3>
           <p>
-            This “Privacy Policy” describes the privacy practices of Shine Decoration and our subsidiaries and affiliates (collectively, “Shine Decoration”, “we”, “us”, or “our”) in connection with the
-            https://www.shinedecoration.com/ , the Shine Decoration, any other website
+            This "Privacy Policy" describes the privacy practices of Oluxe and our subsidiaries and affiliates (collectively, "Oluxe", "we", "us", or "our") in connection with the
+            https://www.oluxe.com/ , the Oluxe, any other website
             or mobile application that we own or control and which posts or
-            links to this Privacy Policy (the “Sites”) as well as our retail
+            links to this Privacy Policy (the "Sites") as well as our retail
             stores and related services (together with the Sites, the
-            “Service”), and the rights and choices available to individuals with
+            "Service"), and the rights and choices available to individuals with
             respect to their information.
           </p>
           <p>
@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
             <li>Public sources, such as blogs, forums or social media platforms.</li>
             <li>Information we obtain from third party platforms.</li>
           </ul>
-          <p>If you choose to login to the Sites via a third-party platform, such as Google or Facebook, or otherwise connect your account on the third-party platform or network to your account through the Sites, we may collect information from that platform or network. You may also have the opportunity to provide us with additional information via the third-party platform or network, such as a list of your friends or connections and your email address. You can read more about your privacy choices in the “Your Choices” section.</p>
+          <p>If you choose to login to the Sites via a third-party platform, such as Google or Facebook, or otherwise connect your account on the third-party platform or network to your account through the Sites, we may collect information from that platform or network. You may also have the opportunity to provide us with additional information via the third-party platform or network, such as a list of your friends or connections and your email address. You can read more about your privacy choices in the "Your Choices" section.</p>
         </div>
         <div className="col-12">
           <h4 className="mt-4">Automatic collection</h4>

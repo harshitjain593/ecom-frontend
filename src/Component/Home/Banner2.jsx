@@ -2,8 +2,26 @@ import React from "react";
 
 const Banner2 = () => {
   return(
-    <section className="d-flex banner2-container  " style={{marginBottom:'.5rem'}}>
-    <div className="banner2-bg">
+    <section 
+      className="d-flex banner2-container" 
+      style={{
+        marginBottom: '.5rem',
+        height: '400px',
+        maxHeight: '400px',
+        minHeight: '400px',
+        overflow: 'hidden'
+      }}
+    >
+    <div 
+      className="banner2-bg"
+      style={{
+        height: '400px',
+        maxHeight: '400px',
+        minHeight: '400px',
+        backgroundPosition: 'center',
+        overflow: 'hidden'
+      }}
+    >
         <div className="banner2-bg-text">
             <img src='/img/after-products-banner-circle1.png' className="banner2-img" alt="" />
             <h3 className="cormorant-italic">Stonemade/Unique.</h3>

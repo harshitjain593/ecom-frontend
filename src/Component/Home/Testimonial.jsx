@@ -49,7 +49,7 @@ function Testimonial() {
             <div className='d-flex justify-content-center'>
               <img src="https://www.ugaoo.com/cdn/shop/files/Customer_Testimonial_Thumbnails_Pragyasmita.jpg?v=1661747356&width=70" alt="Client 2" style={{ width: "100px", borderRadius: "30px", height: "100px" }} />
             </div>
-            <p>Join the ranks of our satisfied clientele and discover why Shine Decoration is the go-to destination for all your shopping needs. With a passion for excellence and a dedication to customer satisfaction, we look forward to exceeding your expectations and earning your trust as your preferred ecommerce partner.</p>
+                <p>Join the ranks of our satisfied clientele and discover why Oluxe is the go-to destination for all your shopping needs. With a passion for excellence and a dedication to customer satisfaction, we look forward to exceeding your expectations and earning your trust as your preferred ecommerce partner.</p>
             <h3>Pragya Smith</h3>
           </div>
         </Slider>

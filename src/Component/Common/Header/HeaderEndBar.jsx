@@ -1,97 +1,125 @@
-import React, {  useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useMemo } from 'react';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { useSelector } from "react-redux";
-import { CatNextArrow, CatPrevArrow } from "../../Home/CatArrows";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const HeaderEndBar = () => {
   const category = useSelector(state => state.categories)
+  
+  // Deduplicate categories using useMemo for better performance
+  const uniqueCategories = useMemo(() => {
+    if (!category?.categories?.category) return [];
+    
+    const categories = category.categories.category;
+    
+    // Create a Map to ensure uniqueness by _id
+    const uniqueMap = new Map();
+    
+    categories.forEach(cat => {
+      if (cat && cat._id && cat.name) {
+        // If we already have this category, skip it
+        if (uniqueMap.has(cat._id)) {
+          return;
+        }
+        uniqueMap.set(cat._id, cat);
+      }
+    });
+    
+    return Array.from(uniqueMap.values());
+  }, [category]);
+
   const settings = {
     dots: false,
-    infinite: true,
-    speed: 500,
-    autoplay:true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <CatPrevArrow/>,
-    prevArrow: <CatNextArrow/>,
+    infinite: false,
+    speed: 0,
+    autoplay: false,
+    slidesToShow: 13,
+    slidesToScroll: 0,
+    arrows: false,
+    swipe: false,
+    touchMove: false,
+    draggable: false,
     responsive: [
       {
         breakpoint: 1440,
         settings: {
           slidesToShow: 13,
-          slidesToScroll: 1,
-          autoplay: true,
-          infinite: true,
+          slidesToScroll: 0,
+          autoplay: false,
+          infinite: false,
+          arrows: false,
+          swipe: false,
+          touchMove: false,
+          draggable: false,
         },
       },
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 10,
-          slidesToScroll: 1,
-          autoplay: true,
-          infinite: true,
+          slidesToScroll: 0,
+          autoplay: false,
+          infinite: false,
+          arrows: false,
+          swipe: false,
+          touchMove: false,
+          draggable: false,
         },
       },
       {
         breakpoint: 900,
         settings: {
           slidesToShow: 6,
-          slidesToScroll: 1,
-          autoplay: true,
-          infinite: true,
+          slidesToScroll: 0,
+          autoplay: false,
+          infinite: false,
+          arrows: false,
+          swipe: false,
+          touchMove: false,
+          draggable: false,
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 1,
+          slidesToScroll: 0,
           autoplay: false,
-          initialSlide: 1,
+          initialSlide: 0,
+          arrows: false,
+          swipe: false,
+          touchMove: false,
+          draggable: false,
         },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 4,
-          autoplay: true,
-          slidesToScroll: 1,
+          autoplay: false,
+          slidesToScroll: 0,
+          arrows: false,
+          swipe: false,
+          touchMove: false,
+          draggable: false,
         },
       },
     ],
   };
 
+  // Don't render if no categories are available
+  if (!category || !category.categories || !category.categories.category) {
+    return null;
+  }
+
   return (
     <>
-      {/* <div
-        className="d-flex justify-content-start align-items-baseline py-2"
-        style={{
-          backgroundColor: "#ededed",
-          paddingLeft: "2rem",
-        }}
-      >
-        <h5>SORT BY</h5>
-        <select
-          name=""
-          id=""
-          className="px-3 py-1 rounded border-0"
-          style={{
-            boxShadow: "0px 8px 10px 1px #b9b9b9",
-            fontSize: "1rem",
-            marginLeft: "1rem",
-          }}
-        >
-          <option value="">Price Category</option>
-        </select>
-      </div> */}
-
       <div className="header-slider">
-        <Slider {...settings}>
-          {category &&
-            category.categories &&
-            category.categories.category.map((cat) => (
+        {uniqueCategories && uniqueCategories.length > 0 ? (
+          <Slider {...settings}>
+            {uniqueCategories.map((cat) => (
               <div className="dropdown drop-list position-static" key={cat._id}>
                 <Link to={`/category/${cat.name}`} className="d-flex justify-content-center">
                   <img
@@ -109,7 +137,12 @@ const HeaderEndBar = () => {
                 </p>
               </div>
             ))}
-        </Slider>
+          </Slider>
+        ) : (
+          <div className="text-center py-3">
+            <p>Loading categories...</p>
+          </div>
+        )}
       </div>
     </>
   );
