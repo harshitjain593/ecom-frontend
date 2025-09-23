@@ -1,14 +1,20 @@
 .price-details {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 5px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
   position: sticky;
-  top: 2px;
+  top: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  height: fit-content;
 }
 
 .product-title {
-  color: #6B6363;
-  font-weight: bold;
+  color: #6B5B73;
+  font-weight: 600;
+  font-size: 1.3rem;
+  font-family: 'Lato', sans-serif;
+  margin-bottom: 1rem;
 }
 
 .discount {
@@ -29,8 +35,10 @@
 
 .containerCart {
   display: flex;
-  background-color: #f1f3f6;
- 
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 2rem;
+  gap: 2rem;
 }
 
 
@@ -39,19 +47,24 @@
   flex: 2;
   display: flex;
   flex-direction: column;
-  padding: 0rem 2rem;
-  padding-top: 2rem;
-  gap: 1rem;
+  padding: 0;
+  gap: 1.5rem;
 }
 
 .cartcard-container{
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 1px 5px rgb(229, 228, 228);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
-  padding: 2rem 2rem;
-  border-radius: 5px;
-  
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s ease;
+}
+
+.cartcard-container:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 .cartcard{
 
@@ -64,10 +77,10 @@
 
 .cartcartImgContainer img{
   width: 8rem;
-  height: 100%;
-
-  border-radius: 5px;
-
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .cartcard-textPart{
@@ -97,7 +110,9 @@
 }
 
 .cartcard-textPart > div:first-child div h5{
-  font-weight: 400;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #6B5B73;
   text-transform: capitalize;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -106,6 +121,8 @@
   text-overflow: ellipsis;
   white-space: normal; 
   width: 100%;
+  font-family: 'Lato', sans-serif;
+  margin-bottom: 0.5rem;
 }
 
 .cartcard-textPart > .cartcardPrice-sec{
@@ -125,8 +142,9 @@
 }
 
 .cartcardPrice-sec p:nth-child(2){
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #6B5B73;
 }
 
 .cartcardPrice-sec p:nth-child(3){
@@ -170,8 +188,11 @@
 }
 .quantity-buttons > div > input {
   width: 4rem;
-  height: 1.8rem;
+  height: 2rem;
   text-align: center;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  font-weight: 500;
 }
 .quantity-buttons > div > label{
   width: 4rem;
@@ -204,11 +225,21 @@
 }
 
 .placeorder > button{
-  background-color: rgb(196, 106, 2);
-  padding: 6px 14px;
-  font-size: 1.3rem;
+  background-color: #6B5B73;
+  padding: 12px 24px;
+  font-size: 1.1rem;
   color: white;
-  border-radius: 3px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.placeorder > button:hover {
+  background-color: #5a4a5f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -236,8 +267,9 @@
 .containerCart {
   display: flex;
   flex-direction: column;
-  background-color: #f1f3f6;
- 
+  background-color: #f8f9fa;
+  padding: 1rem;
+  gap: 1rem;
 }
 
 .cards{
@@ -249,9 +281,11 @@
 .cartcard-container{
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 1px 5px rgb(183, 183, 183);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
-  padding: .5rem .5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
 }
   
   
@@ -448,16 +482,21 @@
 }
 
 .updatebutton,.btn{
-  background-color: #f1c40f;
-  
-  border-radius: .5rem;
-  transition:all .4s ;
-  font-weight: 600;
+  background-color: #6B5B73;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
   text-transform: capitalize;
+  padding: 8px 16px;
+  cursor: pointer;
 }
 
 .updatebutton:hover ,.btn:hover {
-  background-color: #493b05;
+  background-color: #5a4a5f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn{

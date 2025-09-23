@@ -79,7 +79,7 @@ const DirectForm = () => {
       newErrors.email = "Invalid email format";
     }
     if (!formData.billing_address) newErrors.billing_address = "Billing address is required";
-    if (!formData.city) newErrors.city = "City is required";
+    if (!formData.city && !formData.district) newErrors.city = "City or District is required";
     if (!formData.state) newErrors.state = "State is required";
     if (!formData.pinCode) newErrors.pinCode = "Pin Code is required";
     if (!formData.mobile) {
@@ -102,9 +102,17 @@ const DirectForm = () => {
       setErrors(formErrors);
       setShowModal(true);
     } else {
+      // Ensure city is populated - use district if city is empty
+      // Map addressType to address_type for backend compatibility
+      const processedFormData = {
+        ...formData,
+        city: formData.city || formData.district,
+        address_type: formData.addressType
+      };
+      
       dispatch({
         type: ADD_NEW_ADDRESS_DIRECTBUY,
-        payload: formData,
+        payload: processedFormData,
       });
       // setFormData({
       //   fullName: "",
@@ -118,7 +126,7 @@ const DirectForm = () => {
       //   pinCode: "",
       //   addressType: "",
       // });
-      console.log("Billing Details Submitted:", formData);
+      console.log("Billing Details Submitted:", processedFormData);
       setErrors({});
     }
   };

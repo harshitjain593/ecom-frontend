@@ -18,8 +18,9 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    box-shadow: 1px 1px 5px gray;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 14px 20px;
+    border-radius: 8px;
 }
 
 .box main{
@@ -121,9 +122,10 @@
 .paymentbox{
     display: flex;
     flex-direction: column;
-    box-shadow: 1px 1px 2px rgb(131, 129, 129);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
    width: 100%;
-
+   border-radius: 8px;
+   overflow: hidden;
 }
 
 .paymentSummary > div:first-child {
@@ -154,6 +156,7 @@ padding: 5px 20px;}
     font-weight: 600;
     gap: 2%;
     padding: 5px 20px;
+    border-radius: 8px 8px 0 0;
 }
 
 
@@ -195,8 +198,7 @@ padding: 5px 20px;}
 
 .summarybox main div:first-child img {
     width: 100%;
-
-
+    border-radius: 6px;
 }
 .summarybox main section {
     display:flex;
@@ -221,7 +223,7 @@ padding: 5px 20px;}
     background-color: rgb(238, 215, 5);
     font-weight: 500;
     padding: 4px 8px;
-    border-radius: 2px;
+    border-radius: 6px;
     width:9rem;
     
 }
@@ -286,6 +288,7 @@ padding: 5px 20px;}
 
 input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
   }
 .quantityBox input::-webkit-outer-spin-button, .quantityBox input::-webkit-inner-spin-button{
     -webkit-appearance: none;
@@ -373,10 +376,11 @@ input[type=number] {
 .priceDetails{
     position: sticky;
     top: 100px;
-    box-shadow: 1px 1px 5px gray;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     height: max-content;
     padding: 10px 20px;
     width: 100%;
+    border-radius: 8px;
 }
 
 .priceDetails main {
@@ -500,10 +504,11 @@ input[type=number] {
     .priceDetails{
         position: static;
         margin-top: 20px;
-        box-shadow: 1px 1px 5px gray;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         height: max-content;
         padding: 10px 20px;
         width: 100%;
+        border-radius: 8px;
     }
 
     .leftcontainer{
@@ -628,8 +633,9 @@ input[type=number] {
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
-        box-shadow: 1px 1px 5px gray;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         padding: 14px 20px;
+        border-radius: 8px;
     }
 
     .summarybutns > button ,.summarybutns > a {
@@ -637,7 +643,7 @@ input[type=number] {
         font-weight: 500;
         font-size: .8rem;
         padding: 2px 4px;
-        border-radius: 2px;
+        border-radius: 6px;
         width: 5rem;
         
     }
@@ -651,8 +657,9 @@ input[type=number] {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    box-shadow: 1px 1px 5px gray;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 10px 10px;
+    border-radius: 8px;
 }
 
 

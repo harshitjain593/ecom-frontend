@@ -35,7 +35,7 @@ function Login() {
             <div className="brand-wrapper d-flex justify-content-sm-center">
              
                <Link className='mx-auto' to={'/'}>
-                  <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png" alt='Oluxe logo' />
+                  <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt='Oluxe logo' />
                </Link> 
             </div>
             <div className="intro-content-wrapper">
@@ -52,13 +52,14 @@ function Login() {
                 <div className="form-group">
                   <label htmlFor="email" className="sr-only">Email</label>
                   <input 
-                    type="tel" 
-                    name="mobile" 
-                    id="mobile" 
+                    type="email" 
+                    name="email" 
+                    id="email" 
                     className="form-control" 
-                    placeholder="phone number" 
-                    value={form.mobile} 
+                    placeholder="Email Address" 
+                    value={form.email} 
                     onChange={handleInputChange} 
+                    required
                   />
                 </div>
                 <div className="form-group mb-3">

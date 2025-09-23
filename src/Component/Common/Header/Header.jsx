@@ -221,8 +221,9 @@ function Header() {
               <div className="gi-flex">
                 <div className="align-self-center gi-header-logo">
                   <div className="header-logo">
-                    <Link to="/"><img src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png" alt="Oluxe Logo" style={{ width: "130px", height: "120px" }} /></Link>
+                    <Link to="/"><img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt="Oluxe Logo" style={{ width: "130px", height: "120px" }} /></Link>
                   </div>
+                  
                 </div>
                 <div className="align-self-center gi-header-search">
                   <div className="header-search ">

@@ -13,7 +13,6 @@ import CryptoJS from "crypto-js";
 import { getOrderSummary } from "../../action/orderSummaryAction";
 import { MdVerifiedUser } from "react-icons/md";
 import { GET_DIRECTBUY } from "../../action/actionType";
-import CodeVerification from "./CodeVerification";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -39,7 +38,6 @@ function Payment() {
   const paymentMethod = useRef(null);
   const [direct, setDirect] = useState(false);
   const [timeOutId, setTimeoutId] = useState("");
-  const [codVerify ,setCodVerify] = useState(false)
 
   useEffect(() => {
     if(checkUser()){
@@ -67,25 +65,23 @@ function Payment() {
   }, [selectedAddress]);
 
   const generateCaptcha = () => {
-    const randomCaptcha = Math.random().toString().substring(2, 6);
+    // Generate a 4-digit CAPTCHA more reliably
+    const randomCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
     setCaptcha(randomCaptcha);
     setInput(""); // Reset input field
     setCaptchaError(false); // Reset error state
+    console.log('Generated CAPTCHA:', randomCaptcha);
   };
   
   const handleInputChange = useCallback((e) => {
     const value = e.target.value;
+    console.log('Input change:', value);
     setInput(value);
-    if (value.length === 4) {
-      if (value === captcha) {
-        setCaptchaError(false);
-      } else {
-        setCaptchaError(true);
-      }
-    } else {
+    // Only clear error when user starts typing, don't validate in real-time
+    if (captchaError && value.length > 0) {
       setCaptchaError(false);
     }
-  },[captcha,input]);
+  }, [captchaError]);
 
   useEffect(() => {
     generateCaptcha();
@@ -185,7 +181,7 @@ function Payment() {
       currency: orderedList.currency,
       name: "Oluxe",
       description: "Test Transaction",
-      image:'https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png',
+      image:'https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png',
       order_id: orderedList.id,
       handler: (response) => {
         console.log("succeeded");
@@ -281,13 +277,28 @@ function Payment() {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+      console.log('Form submitted, current input state:', input);
       if (selectedMethod === "cod") {
-        if (captcha !== input) {
-          setSelectedMethod('')
+        // Check if user is logged in
+        if (!checkUser()) {
+          alert("Please login to place a cash on delivery order");
+          return;
+        }
+        
+        // Trim whitespace and make comparison case-insensitive for better UX
+        const trimmedInput = input.trim();
+        const trimmedCaptcha = captcha.trim();
+        console.log('CAPTCHA Debug:', { 
+          originalInput: input, 
+          originalCaptcha: captcha, 
+          trimmedInput, 
+          trimmedCaptcha,
+          match: trimmedCaptcha.toLowerCase() === trimmedInput.toLowerCase()
+        });
+        if (trimmedCaptcha.toLowerCase() !== trimmedInput.toLowerCase()) {
           setCaptchaError(true);
           return;
         } else {
-          
           setCaptchaError(false);
           const updatedReqProducts = handleReqBody();
           setReqProducts(updatedReqProducts);
@@ -297,8 +308,9 @@ function Payment() {
               paymentMethod: "Cash on delivery",
             })
           ).then(() => {
-            setCodVerify(true)
-          
+            // Skip OTP verification for logged-in users and directly place order
+            setDirect(true);
+            handleDirect();
           });
           return;
         }
@@ -312,7 +324,7 @@ function Payment() {
         });
       }
     },
-    [dispatch, handleReqBody, selectedMethod]
+    [dispatch, handleReqBody, selectedMethod, handleDirect, input, captcha]
   );
 
   useEffect(() => {
@@ -337,17 +349,7 @@ function Payment() {
     );
   }
 
-  if(codVerify){
-    console.log('hello codverify');
-
-    
-    
-    return(
-      <div>
-        <CodeVerification mobile={selectedAddress.mobile} setDirect={handleDirect} setCodVerify={setCodVerify}/>
-      </div>
-    )
-  }
+  // OTP verification removed for logged-in users - orders are placed directly
 
   if(!checkUser()){
     return (

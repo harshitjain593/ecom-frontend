@@ -22,7 +22,7 @@ function Footer() {
               <div className="row m-minus-991">
                 <div className="col-sm-12 col-lg-3 gi-footer-cat wow fadeInUp">
                   <div className="gi-footer-widget gi-footer-company">
-                    <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/Oluxe-logo-transparent.png" className="gi-footer-logo" alt="Oluxe footer logo" />
+                    <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" className="gi-footer-logo" alt="Oluxe footer logo" />
                                           <p className="gi-footer-detail">Oluxe is the biggest market of home decoration products. Get your
                         daily
                       needs from our store.</p>
