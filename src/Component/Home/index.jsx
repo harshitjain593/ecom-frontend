@@ -78,7 +78,8 @@ useEffect(() => {
 
   return (
     <>
-     <HeaderEndBar  />
+     <HeaderEndBar />
+
       <section className="mt-0  pt-0" >
         <div className='slider-container home-slider-bottom'>
 

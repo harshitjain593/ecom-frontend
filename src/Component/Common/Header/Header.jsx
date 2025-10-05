@@ -141,20 +141,23 @@ function Header() {
               <div className="col header-top-res d-lg-none">
                 <div className="gi-header-bottons">
                   <div className="right-icons">
-                    <Link to="login.html" className="gi-header-btn gi-header-user">
+                    {/* Profile icon hidden on mobile - moved to second header */}
+                    <Link to="login.html" className="gi-header-btn gi-header-user d-none">
                       <div className="header-icon"><i className="fa-regular fa-user"></i></div>
                     </Link>
-                    <Link to="/wishlist" className="gi-header-btn gi-wish-toggle">
+                    {/* Wishlist and cart icons moved to second header on mobile */}
+                    <Link to="/wishlist" className="gi-header-btn gi-wish-toggle d-none">
                       <div className="header-icon"><i className="fa-regular fa-heart"></i></div>
                       {wishListQuantity > 0 &&<span className="gi-header-count gi-wishlist-count">{wishListQuantity || 0}</span>}
                     </Link>
-                    <Link to="/cart" className="gi-header-btn gi-cart-toggle">
+                    <Link to="/cart" className="gi-header-btn gi-cart-toggle d-none">
                       <div className="header-icon"><i className="fa-solid fa-cart-shopping"></i>
                         <span className="main-label-note-new"></span>
                       </div>
              {cartQuantity > 0 &&  <span className="gi-header-count gi-cart-count">{cartQuantity? cartQuantity :0}</span>}
                     </Link>
-                    <button onClick={toggleSidebar} className="gi-header-btn gi-site-menu-icon d-lg-none">
+                    {/* Hamburger menu moved to second header on mobile */}
+                    <button onClick={toggleSidebar} className="gi-header-btn gi-site-menu-icon d-none">
                       <i className="fa-solid fa-bars"></i>
                     </button>
                   </div>
@@ -162,58 +165,81 @@ function Header() {
               </div>
             </div>
           </div>
-          {isSidebarOpen && (
-            <div className="sidebar">
-              <button onClick={toggleSidebar} className="close-btn">&times;</button>
-              <nav>
-                <ul>
-                  <div className="category-dropdown px-2">
-                  {activeFilter?( <li className="d-flex justify-content-between text-black border-bottom" onClick={handleToggleSidebar}>Shop by Filter
-                      <span>{isOpen ? '+' : '+'}</span>
-                    </li>):''}
-                    {/* {isOpen && (
-                      <div className="dropdown">
-                        <ul>
-                          <li><Link to="/">Bone China</Link></li>
-                          <li><Link to="/">Wooden</Link></li>
-                          <li><Link to="/">Ceramic</Link></li>
-                        </ul>
-                      </div>
-                    )} */}
-                  </div>
-                 
-                  { user ? (
-                    <>
-                      <div className="px-2">
-                        <li className="border-bottom"><Link to="/logout">Logout</Link></li>
-                      </div>
-                      <div className="px-2">
-                      <li className="border-bottom"><Link to="/user/orders">Orders</Link></li>
-                      </div>
-                      <div className="px-2">
-                      <li className="border-bottom"><Link to="/profile">Profile</Link></li>
-                      </div>
-                    </>
-
-                  ) :(
-                    <section>
-
-                      <div className="px-2">
-                      <li className="border-bottom"><Link to="/login">Login</Link></li>
-                     </div>
-                      <div className="px-2">
-                      <li className="border-bottom"><Link to="/register">Register</Link></li>
-                     </div>
-                    </section>
-                    
-                     
-                  )}
-             
-                </ul>
-              </nav>
-            </div>
-          )}
         </div>
+
+        {/* Mobile Header with Icons - appears on all pages */}
+        <div className="d-lg-none mobile-header-icons">
+          <div className="container-fluid">
+            <div className="row align-items-center">
+              <div className="col-3">
+                <button onClick={toggleSidebar} className="gi-header-btn gi-site-menu-icon">
+                  <i className="fa-solid fa-bars"></i>
+                </button>
+              </div>
+              <div className="col-6 text-center">
+                <div className="header-logo">
+                  <Link to="/"><img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt="Oluxe Logo" style={{ width: "100px", height: "80px" }} /></Link>
+                </div>
+              </div>
+              <div className="col-3">
+                <div className="d-flex justify-content-end">
+                  <Link to="/wishlist" className="gi-header-btn gi-wish-toggle me-2">
+                    <div className="header-icon"><i className="fa-regular fa-heart"></i></div>
+                    {wishListQuantity > 0 &&<span className="gi-header-count gi-wishlist-count">{wishListQuantity || 0}</span>}
+                  </Link>
+                  <Link to="/cart" className="gi-header-btn gi-cart-toggle">
+                    <div className="header-icon"><i className="fa-solid fa-cart-shopping"></i>
+                      <span className="main-label-note-new"></span>
+                    </div>
+                    {cartQuantity > 0 &&  <span className="gi-header-count gi-cart-count">{cartQuantity? cartQuantity :0}</span>}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Search Bar - appears on all pages */}
+        <div className="d-lg-none mobile-search-container">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <div className="mobile-search-bar">
+                  <SearchBar SidebarOpen={SidebarOpen} handleCloseSidebar={handleCloseSidebar} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Sidebar - appears on all pages */}
+        {isSidebarOpen && (
+          <div className="sidebar">
+            <button onClick={toggleSidebar} className="close-btn">&times;</button>
+            <nav>
+              <ul>
+                { user ? (
+                  <>
+                    <li><Link to="/profile"><i className="fa-regular fa-user me-2"></i>Profile</Link></li>
+                    <li><Link to="/user/orders"><i className="fa-solid fa-box me-2"></i>Orders</Link></li>
+                    <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
+                    <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
+                    <li><Link to="/logout"><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</Link></li>
+                  </>
+
+                ) :(
+                  <>
+                    <li><Link to="/login"><i className="fa-solid fa-sign-in-alt me-2"></i>Login</Link></li>
+                    <li><Link to="/register"><i className="fa-solid fa-user-plus me-2"></i>Register</Link></li>
+                    <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
+                    <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
+                  </>
+                )}
+             
+              </ul>
+            </nav>
+          </div>
+        )}
 
         <div className="gi-header-bottom d-lg-block">
           <div className="container-fluid position-relative">

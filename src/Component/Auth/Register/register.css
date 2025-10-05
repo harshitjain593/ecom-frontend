@@ -197,6 +197,7 @@
 @media (max-width: 767px) {
   .form-section {
     padding: 35px; 
+    width: 100%;
   }
 }
 

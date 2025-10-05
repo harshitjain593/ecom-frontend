@@ -332,6 +332,12 @@
     .shipping {
         padding: 0px 10px;
     }
+    .shipping .container .row{
+        justify-content: space-around;
+    }
+    .shipping .container .row div{
+        width: auto;
+    }
 }
 
 .card-custom div .card-img-top {
@@ -374,7 +380,7 @@
 
 .fixed-right {
     position: fixed;
-    right: -60px;
+    right: -124px;
     top: 270px;
     height: 44px;
     z-index: 1000;
@@ -412,9 +418,9 @@
 
 @media (max-width:768px) {
     .fixed-right{
-        top: 200px;
+        top: 300px;
         font-size: 1rem;
-        right: -65px;
+        right: -124px;
     }
 
     .feedback-right{
@@ -540,7 +546,7 @@
     margin-bottom: 5rem !important;
 }
 
-@media (max-width:760px) {
+@media (max-width:770px) {
     .home-slider-bottom{
         margin-bottom: 1.5rem !important; 
     }
@@ -550,10 +556,17 @@
 }
 
 .banner2-container{
-    margin-top: -1rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 1rem !important;
 }
 
+}
 
+@media (max-width:480px) {
+    .banner2-container{
+        margin-top: 0 !important;
+        margin-bottom: 1rem !important;
+    }
 }
 
 
