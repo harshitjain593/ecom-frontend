@@ -1,4 +1,4 @@
-name: Deploy Frontend to EC2
+name: Auto Build & Deploy Frontend to EC2
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
           source: "build/*"
           target: "/var/www/html"
 
-      - name: Restart Nginx (optional)
+      - name: Restart Nginx
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
