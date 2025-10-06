@@ -24,14 +24,26 @@ jobs:
       - name: Build the project
         run: CI=false npm run build
 
-      - name: Deploy to EC2 via SSH
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "build/*"
-          target: "/var/www/html"
+      - name: Deploy to EC2 via SCP
+  uses: appleboy/scp-action@v0.1.4
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ${{ secrets.EC2_USER }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    source: "build/*"
+    target: "/home/ubuntu/build-temp"
+
+- name: Move build to Nginx directory
+  uses: appleboy/ssh-action@v1.0.3
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ${{ secrets.EC2_USER }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    script: |
+      sudo rm -rf /var/www/html/*
+      sudo mv /home/ubuntu/build-temp/* /var/www/html/
+      sudo systemctl restart nginx
+
 
       - name: Restart Nginx
         uses: appleboy/ssh-action@v1.0.3
