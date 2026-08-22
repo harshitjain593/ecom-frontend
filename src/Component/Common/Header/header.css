@@ -923,3 +923,22 @@ right:7px;
         font-size: 12px;
     }
 }
+
+/* Profile dropdown must sit above the category nav row */
+.gi-header {
+    position: relative;
+    z-index: 1100;
+}
+
+.gi-header-bottom {
+    position: relative;
+    z-index: 1120;
+}
+
+.gi-header-bottons .gi-acc-drop {
+    z-index: 1130;
+}
+
+.gi-header-bottons .gi-acc-drop .gi-dropdown-menu {
+    z-index: 1200;
+}

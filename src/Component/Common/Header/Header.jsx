@@ -291,9 +291,9 @@ function Header() {
                       <ul className="gi-dropdown-menu">
                         {user ? (
                           <>
-                             <li><Link className="dropdown-item" to="/logout">logout</Link></li>
                              <li><Link className="dropdown-item" to="/profile">Profile</Link></li>
                              <li><Link className="dropdown-item" to="/user/orders">Orders</Link></li>
+                             <li><Link className="dropdown-item" to="/logout">Logout</Link></li>
                           </>
 
                         ):(

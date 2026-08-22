@@ -2,24 +2,27 @@ import { API_URL } from '../service/api';
 import axios from 'axios';
 import {
   ADD_TO_CART,
-  ADD_TO_WISHLIST,
   BEST_PRODUCTS,
   GET_PRODUCT_DETAILS,
-  GET_WISHLIST,
   UPDATE_CART,
 } from './actionType';
 import { ToastContainer, toast } from 'react-toastify';
 import { getCart } from './getCartAction';
+import { getWishlist } from './wishListAciton';
 
 export const addWishList = (productId) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
-      console.log('dispatched for add to wishlist');
       const token = localStorage.getItem('token');
       if (!token) {
-        // toast.error("User is not authenticated");
-        return;
+        return { success: false };
       }
+
+      const existing = getState()?.WishlistData?.data?.products ?? [];
+      if (existing.some((product) => product._id === productId)) {
+        return { success: true, alreadyExists: true };
+      }
+
       const response = await fetch(`${API_URL}/mobileApi/wishlist/add-to-wishlist/${productId}`, {
         method: 'POST',
         headers: {
@@ -30,24 +33,20 @@ export const addWishList = (productId) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('data wishlist', data);
-        const { message, statusCode, result } = data;
+        const { statusCode } = data;
 
         if (statusCode === 200) {
-          // Dispatch the add to wishlist action with the new product as payload
-          dispatch({ type: ADD_TO_WISHLIST, payload: result.products });
-        
-        } else {
-         
+          return dispatch(getWishlist());
         }
       } else {
         const errorData = await response.json();
         console.log('data', errorData);
-    
       }
+
+      return { success: false };
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-     
+      return { success: false };
     }
   };
 };

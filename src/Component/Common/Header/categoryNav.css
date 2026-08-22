@@ -2,7 +2,7 @@
   background: #f8f6f2;
   border-bottom: 1px solid #e8e4de;
   position: relative;
-  z-index: 1100;
+  z-index: 1090;
 }
 
 .category-nav__inner {
@@ -40,7 +40,7 @@
 }
 
 .category-nav__link:hover,
-.category-nav__item.is-active .category-nav__link {
+.category-nav__item:hover .category-nav__link {
   color: #b8956e;
 }
 
@@ -49,6 +49,7 @@
 }
 
 .category-nav__dropdown {
+  display: none;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -58,7 +59,11 @@
   border: 1px solid #e8e4de;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  z-index: 1101;
+  z-index: 1095;
+}
+
+.category-nav__item:hover .category-nav__dropdown {
+  display: block;
   animation: categoryNavFadeIn 0.2s ease;
 }
 

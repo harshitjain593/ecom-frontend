@@ -73,7 +73,7 @@ export const removeFromWishlist = (productId)=>{
                         type: REMOVE_FROM_WISHLIST,
                         payload:productId
                     })
-                    // toast.success('product removed from wishlist')
+                    return dispatch(getWishlist());
                     
                 } else {
                     

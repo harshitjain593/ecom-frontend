@@ -60,10 +60,8 @@ const CategoryResult = () => {
   }, [id, subCategoryParam, categories]);
 
   useEffect(() => {
-    if (!categories.length) {
-      dispatch(getCategory());
-    }
-  }, [dispatch, categories.length]);
+    dispatch(getCategory());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!id) return;
