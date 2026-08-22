@@ -30,34 +30,6 @@ export const getActiveSubcategories = (category) => {
 
 const normalizeName = (value) => decodeURIComponent(value || '').trim().toLowerCase();
 
-/** Attach flat subcategory list to categories when not nested in category payload. */
-export const mergeSubcategoriesIntoCategories = (categories = [], subcategories = []) => {
-  if (!Array.isArray(categories) || categories.length === 0) return categories;
-  if (!Array.isArray(subcategories) || subcategories.length === 0) return categories;
-
-  return categories.map((category) => {
-    const existing = getSubcategories(category);
-    if (existing.length > 0) return category;
-
-    const categoryName = normalizeName(category.name);
-    const matched = subcategories.filter((sub) => {
-      const subCategoryName = normalizeName(sub.categoryName || sub.category);
-      return subCategoryName === categoryName || sub.categoryId === category._id;
-    });
-
-    if (!matched.length) return category;
-    return { ...category, subcategories: matched };
-  });
-};
-
-export const extractSubcategoryList = (result) => {
-  if (!result) return [];
-  if (Array.isArray(result)) return result;
-  if (Array.isArray(result.subcategory)) return result.subcategory;
-  if (Array.isArray(result.subcategories)) return result.subcategories;
-  return [];
-};
-
 export const extractCategoryList = (result) => {
   if (!result) return [];
   if (Array.isArray(result)) return result;
