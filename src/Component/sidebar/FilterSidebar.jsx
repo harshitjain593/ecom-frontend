@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { filterProducts } from '../../action/filterAction';
+import { fetchProduct } from '../../action/index';
 import PriceFilter from '../Common/filter components/PriceFilter';
 import CategoryFilter from '../Common/filter components/CategoryFilter';
 import { getMouseEventOptions } from '@testing-library/user-event/dist/utils';
@@ -134,6 +135,19 @@ export const FilterSidebar = () => {
             setReqObj({...reqobj,'category':lastSegment})
     
     
+          }
+        } else if (pathname === '/shop') {
+          const params = new URLSearchParams(window.location.search);
+          const categoryParam = params.get('category');
+          if (categoryParam) {
+            const categories = categoryParam.split(',').filter(Boolean);
+            dispatch(filterProducts({ category: categories }));
+            setBaseKey({ category: categories });
+            setReqObj({ category: categories });
+          } else {
+            dispatch(fetchProduct());
+            setBaseKey({});
+            setReqObj({});
           }
         }
         

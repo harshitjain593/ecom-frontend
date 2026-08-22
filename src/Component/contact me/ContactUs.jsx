@@ -61,7 +61,7 @@ const handleSubmit = useCallback(async(event) => {
 							<div className="info">
 								<h3 className="title">CONTACT</h3>
 								<p>
-									<i className="fa fa-mobile" aria-hidden="true"></i> &nbsp; <a style={{color:'black'}} href="tel:7428689188">(+91) - 7428689188</a>
+									<i className="fa fa-mobile" aria-hidden="true"></i> &nbsp; <a style={{color:'black'}} href="tel:+919991299682">(+91) - 9991299682</a>
 									<br/>
 								
 								</p>
@@ -79,7 +79,7 @@ const handleSubmit = useCallback(async(event) => {
 								<h3 className="title">ADDRESS</h3>
 								<p>
 									<i className="fa fa-map-marker" aria-hidden="true"></i>
-									<a href="http://maps.google.com/?q=0490D /7/13 main road surajpur greater Noida Uttar Pradesh." style={{color:'black',textWrap:"wrap"}}>0490D /7/13 main road surajpur greater Noida Uttar Pradesh.</a> 
+									<a href="https://maps.google.com/?q=Factory+no+8,+Gali+no+7,+Ram+nagar,+Nehar+paar,+Jattal+Road,+Sondhapur,+Panipat,+Haryana+132103" style={{color:'black',textWrap:"wrap"}}>Factory no 8 , Gali no 7 , Ram nagar , Nehar paar , Jattal Road , Sondhapur , Panipat, Haryana 132103</a> 
 								</p>
 							</div>
 						</div>
@@ -427,7 +427,7 @@ const handleSubmit = useCallback(async(event) => {
 			</div>
 		</main>
 		<div className="d-flex align-items-center justify-content-center" >
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3506.431613191668!2d77.48487577549582!3d28.496659275739088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cea395d66fccb%3A0x48dd528d9324baff!2sMain%20Rd%2C%20Greater%20Noida%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1724151450885!5m2!1sen!2sin" width="100%" height="400" style={{border:0}} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="map mt-2"></iframe>
+			<iframe src="https://maps.google.com/maps?q=Factory+no+8,+Gali+no+7,+Ram+nagar,+Nehar+paar,+Jattal+Road,+Sondhapur,+Panipat,+Haryana+132103&output=embed" width="100%" height="400" style={{border:0}} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="map mt-2"></iframe>
 		</div>
 	</section>
   </>);

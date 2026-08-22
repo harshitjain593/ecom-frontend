@@ -35,7 +35,7 @@ function Login() {
             <div className="brand-wrapper d-flex justify-content-sm-center">
              
                <Link className='mx-auto' to={'/'}>
-                  <img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt='Oluxe logo' />
+                  <img src="/img/oluxe-logo.png" alt='Oluxe logo' className="auth-logo" />
                </Link> 
             </div>
             <div className="intro-content-wrapper">

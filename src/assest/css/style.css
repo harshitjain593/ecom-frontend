@@ -2097,9 +2097,10 @@ Tools sidebar
 }
 
 .gi-header-bottom {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    padding: 15px 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+    padding: 12px 0;
+    border-bottom: 1px solid #e8e8e8;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .gi-flex {
@@ -2119,15 +2120,38 @@ Tools sidebar
 .header-logo {
     text-align: left;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 992px) {
+    .header-logo {
+        justify-content: flex-start;
+    }
 }
 
 .header-logo:hover {
     transform: scale(1.02);
 }
 
-.header-logo img {
-    width: 144px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+.header-logo img,
+.site-logo {
+    max-width: none;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    filter: none;
+    background: transparent;
+}
+
+.site-logo--desktop {
+    max-height: 56px;
+}
+
+.site-logo--mobile {
+    max-height: 44px;
 }
 
 .col.gi-header-logo {
@@ -2222,7 +2246,7 @@ Tools sidebar
     -ms-flex-pack: center;
     justify-content: center;
     text-decoration: none;
-    color: #E1AB0A;
+    color: #1a1a1a;
     padding: 8px 12px;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -2231,9 +2255,9 @@ Tools sidebar
 }
 
 .gi-header-bottons .gi-header-btn:hover {
-    background: rgba(225, 171, 10, 0.1);
+    background: rgba(26, 26, 26, 0.05);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(225, 171, 10, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .gi-header-bottons .gi-header-btn .gi-btn-desc {
@@ -3244,9 +3268,13 @@ body.gi-menu-open:before {
     Site Footer Section
 ---------------------------------------------------*/
 .gi-footer {
-    color: #fff;
+    color: #1a1a1a;
     background: #fff;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #e8e8e8;
+}
+
+.gi-footer .footer-container {
+    background: #fafafa;
 }
 
 .gi-footer .footer-top .gi-footer-company {
@@ -3271,8 +3299,14 @@ body.gi-menu-open:before {
 }
 
 .gi-footer .footer-top .gi-footer-widget .gi-footer-logo {
-    max-width: 144px;
-    margin-bottom: 30px;
+    max-height: 64px;
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin-bottom: 20px;
+    object-fit: contain;
+    display: block;
+    filter: none;
 }
 
 .gi-footer .footer-top .gi-footer-widget .gi-footer-detail {
@@ -3282,7 +3316,7 @@ body.gi-menu-open:before {
     font-size: 14px;
     line-height: 27px;
     font-weight: 400;
-    color: white;
+    color: #4a4a4a;
     display: inline-block;
     position: relative;
 }
@@ -3301,7 +3335,7 @@ body.gi-menu-open:before {
     font-size: 21px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: white;
+    color: #1a1a1a;
     letter-spacing: 0;
     position: relative;
     display: block;
@@ -3326,7 +3360,7 @@ body.gi-menu-open:before {
     padding: 0;
     font-weight: 400;
     font-size: 16px;
-    color: #E1AB0A;
+    color: #b8956e;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -3345,7 +3379,7 @@ body.gi-menu-open:before {
     font-size: 14px;
     line-height: 20px;
     padding: 0;
-    color: white;
+    color: #4a4a4a;
     margin-bottom: 0;
     display: inline-block;
     position: relative;
@@ -3355,7 +3389,7 @@ body.gi-menu-open:before {
 }
 
 .gi-footer .footer-top .gi-footer-widget .gi-footer-links .gi-footer-link a:hover {
-    color: #E7BC3E;
+    color: #b8956e;
     opacity: 1;
 }
 
@@ -3369,7 +3403,7 @@ body.gi-menu-open:before {
     margin: 0;
     font-size: 14px;
     font-weight: 400;
-    color: white;
+    color: #4a4a4a;
 }
 
 .gi-footer .footer-top .gi-footer-contact .gi-footer-widget .gi-footer-links a {
@@ -3409,7 +3443,7 @@ body.gi-menu-open:before {
 .gi-footer .footer-top .gi-footer-social .gi-footer-widget .gi-footer-links .gi-footer-link a {
     width: 30px;
     height: 30px;
-    background-color: #4b5966;
+    background-color: #1a1a1a;
     border-radius: 5px;
     text-transform: capitalize;
     display: -webkit-box;
@@ -3422,6 +3456,7 @@ body.gi-menu-open:before {
     -ms-flex-pack: center;
     justify-content: center;
     font-size: 15px;
+    color: #fff;
 }
 
 .gi-footer .footer-top .gi-footer-social .gi-footer-widget .gi-footer-links .gi-footer-link a i {
@@ -3482,7 +3517,8 @@ body.gi-menu-open:before {
 }
 
 .footer-bottom .gi-copy a {
-    color: #E7BC3E;
+    color: #b8956e;
+    font-weight: 500;
 }
 
 .footer-bottom .gi-copy .site-name:hover {

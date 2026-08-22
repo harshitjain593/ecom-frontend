@@ -3,12 +3,24 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { NextArrow, PrevArrow } from './Arrow';
-import './index.css';
+import './homeTheme.css';
 
+const TESTIMONIALS = [
+  {
+    quote: 'The rug transformed our living room completely. The quality is exceptional — you can feel the craftsmanship in every thread. Oluxe delivered exactly what we envisioned.',
+    author: 'Priya Sharma',
+  },
+  {
+    quote: 'We ordered a custom-sized rug for our bedroom and the finish is flawless. The colours are even more beautiful in person. Truly a piece of art for the floor.',
+    author: 'Rahul Mehta',
+  },
+  {
+    quote: 'From browsing to delivery, the experience was seamless. The rug anchors our dining space perfectly. I have already recommended Oluxe to friends and family.',
+    author: 'Ananya Kapoor',
+  },
+];
 
 function Testimonial() {
-
-
   const slider = useRef();
   const setting = {
     dots: true,
@@ -20,42 +32,25 @@ function Testimonial() {
     prevArrow: <PrevArrow />,
     arrows: false,
     autoplay: true,
-    autoplaySpeed: 3000,
-    // fade: true,
+    autoplaySpeed: 5000,
     cssEase: 'linear',
   };
+
   return (
-    <>
-      <section className=" py-4 testimonial" style={{ textAlign: "center" }}>
-        <div>
-          <h2 className='fw-bold fs-3 py-2' style={{ color: "#6B6363" }}>Our Happy Client</h2>
-        </div>
-        <Slider ref={slider} {...setting} className=''>
-          <div className='px-1'>
-            <div className='d-flex justify-content-center'>
-              <img src="https://www.ugaoo.com/cdn/shop/files/Customer_Testimonial_Thumbnails_Samarth_copy.jpg?v=1661747399&width=70" alt="Client 1" style={{ width: "100px", borderRadius: "30px", height: "100px" }} />
+    <section className="home-section testimonial-section">
+      <div className="home-container">
+        <h2 className="home-section-title">What Our Clients Say</h2>
+        <Slider ref={slider} {...setting}>
+          {TESTIMONIALS.map((item) => (
+            <div key={item.author} className="testimonial-slide">
+              <p className="testimonial-quote">&ldquo;{item.quote}&rdquo;</p>
+              <p className="testimonial-author">{item.author}</p>
             </div>
-            <p>our satisfied clients are at the heart of everything we do. We take pride in providing exceptional products and services that exceed expectations. But don't just take our word for it – hear what our happy clients have to say! From seamless shopping experiences to top-notch customer support, our dedicated team works tirelessly to ensure every customer leaves smiling. Join the ranks of our delighted clients and experience ecommerce excellence like never before.</p>
-            <h3>Sarmarth Goyal</h3>
-          </div>
-          <div className='px-1'>
-            <div className='d-flex justify-content-center'>
-              <img src="https://www.ugaoo.com/cdn/shop/files/Customer_Testimonial_Thumbnails_Aishwarya.jpg?v=1661747317&width=70" alt="Client 1" style={{ width: "100px", borderRadius: "30px", height: "100px" }} />
-            </div>
-            <p>But it's not just about the transactions – it's about the relationships we build with each and every customer. We take pride in going above and beyond to ensure that every interaction with our brand leaves a lasting impression. Whether it's providing personalized recommendations or resolving any concerns promptly, our dedicated team is committed to making our clients feel valued and appreciated.</p>
-            <h3>Aishwarya Roy</h3>
-          </div>
-          <div className='px-1'>
-            <div className='d-flex justify-content-center'>
-              <img src="https://www.ugaoo.com/cdn/shop/files/Customer_Testimonial_Thumbnails_Pragyasmita.jpg?v=1661747356&width=70" alt="Client 2" style={{ width: "100px", borderRadius: "30px", height: "100px" }} />
-            </div>
-                <p>Join the ranks of our satisfied clientele and discover why Oluxe is the go-to destination for all your shopping needs. With a passion for excellence and a dedication to customer satisfaction, we look forward to exceeding your expectations and earning your trust as your preferred ecommerce partner.</p>
-            <h3>Pragya Smith</h3>
-          </div>
+          ))}
         </Slider>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
-export default Testimonial;
 
+export default Testimonial;

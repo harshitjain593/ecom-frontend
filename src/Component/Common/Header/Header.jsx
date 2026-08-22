@@ -9,6 +9,10 @@ import { getWishlist } from '../../../action/wishListAciton';
 import { getUser } from '../../../action/authaction';
 import { FaRegUserCircle } from 'react-icons/fa';
 import LoginPOP from '../../Loginbutton/LoginPOP';
+import BrandWordmark from '../BrandWordmark';
+import CategoryNav from './CategoryNav';
+import MobileCategoryMenu from './MobileCategoryMenu';
+import { getCategory } from '../../../action/categoryAction';
 import { checkUser } from '../../../assest/js/checker';
 import { FILTER_UPDATE_STATE } from '../../../action/actionType';
 
@@ -29,6 +33,7 @@ function Header() {
   const [users ,setUsers] = useState(false);
   const [activeFilter, setActiveFilter] = useState(false);
   const opensidebar = useSelector(state=>state.filterData.sidebarOpen);
+  const categoriesState = useSelector(state => state.categories);
   
 
   useEffect(()=>{
@@ -40,7 +45,8 @@ function Header() {
     if (
       matchDynamicRoute('^/result/.+') ||
       matchDynamicRoute('^/category/.+') ||
-      matchDynamicRoute('^/filtered/.+')
+      matchDynamicRoute('^/filtered/.+') ||
+      pathname === '/shop'
     ) {
       setActiveFilter(true);
     } else {
@@ -73,7 +79,7 @@ function Header() {
     if (!user) {
       dispatch(getUser());
     }
-  
+    dispatch(getCategory());
   }, [dispatch, user]); 
   
 
@@ -178,7 +184,7 @@ function Header() {
               </div>
               <div className="col-6 text-center">
                 <div className="header-logo">
-                  <Link to="/"><img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt="Oluxe Logo" style={{ width: "100px", height: "80px" }} /></Link>
+                  <BrandWordmark variant="mobile" />
                 </div>
               </div>
               <div className="col-3">
@@ -217,6 +223,7 @@ function Header() {
           <div className="sidebar">
             <button onClick={toggleSidebar} className="close-btn">&times;</button>
             <nav>
+              <MobileCategoryMenu categoriesState={categoriesState} />
               <ul>
                 { user ? (
                   <>
@@ -247,7 +254,7 @@ function Header() {
               <div className="gi-flex">
                 <div className="align-self-center gi-header-logo">
                   <div className="header-logo">
-                    <Link to="/"><img src="https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png" alt="Oluxe Logo" style={{ width: "130px", height: "120px" }} /></Link>
+                    <BrandWordmark variant="header" />
                   </div>
                   
                 </div>
@@ -280,9 +287,9 @@ function Header() {
                             <img src={user.profile_image?user.profile_image : "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="} alt=""  style={{width:'32px' ,height:'auto',borderRadius:'50% '}}/>
                           </div>
                          ):(
-                         <i className="fa-regular fa-user text-center py-2" style={{ color: "#EDB70B" }}></i>
+                         <i className="fa-regular fa-user text-center py-2 gi-header-icon"></i>
                          )}
-                          <span className="gi-btn-stitle text-center mt-0" style={{ color: "#EDB70B",textAlign:'start' }}>{user ? user.name : 'Profile'}</span>
+                          <span className="gi-btn-stitle text-center mt-0 gi-header-label">{user ? user.name : 'Profile'}</span>
                         </div>
                       </Link>
                       
@@ -307,21 +314,21 @@ function Header() {
                     <Link to="/wishlist" className="gi-header-btn gi-wish-toggle" title="Wishlist">
                       <div className="gi-btn-desc">
                     {wishListQuantity > 0 &&  <span className=" badge-ab ">{wishListQuantity || 0}</span>}
-                        <i className="fa-regular fa-heart text-center py-2" style={{ color: "#EDB70B", }}></i>
-                        <span className="gi-btn-stitle" style={{ color: "#EDB70B" }}>wishlilst</span>
+                        <i className="fa-regular fa-heart text-center py-2 gi-header-icon"></i>
+                        <span className="gi-btn-stitle gi-header-label">wishlilst</span>
                       </div>
                     </Link>
                     <Link to="/cart" className="gi-header-btn gi-cart-toggle" title="Cart">
                       <div className="gi-btn-desc">
                     {cartQuantity > 0 &&  <span className=" badge-ab ab-2 ">{cartQuantity? cartQuantity :0}</span>}
-                        <i className="fa-solid fa-bag-shopping text-center py-2" style={{ color: "#EDB70B" }}></i>
-                        <span className="gi-btn-stitle" style={{ color: "#EDB70B" }}>Cart</span>
+                        <i className="fa-solid fa-bag-shopping text-center py-2 gi-header-icon"></i>
+                        <span className="gi-btn-stitle gi-header-label">Cart</span>
                       </div>
                     </Link>
                    {activeFilter && <div className="gi-header-action align-self-center" style={{cursor:"pointer"}}>      
                       <div className="px-2 d-flex justify-content-center px-3" style={{ padding: "5px 0px" ,cursor:"pointer" }} 
                         onClick={handleToggleSidebar}>
-                        <span className="gi-btn-stitle text-center p-1" style={{ color: "#EDB70B", marginRight:'2px', fontSize:'.8rem' }}>FILTER</span>
+                        <span className="gi-btn-stitle text-center p-1 gi-header-label" style={{ marginRight:'2px', fontSize:'.8rem' }}>FILTER</span>
                         <img src="/img/Vector.png" alt="" className='d-flex justify-content-center position-relative align-top ' style={{ width: "22px", top: "5px", height: "20px" }} />
                       </div>
                     </div>}
@@ -332,6 +339,7 @@ function Header() {
           </div>
         </div>
 
+        <CategoryNav />
 
       
      

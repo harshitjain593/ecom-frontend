@@ -1,0 +1,35 @@
+.oluxe-wordmark {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.oluxe-wordmark:hover {
+  color: #1a1a1a;
+  opacity: 0.85;
+}
+
+.oluxe-wordmark--header {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  letter-spacing: 0.32em;
+  padding-left: 0.32em;
+}
+
+.oluxe-wordmark--mobile {
+  font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+  letter-spacing: 0.24em;
+  padding-left: 0.24em;
+}
+
+.oluxe-wordmark--footer {
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+  letter-spacing: 0.34em;
+  padding-left: 0.34em;
+  margin-bottom: 18px;
+}

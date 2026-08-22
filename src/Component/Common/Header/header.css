@@ -43,7 +43,7 @@
 
 .sidebar nav ul li a:hover {
     background-color: #f8f9fa;
-    color: #EDB70B;
+    color: #1a1a1a;
     border-left-color: #EDB70B;
     padding-left: 28px;
 }
@@ -545,12 +545,26 @@ right:7px;
     
 }
 .gi-header-bottom {
-    height: 80px;
-    max-height: 80px;
-    min-height: 80px;
-    padding: 10px 0;
+    height: 72px;
+    max-height: 72px;
+    min-height: 72px;
+    padding: 8px 0;
     display: flex;
     align-items: center;
+}
+
+.gi-header-icon {
+    color: #1a1a1a !important;
+}
+
+.gi-header-label {
+    color: #1a1a1a !important;
+    text-align: start;
+}
+
+.gi-header-bottons .gi-header-btn:hover .gi-header-icon,
+.gi-header-bottons .gi-header-btn:hover .gi-header-label {
+    color: #b8956e !important;
 }
 
 .gi-header-bottom > div,
@@ -572,8 +586,9 @@ right:7px;
         padding: 10px 0;
     }
     
-    .header-logo img {
-        width: 120px;
+    .header-logo img,
+    .site-logo--desktop {
+        max-height: 52px;
     }
     
     .gi-header-search {
@@ -617,9 +632,10 @@ right:7px;
 
 /* Mobile Header Icons Styles */
 .mobile-header-icons {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    padding: 10px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    padding: 8px 0;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid #e8e8e8;
     position: relative;
     z-index: 10;
     margin-top: 0;
@@ -645,7 +661,7 @@ right:7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #EDB70B;
+    color: #1a1a1a;
     text-decoration: none;
     padding: 8px;
     border-radius: 4px;
@@ -656,8 +672,14 @@ right:7px;
 }
 
 .mobile-header-icons .gi-header-btn:hover {
-    background: rgba(237, 183, 11, 0.1);
+    background: rgba(26, 26, 26, 0.06);
     transform: translateY(-1px);
+}
+
+.mobile-header-icons .gi-site-menu-icon {
+    color: #1a1a1a;
+    background: transparent;
+    border: none;
 }
 
 .mobile-header-icons .gi-header-btn i {
@@ -718,7 +740,7 @@ right:7px;
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #EDB70B;
+    color: #1a1a1a;
     font-size: 16px;
 }
 
@@ -786,8 +808,9 @@ right:7px;
         padding: 8px 0;
     }
     
-    .header-logo img {
-        width: 100px;
+    .header-logo img,
+    .site-logo--desktop {
+        max-height: 48px;
     }
     
     .gi-header-search {
@@ -840,9 +863,11 @@ right:7px;
         padding: 8px 0;
     }
     
-    .mobile-header-icons .header-logo img {
-        width: 80px;
-        height: 60px;
+    .mobile-header-icons .header-logo img,
+    .mobile-header-icons .site-logo {
+        max-height: 40px;
+        width: auto;
+        max-width: none;
     }
     
     .mobile-search-container {

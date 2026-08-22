@@ -1,0 +1,120 @@
+.category-nav {
+  background: #f8f6f2;
+  border-bottom: 1px solid #e8e4de;
+}
+
+.category-nav__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.category-nav__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.category-nav__item {
+  position: relative;
+}
+
+.category-nav__link {
+  display: block;
+  padding: 14px 18px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.category-nav__link:hover,
+.category-nav__item.is-active .category-nav__link {
+  color: #b8956e;
+}
+
+.category-nav__link--shop {
+  color: #b8956e;
+}
+
+.category-nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  background: #fff;
+  border: 1px solid #e8e4de;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  z-index: 100;
+  animation: categoryNavFadeIn 0.2s ease;
+}
+
+@keyframes categoryNavFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.category-nav__dropdown-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8e4de;
+}
+
+.category-nav__dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.category-nav__dropdown-link {
+  display: block;
+  padding: 8px 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.category-nav__dropdown-link:hover {
+  color: #b8956e;
+}
+
+.category-nav__view-all {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  text-decoration: none;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.category-nav__view-all:hover {
+  color: #b8956e;
+  border-color: #b8956e;
+}

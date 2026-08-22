@@ -181,7 +181,7 @@ function Payment() {
       currency: orderedList.currency,
       name: "Oluxe",
       description: "Test Transaction",
-      image:'https://harshitj593.s3.eu-north-1.amazonaws.com/colored-logo+(1).png',
+      image: `${window.location.origin}/img/oluxe-logo.png`,
       order_id: orderedList.id,
       handler: (response) => {
         console.log("succeeded");
