@@ -20,19 +20,26 @@ export const fetchImages = () => {
 
 
 export const fetchProduct = () => {
-  return dispatch => {
-    const token = localStorage.getItem('token')
-    axios.get(`${API_URL}/admin/product/products`,{
-      headers: {
-        ...(token&&{'Authorization':`Bearer ${token}`}),
-        'Content-Type':'application/json'
-      }
-    })
-      .then(response => {
+  return async (dispatch) => {
+    try {
+      // Public storefront catalog — same endpoint category/shop filters use.
+      // Avoid /admin/product/products: it rejects customer/expired tokens with 401.
+      const response = await axios.get(`${API_URL}/mobileApi/product/filter-product`, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const { statusCode, result } = response.data || {};
+      if (statusCode === 200) {
         dispatch({
           type: FETCH_PRODUCT_SUCCESS,
-          payload: response.data
+          payload: {
+            result: {
+              products: result?.products || [],
+            },
+          },
         });
-      })
+      }
+    } catch (error) {
+      console.error('Failed to fetch products:', error);
+    }
   };
 };

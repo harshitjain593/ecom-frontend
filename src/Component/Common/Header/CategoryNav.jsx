@@ -45,7 +45,7 @@ const CategoryNav = () => {
                         return (
                           <li key={sub._id || subName}>
                             <Link
-                              to={`/shop?category=${encodeURIComponent(subName)}`}
+                              to={`/category/${encodeURIComponent(category.name)}?sub_category=${encodeURIComponent(subName)}`}
                               className="category-nav__dropdown-link"
                             >
                               {subName}

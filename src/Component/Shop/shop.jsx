@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { fetchProduct } from '../../action/index';
 import { filterProducts } from '../../action/filterAction';
 import { getCategory } from '../../action/categoryAction';
+import { buildCatalogFilter, getCategoriesList } from '../../utils/categoryUtils';
 import ProductCard from '../Home/ProductCard';
 import ShopFilters from './ShopFilters';
 import './shop.css';
@@ -20,8 +21,10 @@ function Shop() {
   const filteredPayload = useSelector((state) => state.filteredProducts?.products);
   const filteredProducts = filteredPayload?.products || [];
   const isLoading = useSelector((state) => state.filteredProducts?.loading);
+  const categories = useSelector((state) => getCategoriesList(state.categories));
 
   const categoryFromUrl = searchParams.get('category');
+  const subCategoryFromUrl = searchParams.get('sub_category');
 
   useEffect(() => {
     dispatch(getCategory());
@@ -29,13 +32,32 @@ function Shop() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (categoryFromUrl) {
-      const categories = categoryFromUrl.split(',').filter(Boolean);
-      setSelectedCategories(categories);
+    if (categoryFromUrl || subCategoryFromUrl) {
+      const filter = buildCatalogFilter({
+        category: categoryFromUrl,
+        subCategory: subCategoryFromUrl,
+        categories,
+      });
+
+      if (categoryFromUrl && !filter.category) {
+        filter.category = categoryFromUrl.split(',').filter(Boolean);
+      }
+
+      setSelectedCategories(
+        Array.isArray(filter.category)
+          ? filter.category
+          : filter.category
+            ? [filter.category]
+            : []
+      );
       setIsFiltering(true);
-      dispatch(filterProducts({ category: categories }));
+      dispatch(filterProducts(filter));
+      return;
     }
-  }, [categoryFromUrl, dispatch]);
+
+    setIsFiltering(false);
+    setSelectedCategories([]);
+  }, [categoryFromUrl, subCategoryFromUrl, categories, dispatch]);
 
   const handleCategoryChange = useCallback(
     (categories) => {

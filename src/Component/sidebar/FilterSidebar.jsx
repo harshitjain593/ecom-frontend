@@ -122,28 +122,34 @@ export const FilterSidebar = () => {
           setReqObj({...reqobj})
     
         }else if( matchingRoute('^/category/.+')){
-          const newReq= {...reqobj,category:lastSegment}
-          delete newReq.productName
-          if(reqobj.category){
-            dispatch(filterProducts({...newReq}))
-            setBaseKey(prev=>({'category':lastSegment}))
-            setReqObj({...newReq})
-    
-          }else{
-            dispatch(filterProducts({'category':lastSegment,...reqobj}))
-            setBaseKey(prev=>({'category':lastSegment}))
-            setReqObj({...reqobj,'category':lastSegment})
-    
-    
+          const params = new URLSearchParams(window.location.search);
+          const subCategoryParam = params.get('sub_category');
+          const filter = { category: lastSegment, ...reqobj };
+          delete filter.productName;
+
+          if (subCategoryParam) {
+            filter.sub_category = subCategoryParam;
           }
+
+          dispatch(filterProducts(filter));
+          setBaseKey({ category: lastSegment, ...(subCategoryParam && { sub_category: subCategoryParam }) });
+          setReqObj(filter);
         } else if (pathname === '/shop') {
           const params = new URLSearchParams(window.location.search);
           const categoryParam = params.get('category');
-          if (categoryParam) {
-            const categories = categoryParam.split(',').filter(Boolean);
-            dispatch(filterProducts({ category: categories }));
-            setBaseKey({ category: categories });
-            setReqObj({ category: categories });
+          const subCategoryParam = params.get('sub_category');
+
+          if (categoryParam || subCategoryParam) {
+            const filter = {};
+            if (categoryParam) {
+              filter.category = categoryParam.split(',').filter(Boolean);
+            }
+            if (subCategoryParam) {
+              filter.sub_category = subCategoryParam;
+            }
+            dispatch(filterProducts(filter));
+            setBaseKey(filter);
+            setReqObj(filter);
           } else {
             dispatch(fetchProduct());
             setBaseKey({});

@@ -20,13 +20,11 @@ export const filterProducts = (base) => {
                    return decodeURIComponent(endcode)
                 }).join('&');
         }
-        const token = localStorage.getItem('token');
         try {
             const response = await fetch(`${API_URL}/mobileApi/product/filter-product?${endpoint}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    ...(token && { 'Authorization': `Bearer ${token}` }) // Add token header if available
                 }
             });
            
