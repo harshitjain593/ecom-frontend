@@ -1,6 +1,8 @@
 .category-nav {
   background: #f8f6f2;
   border-bottom: 1px solid #e8e4de;
+  position: relative;
+  z-index: 1100;
 }
 
 .category-nav__inner {
@@ -56,7 +58,7 @@
   border: 1px solid #e8e4de;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
   padding: 20px;
-  z-index: 100;
+  z-index: 1101;
   animation: categoryNavFadeIn 0.2s ease;
 }
 

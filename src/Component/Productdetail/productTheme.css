@@ -76,6 +76,29 @@
   z-index: 5;
 }
 
+.product-page__wishlist .heartbutton-container {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--oluxe-border);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-page__wishlist .heartbutton-container:hover {
+  border-color: var(--oluxe-black);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.product-page__wishlist .heartbutton-container svg {
+  color: var(--oluxe-black);
+}
+
 .product-page__mobile-gallery {
   display: none;
 }

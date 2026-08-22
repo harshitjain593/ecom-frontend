@@ -17,7 +17,6 @@ import ReviewComments from "../ReviewDisplay/Reviewcomments";
 import { checkUser, formatNumberWithCommas } from "../../assest/js/checker";
 import {
   ADD_COMPARE_PRODUCTS,
-  DIRECT_BUY_ADD_TO_PRODUCTS,
   REMOVE_COMPARE_PRODUCTS,
 } from "../../action/actionType";
 import { checkcompare } from "../../service/checkCompareproduct";
@@ -107,7 +106,7 @@ function Productdetail() {
   const handeaddtoCart = useCallback(
     async (productId) => {
       if (!checkUser()) {
-        navigate("/cart");
+        navigate("/login");
         return;
       }
       setButtonLoader((prevState) => ({
@@ -127,32 +126,9 @@ function Productdetail() {
     [quantity, dispatch, colorOptions, navigate]
   );
 
-  const directBuy = useCallback(
-    (productItem, colorId) => {
-      setButtonLoader((prevState) => ({
-        ...prevState,
-        buynow: true,
-      }));
-      dispatch({
-        type: DIRECT_BUY_ADD_TO_PRODUCTS,
-        payload: {
-          product: productItem,
-          quantity,
-          colorId,
-        },
-      });
-      setButtonLoader((prevState) => ({
-        ...prevState,
-        buynow: false,
-      }));
-      navigate("/cart/ordersummary");
-    },
-    [dispatch, quantity, navigate]
-  );
-
   const handleBuynow = useCallback(async () => {
     if (!checkUser()) {
-      directBuy(product, colorOptions ? colorOptions._id : product._id);
+      navigate("/login");
       return;
     }
     setButtonLoader((prevState) => ({
@@ -172,7 +148,7 @@ function Productdetail() {
       }));
       navigate("/cart/ordersummary");
     });
-  }, [dispatch, navigate, product, quantity, colorOptions, directBuy]);
+  }, [dispatch, navigate, product, quantity, colorOptions]);
 
   const handlePincodeChange = useCallback(
     (e) => {

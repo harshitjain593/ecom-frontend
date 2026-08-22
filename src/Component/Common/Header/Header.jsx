@@ -55,32 +55,27 @@ function Header() {
     }
   }, [pathname]);
   
- useEffect(()=>{
-  if(!cartQuantity){
-    getCart();
+ useEffect(() => {
+  if (checkUser()) {
+    dispatch(getCart());
+    dispatch(getWishlist());
   }
-  if(!wishListQuantity){
-
-    getWishlist();
-  }
- },[cartQuantity,wishListQuantity])
-
-  useEffect(()=>{
-    if(checkUser()){
-      setUsers(true)
-    }else{
-      setUsers(false)
-    }
-    dispatch(getCart())
-    dispatch(getWishlist())
-  },[dispatch ,wishListQuantity,cartQuantity])
+ }, [dispatch, pathname]);
 
   useEffect(() => {
-    if (!user) {
+    if (checkUser()) {
+      setUsers(true);
+    } else {
+      setUsers(false);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!user && checkUser()) {
       dispatch(getUser());
     }
     dispatch(getCategory());
-  }, [dispatch, user]); 
+  }, [dispatch, user]);
   
 
   if (

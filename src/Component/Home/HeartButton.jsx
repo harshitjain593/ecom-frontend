@@ -23,7 +23,7 @@ const HeartButton = ({ productId, check = false }) => {
 
     const handleHeartButton = () => {
         if (!checkUser()) {
-            navigate('/wishlist');
+            navigate('/login');
             return;
         }
         setLike(prevLike => {
@@ -43,7 +43,7 @@ const HeartButton = ({ productId, check = false }) => {
             {like ? (
                 <FaHeart size={23} color="red" onClick={handleHeartButton} />
             ) : (
-                <FaRegHeart size={23} color="black" onClick={handleHeartButton} />
+                <FaRegHeart size={23} onClick={handleHeartButton} />
             )}
         </div>
     );

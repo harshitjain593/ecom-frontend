@@ -3,14 +3,18 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   getCategoriesList,
-  getSubcategories,
+  getActiveSubcategories,
   getSubcategoryName,
+  isActiveCatalogItem,
 } from '../../../utils/categoryUtils';
 import './categoryNav.css';
 
 const CategoryNav = () => {
   const categoriesState = useSelector((state) => state.categories);
-  const categories = useMemo(() => getCategoriesList(categoriesState), [categoriesState]);
+  const categories = useMemo(
+    () => getCategoriesList(categoriesState).filter(isActiveCatalogItem),
+    [categoriesState]
+  );
   const [activeCategory, setActiveCategory] = useState(null);
 
   if (!categories.length) return null;
@@ -20,7 +24,7 @@ const CategoryNav = () => {
       <div className="category-nav__inner">
         <ul className="category-nav__list">
           {categories.map((category) => {
-            const subcategories = getSubcategories(category);
+            const subcategories = getActiveSubcategories(category);
             const isActive = activeCategory === category._id;
 
             return (

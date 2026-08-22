@@ -1,100 +1,89 @@
-
 import { API_URL } from "../service/api";
 import { DELETE_FROM_CART, GET_CART } from "./actionType";
 import { toast } from "react-toastify";
+import { normalizeCartPayload } from "../utils/cartUtils";
+
+const authHeaders = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+};
 
 export const getCart = () => {
-    return async dispatch => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                // toast.error('User is not authorised');
-                return;
-            }
-            fetch(`${API_URL}/mobileApi/cart/cart`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            }).then((response) => {
-                return response.json(); // Parse response as JSON
-            }).then((data) => {
-                const { message, statusCode } = data;
-                if (statusCode === 200) {
-                    dispatch({
-                        type: GET_CART,
-                        payload: data.result,
-                    });
-                    // toast.success(message);
-                } else {
-                    // toast.error( 'Failed to get cart data');
-                }
-            }).catch(error => {
-                throw error;
-            });
-        } catch (error) {
-            if (error.response) {
-                if (error.response && error.response.data) {
-                    const { message } = error.response.data;
-                 
-                } else {
-                    
-                }
-            }
+  return async (dispatch) => {
+    const headers = authHeaders();
+    if (!headers) {
+      return { success: false };
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/mobileApi/cart/cart`, {
+        method: "GET",
+        headers,
+      });
+
+      const data = await response.json();
+      const { statusCode, message, result } = data;
+
+      if (statusCode === 200) {
+        const cart = normalizeCartPayload(result);
+        dispatch({
+          type: GET_CART,
+          payload: cart,
+        });
+        return { success: true, data: cart };
+      }
+
+      console.error("getCart failed:", message);
+      return { success: false };
+    } catch (error) {
+      console.error("getCart error:", error);
+      return { success: false };
+    }
+  };
+};
+
+export const removeFromCart = (props) => {
+  const { productId, colorId = null, quantity } = props;
+
+  return async (dispatch) => {
+    const headers = authHeaders();
+    if (!headers) {
+      toast.error("Please log in to manage your cart");
+      return { success: false };
+    }
+
+    try {
+      const response = await fetch(
+        `${API_URL}/mobileApi/cart/remove-cart-product/${productId}/${colorId}`,
+        {
+          method: "PUT",
+          headers,
         }
-    }
-}
+      );
 
+      if (response.ok) {
+        const data = await response.json();
+        const { statusCode, message } = data;
 
-export const removeFromCart = (props)=>{
-     const{ productId,colorId=null ,quantity} = props
-     console.log(colorId,'remove cart')
-    return async dispatch => {
-        try {
-                const token = localStorage.getItem("token");
-                if (!token) {
-                  // toast.error("User is not authenticated");
-                  return;
-                }
-                const response = await fetch(
-                  `${API_URL}/mobileApi/cart/remove-cart-product/${productId}/${colorId}`,
-                  {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                  }
-                );
-          
-                if (response.ok) {
-                  const data = await response.json();
-                  const { statusCode, message, result } = data;
-                  if (statusCode === 200) {
-                    dispatch({
-                        type: DELETE_FROM_CART,
-                        payload:{
-                            quantity,
-                            productId,
-                            ...(colorId&&{colorId}
- )                       }
-                        });
-                  
-                    // toast.success(message);
-                  } else {
-                    toast.error(message || "Failed to remove product from cart");
-                  }
-                } else {
-                  const errorData = await response.json();
-                  
-                }
-              } catch (error) {
-                console.error("An unexpected error occurred:", error);
-                
-              
-            
-    }
+        if (statusCode === 200) {
+          return dispatch(getCart());
+        }
 
+        toast.error(message || "Failed to remove product from cart");
+        return { success: false };
+      }
+
+      const errorData = await response.json();
+      toast.error(errorData?.message || "Failed to remove product from cart");
+      return { success: false };
+    } catch (error) {
+      console.error("removeFromCart error:", error);
+      toast.error("Failed to remove product from cart");
+      return { success: false };
     }
-}
+  };
+};

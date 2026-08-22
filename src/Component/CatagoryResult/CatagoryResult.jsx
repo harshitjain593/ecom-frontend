@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterProducts } from '../../action/filterAction';
 import { getCategory } from '../../action/categoryAction';
 import {
   buildCatalogFilter,
+  findCategoryBySlug,
+  getActiveSubcategories,
   getCategoriesList,
+  getSubcategoryName,
 } from '../../utils/categoryUtils';
 import ProductCard from '../Home/ProductCard';
 import ShopFilters from '../Shop/ShopFilters';
@@ -29,6 +32,16 @@ const CategoryResult = () => {
 
   const subCategoryParam = searchParams.get('sub_category');
   const pageTitle = subCategoryParam || id;
+
+  const currentCategory = useMemo(
+    () => findCategoryBySlug(id, categories),
+    [id, categories]
+  );
+
+  const subcategories = useMemo(
+    () => getActiveSubcategories(currentCategory),
+    [currentCategory]
+  );
 
   const selectedCategories = useMemo(() => {
     if (!id) return [];
@@ -90,6 +103,8 @@ const CategoryResult = () => {
           <ShopFilters
             selectedCategories={selectedCategories}
             onCategoryChange={handleCategoryChange}
+            activeSubCategory={subCategoryParam}
+            currentCategorySlug={id}
           />
         </aside>
 
@@ -100,6 +115,37 @@ const CategoryResult = () => {
               <p className="shop-page__count">
                 {products?.length || 0} product{(products?.length || 0) !== 1 ? 's' : ''}
               </p>
+            )}
+            {subcategories.length > 0 && currentCategory && (
+              <div className="shop-page__subcategories">
+                <Link
+                  to={`/category/${encodeURIComponent(currentCategory.name)}`}
+                  className={`shop-page__subcategory-link${
+                    !subCategoryParam ? ' is-active' : ''
+                  }`}
+                >
+                  All {currentCategory.name}
+                </Link>
+                {subcategories.map((sub) => {
+                  const subName = getSubcategoryName(sub);
+                  if (!subName) return null;
+
+                  const isActive =
+                    subCategoryParam &&
+                    decodeURIComponent(subCategoryParam).toLowerCase() ===
+                      subName.toLowerCase();
+
+                  return (
+                    <Link
+                      key={sub._id || subName}
+                      to={`/category/${encodeURIComponent(currentCategory.name)}?sub_category=${encodeURIComponent(subName)}`}
+                      className={`shop-page__subcategory-link${isActive ? ' is-active' : ''}`}
+                    >
+                      {subName}
+                    </Link>
+                  );
+                })}
+              </div>
             )}
           </div>
 

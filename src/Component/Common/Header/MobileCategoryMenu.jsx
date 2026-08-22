@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   getCategoriesList,
-  getSubcategories,
+  getActiveSubcategories,
   getSubcategoryName,
 } from '../../../utils/categoryUtils';
 import './mobileCategoryMenu.css';
@@ -22,7 +22,7 @@ const MobileCategoryMenu = ({ categoriesState }) => {
       <p className="mobile-category-menu__heading">Categories</p>
       <ul className="mobile-category-menu__list">
         {categories.map((category) => {
-          const subcategories = getSubcategories(category);
+          const subcategories = getActiveSubcategories(category);
           const isOpen = openCategory === category._id;
 
           return (

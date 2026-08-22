@@ -7,12 +7,19 @@ import { getProductDetails } from "../../action/productdetailaction";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import ChangeAddress from "../OrderSummary/ChangeAddress";
+import AddAddress from "../OrderSummary/AddAddress";
 import { createOrder } from "../../action/createOrderAction";
 import { verifyPayment } from "../../action/paymentVerifyAction";
 import CryptoJS from "crypto-js";
 import { getOrderSummary } from "../../action/orderSummaryAction";
+import { getUser } from "../../action/authaction";
 import { MdVerifiedUser } from "react-icons/md";
 import { GET_DIRECTBUY } from "../../action/actionType";
+import {
+  formatAddressLine,
+  resolveSelectedAddress,
+  persistSelectedAddress,
+} from "../../utils/orderCheckoutUtils";
 
 function Payment() {
   const [selectedMethod, setSelectedMethod] = useState("");
@@ -26,6 +33,7 @@ function Payment() {
   const [selectedAddress, setSelectedAddress] = useState({});
   const [modal, setModal] = useState(false);
   const [addressModal, setAddressModal] = useState(false);
+  const [addAddressModal, setAddAddressModal] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [updating, setUpdating] = useState(false);
   const orderDetails = useSelector((state) => state.OrderSummary?.data);
@@ -40,29 +48,42 @@ function Payment() {
   const [timeOutId, setTimeoutId] = useState("");
 
   useEffect(() => {
-    if(checkUser()){
-
+    if (checkUser()) {
+      dispatch(getUser());
       dispatch(getOrderSummary());
-    }else{
-
-      dispatch({
-       type:GET_DIRECTBUY
-      })
+    } else {
+      dispatch({ type: GET_DIRECTBUY });
     }
   }, [dispatch]);
 
   useEffect(() => {
-   
-    if (userDetails ) {
-      setSelectedAddress(prev=>userDetails.shipping_address[0]);
-    }else{
-      directAddress&& setSelectedAddress(prev=>directAddress[0])
+    if (userDetails?.shipping_address?.length) {
+      setSelectedAddress(resolveSelectedAddress(userDetails.shipping_address));
+    } else if (directAddress?.length) {
+      setSelectedAddress(directAddress[0]);
     }
-  }, [userDetails,directAddress]);
+  }, [userDetails, directAddress]);
 
   const handleAddress = useCallback(() => {
     setAddressModal(true);
-  }, [selectedAddress]);
+  }, []);
+
+  const handleOpenAddAddress = useCallback(() => {
+    setAddressModal(false);
+    setAddAddressModal(true);
+  }, []);
+
+  const handleAddressSaved = useCallback((address) => {
+    persistSelectedAddress(address);
+    setSelectedAddress(address);
+    setAddAddressModal(false);
+    setAddressModal(false);
+  }, []);
+
+  const handleAddressSelect = useCallback((address) => {
+    persistSelectedAddress(address);
+    setSelectedAddress(address);
+  }, []);
 
   const generateCaptcha = () => {
     // Generate a 4-digit CAPTCHA more reliably
@@ -384,9 +405,8 @@ function Payment() {
                 <h5 className="">DELIVERY ADDRESS</h5>
                 <p className={css.address}>
                   <span>{selectedAddress.fullName}</span> -
-                  <span>{selectedAddress.mobile}</span> ,
-                  {selectedAddress.billing_address}{" "}
-                  <span>pinCode:{selectedAddress.pinCode}</span>
+                  <span>{selectedAddress.mobile}</span>,
+                  {formatAddressLine(selectedAddress)}
                 </p>
               </div>
             </main>
@@ -638,17 +658,33 @@ function Payment() {
                 <h5 className="">DELIVERY ADDRESS</h5>
                 <p className={css.address}>
                   <span>{selectedAddress.fullName}</span> -
-                  <span>{selectedAddress.mobile}</span> ,
-                  {selectedAddress.billing_address}{" "}
-                  <span>pinCode:{selectedAddress.pinCode}</span>
+                  <span>{selectedAddress.mobile}</span>,
+                  {formatAddressLine(selectedAddress)}
                 </p>
               </div>
             </main>
             <div className={css.buttonContent}>
-              <button onClick={handleAddress}>change</button>
+              <button type="button" onClick={handleAddress}>change</button>
             </div>
           </div>
-        ) : null}
+        ) : (
+          <div className={css.box}>
+            <main>
+              <div>
+                <p className="text-primary">2</p>
+              </div>
+              <div className={css.addresscontent}>
+                <h5>DELIVERY ADDRESS</h5>
+                <p className={`${css.address} text-danger`} style={{ fontWeight: 500 }}>
+                  please add address
+                </p>
+              </div>
+            </main>
+            <div className={css.buttonContent}>
+              <button type="button" onClick={handleOpenAddAddress}>Add Address</button>
+            </div>
+          </div>
+        )}
         <div className={css.paymentSummary}>
           <div className="">
             <p>3</p>
@@ -858,13 +894,26 @@ function Payment() {
       </section>
       {userDetails ? (
         <>
-          {modal ? <ChangeUser user={userDetails} setModal={setModal} /> : null}
+          {modal ? (
+            <div className={css.modalOverlay} onClick={() => setModal(false)}>
+              <div onClick={(e) => e.stopPropagation()}>
+                <ChangeUser user={userDetails} setModal={setModal} />
+              </div>
+            </div>
+          ) : null}
           {addressModal ? (
             <ChangeAddress
               userDetails={userDetails}
               setModal={setAddressModal}
               currentAdress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
+              setSelectedAddress={handleAddressSelect}
+              onAddNew={handleOpenAddAddress}
+            />
+          ) : null}
+          {addAddressModal ? (
+            <AddAddress
+              setModal={setAddAddressModal}
+              onAddressSaved={handleAddressSaved}
             />
           ) : null}
         </>

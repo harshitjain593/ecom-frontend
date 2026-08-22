@@ -9,7 +9,7 @@ import {
   UPDATE_CART,
 } from './actionType';
 import { ToastContainer, toast } from 'react-toastify';
-import { type } from '@testing-library/user-event/dist/type';
+import { getCart } from './getCartAction';
 
 export const addWishList = (productId) => {
   return async dispatch => {
@@ -82,13 +82,7 @@ export const addtoCart = ( productId,colorId=null, quantity=1 ) => {
         const { message, statusCode, result } = data;
 
         if (statusCode === 200) {
-          dispatch({
-            type: ADD_TO_CART,
-            payload: {
-              product: result.product, // Ensure the payload matches the reducer logic
-              quantity: quantity,
-            }
-          });
+          await dispatch(getCart());
           // toast.success(message);
         } else {
           toast.error("Failed to add to Cart: " + message);
@@ -137,12 +131,7 @@ export const updateCart = ({productId,colorId,quantity}) => {
         const { message, statusCode, result } = data;
 
         if (statusCode === 200) {
-          dispatch({
-            type:UPDATE_CART,
-            payload:{ result,
-              colorId:colorId
-            }
-          });
+          await dispatch(getCart());
           // toast.success(message);
         } else {
           toast.error("Failed to add to Cart: " + message);

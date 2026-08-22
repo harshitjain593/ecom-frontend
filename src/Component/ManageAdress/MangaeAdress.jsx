@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IoIosAddCircleOutline, IoIosArrowDropdown } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { statesData } from "../../action/statesData";
 import { GET_DISTRICTS } from "../../action/actionType";
 
@@ -13,6 +13,9 @@ const MangaeAdress = () => {
   const states = useSelector(state=>state.statesData?.state);
   const districts = useSelector(state=>state.statesData?.districts);
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const returnTo = searchParams.get('returnTo');
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -64,7 +67,7 @@ const MangaeAdress = () => {
       addressType:"",
     })
   }
-  const handlesubmit = useCallback((e)=>{
+  const handlesubmit = useCallback(async (e)=>{
     e.preventDefault()
     const body = {
       fullName:formData.fullName,
@@ -73,13 +76,24 @@ const MangaeAdress = () => {
         mobile:formData.phoneNumber,
         country:formData.country,
         state:formData.state,
-        city:formData.city,
+        city:formData.city || formData.district,
         district:formData.district,
         pinCode:formData.pincode,
         addressType:formData.addressType
 
     }
-    dispatch(addNewAdress(body))
+    const result = await dispatch(addNewAdress(body))
+    if (result?.success) {
+      handleCancel();
+      if (returnTo) {
+        const addresses = result.user?.shipping_address;
+        if (addresses?.length) {
+          const newest = addresses[addresses.length - 1];
+          sessionStorage.setItem('pendingAddressId', newest._id);
+        }
+        navigate(returnTo);
+      }
+    }
   })
 
   const handleDeleteAddress = useCallback((id)=>{

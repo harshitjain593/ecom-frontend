@@ -3,6 +3,11 @@ export const getCategoriesList = (categoriesState) => {
   return Array.isArray(list) ? list : [];
 };
 
+export const isActiveCatalogItem = (item) => {
+  if (!item?.status) return true;
+  return String(item.status).toLowerCase() === 'active';
+};
+
 export const getSubcategories = (category) => {
   if (!category) return [];
 
@@ -13,17 +18,35 @@ export const getSubcategories = (category) => {
     category.subCategory;
 
   if (Array.isArray(nested)) return nested;
-  if (typeof nested === 'string' && nested.trim()) return [{ name: nested }];
+  if (typeof nested === 'string' && nested.trim()) {
+    return [{ subcategory: nested }];
+  }
   return [];
+};
+
+export const getActiveSubcategories = (category) => {
+  return getSubcategories(category).filter(isActiveCatalogItem);
 };
 
 export const getSubcategoryName = (subcategory) => {
   if (!subcategory) return '';
   if (typeof subcategory === 'string') return subcategory;
-  return subcategory.name || subcategory.subcategory_name || subcategory.title || '';
+  return (
+    subcategory.subcategory ||
+    subcategory.name ||
+    subcategory.subcategory_name ||
+    subcategory.title ||
+    ''
+  );
 };
 
 const normalizeName = (value) => decodeURIComponent(value || '').trim().toLowerCase();
+
+export const findCategoryBySlug = (slug, categories = []) => {
+  if (!slug) return null;
+  const normalizedSlug = normalizeName(slug);
+  return categories.find((cat) => normalizeName(cat.name) === normalizedSlug);
+};
 
 export const resolveCatalogFilter = (slug, categories = []) => {
   if (!slug) return {};
@@ -38,7 +61,7 @@ export const resolveCatalogFilter = (slug, categories = []) => {
   }
 
   for (const category of categories) {
-    const subs = getSubcategories(category);
+    const subs = getActiveSubcategories(category);
     const match = subs.find(
       (sub) => normalizeName(getSubcategoryName(sub)) === normalizedSlug
     );
@@ -64,7 +87,7 @@ export const buildCatalogFilter = ({ category, subCategory, categories = [] }) =
       filter.category = category;
     } else {
       for (const cat of categories) {
-        const subs = getSubcategories(cat);
+        const subs = getActiveSubcategories(cat);
         const match = subs.find(
           (sub) => normalizeName(getSubcategoryName(sub)) === normalizeName(subCategory)
         );

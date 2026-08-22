@@ -202,50 +202,46 @@ export const getUser = () => {
   };
 };
 
-export const addNewAdress = (address)=>{ 
-  console.log(address,'this is adress');
-  return async dispatch => {
+export const addNewAdress = (address) => {
+  return async (dispatch) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      // toast.error('please login');
-      return; // Early return if token is not present
+      toast.error('please login');
+      return { success: false };
+    }
+    try {
+      const response = await fetch(`${API_URL}/mobileApi/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          shipping_address: address,
+        }),
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        const { statusCode, result } = data;
+        if (statusCode === 200) {
+          dispatch({
+            type: ADD_NEW_ADDRESS,
+            payload: result,
+          });
+          toast.success('new adress added');
+          return { success: true, user: result };
+        }
+        toast.error('error from add new adress');
+        return { success: false };
       }
-      try {
-        console.log(address,'from add address');
-        const response = await fetch(`${API_URL}/mobileApi/profile`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-          shipping_address: address
-          })
-        });
-            if(response.status===200){
-              const data = await response.json()
-              const {statusCode,result}= data;
-              if(statusCode===200){
-                dispatch({
-                  type:ADD_NEW_ADDRESS,
-                  payload:result
-                  });
-                  console.log(data,'from add new adress')
-                  toast.success('new adress added');
-                  }
-                  else{
-                    toast.error('error from add new adress');
-                    }
-                    }
-
-            }catch(error){
-              toast.error('error from add new adress');
-              console.log(error,'add new addresss')
-            }
-
-
-  }
-}
+      return { success: false };
+    } catch (error) {
+      toast.error('error from add new adress');
+      console.log(error, 'add new addresss');
+      return { success: false };
+    }
+  };
+};
 
 
 

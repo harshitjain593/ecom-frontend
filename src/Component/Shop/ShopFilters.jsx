@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '../../action/categoryAction';
-import { getCategoriesList } from '../../utils/categoryUtils';
+import {
+  getActiveSubcategories,
+  getCategoriesList,
+  getSubcategoryName,
+} from '../../utils/categoryUtils';
 
-const ShopFilters = ({ selectedCategories, onCategoryChange }) => {
+const ShopFilters = ({
+  selectedCategories,
+  onCategoryChange,
+  activeSubCategory,
+  currentCategorySlug,
+}) => {
   const dispatch = useDispatch();
   const categoriesState = useSelector((state) => state.categories);
   const categories = getCategoriesList(categoriesState);
@@ -27,6 +37,13 @@ const ShopFilters = ({ selectedCategories, onCategoryChange }) => {
     }
   };
 
+  const isSubActive = (subName) => {
+    if (!activeSubCategory) return false;
+    return (
+      decodeURIComponent(activeSubCategory).toLowerCase() === subName.toLowerCase()
+    );
+  };
+
   return (
     <div className="shop-filters">
       <h3 className="shop-filters__title">Categories</h3>
@@ -39,16 +56,57 @@ const ShopFilters = ({ selectedCategories, onCategoryChange }) => {
       />
       <div className="shop-filters__list">
         {filtered.length > 0 ? (
-          filtered.map((category) => (
-            <label key={category._id || category.name} className="shop-filters__item">
-              <input
-                type="checkbox"
-                checked={selectedCategories.includes(category.name)}
-                onChange={() => toggleCategory(category.name)}
-              />
-              <span>{category.name}</span>
-            </label>
-          ))
+          filtered.map((category) => {
+            const subcategories = getActiveSubcategories(category);
+            const showSubs =
+              subcategories.length > 0 &&
+              (currentCategorySlug
+                ? decodeURIComponent(currentCategorySlug).toLowerCase() ===
+                  category.name?.toLowerCase()
+                : selectedCategories.includes(category.name));
+
+            return (
+              <div key={category._id || category.name} className="shop-filters__group">
+                <label className="shop-filters__item">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(category.name)}
+                    onChange={() => toggleCategory(category.name)}
+                  />
+                  <span>{category.name}</span>
+                </label>
+
+                {showSubs && (
+                  <div className="shop-filters__sublist">
+                    <Link
+                      to={`/category/${encodeURIComponent(category.name)}`}
+                      className={`shop-filters__sublink${
+                        !activeSubCategory ? ' is-active' : ''
+                      }`}
+                    >
+                      All
+                    </Link>
+                    {subcategories.map((sub) => {
+                      const subName = getSubcategoryName(sub);
+                      if (!subName) return null;
+
+                      return (
+                        <Link
+                          key={sub._id || subName}
+                          to={`/category/${encodeURIComponent(category.name)}?sub_category=${encodeURIComponent(subName)}`}
+                          className={`shop-filters__sublink${
+                            isSubActive(subName) ? ' is-active' : ''
+                          }`}
+                        >
+                          {subName}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })
         ) : (
           <p className="shop-filters__empty">No categories found</p>
         )}

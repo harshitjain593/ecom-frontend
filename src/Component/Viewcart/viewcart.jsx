@@ -11,7 +11,7 @@ import { checkUser, formatNumberWithCommas } from "../../assest/js/checker";
 import { CheckUserComponent } from "../Auth/checkComponent/CheckUserComponent";
 
 export default function Viewcart() {
-  const [loggedIn, setLoggedIn] = useState(checkUser());
+  const isLoggedIn = checkUser();
   const cartData = useSelector((state) => state.CartData?.data);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,11 @@ export default function Viewcart() {
   const navigate = useNavigate();
 
   const fetchCartData = useCallback(async () => {
+    if (!checkUser()) {
+      setLoading(false);
+      return;
+    }
+
     try {
       await dispatch(getCart());
     } catch (error) {
@@ -117,7 +122,7 @@ export default function Viewcart() {
     <>
       {loading ? (
         <div className="loader"></div>
-      ) : loggedIn ? (
+      ) : isLoggedIn ? (
         <section className="containerCart">
           <div className="cards">
             {cartData?.cartItems && cartData.cartItems.length > 0 ? (
