@@ -6,8 +6,9 @@ import { LikeSec } from "./LikeSec";
 import { addLikesandDislikes } from "../../action/ReviewActions";
 
 const ReviewComments = ({ product ,setUpdatepage}) => {
-  const { reviews, averageRating, totalReviews } = product;
-  console.log(reviews,'reviewssss')
+  const reviews = product?.reviews || [];
+  const averageRating = product?.averageRating ?? 0;
+  const totalReviews = product?.totalReviews ?? reviews.length;
   const [ReviewStat, setReviewStat] = useState({
     excellent: 0,
     good: 0,
@@ -90,14 +91,14 @@ const ReviewComments = ({ product ,setUpdatepage}) => {
   };
 
   return (
-    <div className="container-fluid py-5 mx-auto">
+    <div className="product-reviews__inner py-3">
       <div className="row justify-content-center">
-        <div className="col-xl-7 col-lg-8 col-md-10 col-12 text-center mb-5">
+        <div className="col-xl-8 col-lg-10 col-12">
           <div className="card">
             <div className="row justify-content-left d-flex">
               <div className="col-md-4 d-flex flex-column">
                 <div className="rating-box">
-                  <h1 className="pt-2">{averageRating.toFixed(1)}</h1>
+                  <h1 className="pt-2">{Number(averageRating).toFixed(1)}</h1>
                   <p>out of 5</p>
                 </div>
                 <div>{getStars(averageRating)}</div>
@@ -207,7 +208,7 @@ const ReviewComments = ({ product ,setUpdatepage}) => {
               <div key={index} className="card mt-2">
                 <div className="row d-flex">
                   <div className="d-flex gap-1 justify-content-start align-items-center">
-                   {item.user.name&& <h6 className="text-capitalize m-0">{item.user.name}</h6>}
+                   {item.user?.name && <h6 className="text-capitalize m-0">{item.user.name}</h6>}
                     <div className="ml-2">
                       <p className="m-0 d-flex gap-1 align-items-center justify-context-center">
                         <span className="pr-1" style={{ fontWeight: 600, fontSize: "1rem" }}>
@@ -227,12 +228,12 @@ const ReviewComments = ({ product ,setUpdatepage}) => {
                   </p>
                 </div>
                 <div className="row text-left">
-                  {item.images.map((img, index) => (
+                  {(item.images || []).map((img, imgIndex) => (
                     <img
-                      key={index}
+                      key={imgIndex}
                       className="pic"
                       src={img}
-                      alt="Activity"
+                      alt="Review"
                       onClick={() => openModal(img)}
                     />
                   ))}

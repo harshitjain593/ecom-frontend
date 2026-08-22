@@ -14,14 +14,6 @@
   align-items: start;
 }
 
-.shop-page__container--category {
-  display: block;
-}
-
-.shop-page__main--full {
-  width: 100%;
-}
-
 .shop-page__sidebar {
   position: sticky;
   top: 24px;

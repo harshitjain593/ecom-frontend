@@ -169,12 +169,10 @@ export const updateCart = ({productId,colorId,quantity}) => {
 export const getProductDetails = (id) => {
 
   return async dispatch => {
-     const token = localStorage.getItem('token')
     try {
       const response = await axios.get(`${API_URL}/admin/product/product/${id}`,{
         headers: {
-            ...(token &&{'Authorization':`Bearer ${token}`}),
-            'Content-Type': 'application/json' 
+            'Content-Type': 'application/json'
         } 
       });
       const { data: { message, statusCode, result } = {} } = response;
@@ -201,11 +199,8 @@ export const getProductDetails = (id) => {
 export const newProducts = ()=>{
   return async dispatch => {
     try {
-      const token = localStorage.getItem('token');
-    
       const response = await axios.get(`${API_URL}/admin/product/best-product`,{
         headers:{
-         ...(token &&{'Authorization':`Bearer ${token}`}),
           'Content-Type':'application/json'
         }
       })

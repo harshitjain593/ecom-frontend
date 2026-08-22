@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import css from "./productdetails.module.css";
+import "./productTheme.css";
 import Excusivecategory from "../Home/Excusivecategory";
 import ReactImageMagnify from "react-image-magnify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,47 +15,27 @@ import HeartButton from "../Home/HeartButton";
 import { checkDelivery } from "../../action/Delivery";
 import ReviewComments from "../ReviewDisplay/Reviewcomments";
 import { checkUser, formatNumberWithCommas } from "../../assest/js/checker";
-import addCompareProducts from "../../action/compareProducts";
-
 import {
   ADD_COMPARE_PRODUCTS,
   DIRECT_BUY_ADD_TO_PRODUCTS,
   REMOVE_COMPARE_PRODUCTS,
 } from "../../action/actionType";
-import useLocal from "../../service/compare";
-import CompareError from "../comparePOPup/CompareError";
-import ComparePOPup from "../comparePOPup/ComparePOPup";
 import { checkcompare } from "../../service/checkCompareproduct";
+import ComparePOPup from "../comparePOPup/ComparePOPup";
 import Slider from "react-slick";
-
-import { NextArrow, PrevArrow } from "../Home/Arrow";
 import { CatNextArrow, CatPrevArrow } from "../Home/CatArrows";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { IoMdArrowDropup } from "react-icons/io";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoIosArrowUp    } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const sliderSettings = {
-  dots: false, // Shows navigation dots
-  infinite: true, // Enables infinite loop sliding
-  speed: 500, // Transition speed in milliseconds
-  slidesToShow: 1, // Number of slides to show
-  slidesToScroll: 1, // Number of slides to scroll at a time
-  autoplay: false, // Enables autoplay
-  autoplaySpeed: 3000, // Time between each slide in autoplay mode
-  arrows: true, // Show next/previous arrows
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: false,
+  arrows: true,
   nextArrow: <CatNextArrow />,
   prevArrow: <CatPrevArrow />,
-  responsive: [
-    // Responsive settings for different screen sizes
-    {
-      breakpoint: 768, // At or below this screen width
-      settings: {
-        slidesToShow: 1, // Show 1 image on smaller screens as well
-        slidesToScroll: 1,
-      },
-    },
-  ],
 };
 
 function Productdetail() {
@@ -73,7 +54,6 @@ function Productdetail() {
   const [colorOptions, setColorOptions] = useState(null);
   const dispatch = useDispatch();
   const [isCompared, setIsCompared] = useState(false);
-  const directbuy = useSelector((state) => state.directBuy);
   const [isExpanded, setIsExpanded] = useState({
     description: true,
     highlight: true,
@@ -87,6 +67,7 @@ function Productdetail() {
     (state) => state.checkDelivery?.data?.delivery_codes
   );
   const compareProducts = useSelector((state) => state.compare.data);
+
   useEffect(() => {
     if (product && compareProducts.products.length > 0) {
       setIsCompared((prev) =>
@@ -110,32 +91,18 @@ function Productdetail() {
     setMainImage(image);
   }, []);
 
-  const handleColorOptions = useCallback(
-    (obj) => {
-      setColorOptions((prev) => obj);
-      handleImageClick(obj.product_image);
-    },
-    [colorOptions]
-  );
+  const handleColorOptions = useCallback((obj) => {
+    setColorOptions(obj);
+    handleImageClick(obj.product_image);
+  }, [handleImageClick]);
 
   const handleIncrease = useCallback(() => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   }, []);
 
   const handleDecrease = useCallback(() => {
-    setQuantity((prevQuantity) => (prevQuantity > 0 ? prevQuantity - 1 : 0));
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   }, []);
-
-  const addToWishlist = useCallback(
-    (productId) => {
-      if (!checkUser()) {
-        navigate("/wishlist");
-        return;
-      }
-      dispatch(addWishList(productId));
-    },
-    [dispatch]
-  );
 
   const handeaddtoCart = useCallback(
     async (productId) => {
@@ -148,7 +115,6 @@ function Productdetail() {
         addtocart: true,
       }));
 
-      console.log(colorOptions, "add to cart");
       await dispatch(
         addtoCart(productId, colorOptions && colorOptions._id, quantity)
       ).then(() => {
@@ -158,11 +124,11 @@ function Productdetail() {
         }));
       });
     },
-    [quantity, dispatch, colorOptions]
+    [quantity, dispatch, colorOptions, navigate]
   );
 
   const directBuy = useCallback(
-    (product, colorId) => {
+    (productItem, colorId) => {
       setButtonLoader((prevState) => ({
         ...prevState,
         buynow: true,
@@ -170,7 +136,7 @@ function Productdetail() {
       dispatch({
         type: DIRECT_BUY_ADD_TO_PRODUCTS,
         payload: {
-          product,
+          product: productItem,
           quantity,
           colorId,
         },
@@ -181,12 +147,11 @@ function Productdetail() {
       }));
       navigate("/cart/ordersummary");
     },
-    [dispatch, directbuy, quantity]
+    [dispatch, quantity, navigate]
   );
 
   const handleBuynow = useCallback(async () => {
     if (!checkUser()) {
-      console.log("color before direct buy", colorOptions);
       directBuy(product, colorOptions ? colorOptions._id : product._id);
       return;
     }
@@ -207,7 +172,7 @@ function Productdetail() {
       }));
       navigate("/cart/ordersummary");
     });
-  }, [dispatch, navigate, product, quantity, colorOptions]);
+  }, [dispatch, navigate, product, quantity, colorOptions, directBuy]);
 
   const handlePincodeChange = useCallback(
     (e) => {
@@ -219,10 +184,9 @@ function Productdetail() {
       if (newPincode.length < 6 || isNaN(Number(newPincode))) {
         setPincodeError("Please enter a valid pincode");
         return;
-      } else {
-        setPincodeError("");
-        dispatch(checkDelivery(Number(newPincode)));
       }
+      setPincodeError("");
+      dispatch(checkDelivery(Number(newPincode)));
     },
     [timeOutId, dispatch]
   );
@@ -240,663 +204,404 @@ function Productdetail() {
       } else {
         setPincodeMessage("Currently not Available");
       }
-    } else {
+    } else if (pincode.length === 6) {
       setPincodeMessage("Currently not Available");
     }
-  }, [checkDeliveryData]);
+  }, [checkDeliveryData, pincode.length]);
 
   const addtoCompareList = useCallback(
-    (e, product) => {
+    (e, productItem) => {
       const isChecked = e.target.checked;
 
       if (isChecked) {
-        // Adding product: Check for duplicates
         dispatch({
           type: ADD_COMPARE_PRODUCTS,
-          payload: product,
+          payload: productItem,
         });
-
         setIsCompared(true);
       } else {
-        // Removing product
         dispatch({
           type: REMOVE_COMPARE_PRODUCTS,
-          payload: product,
+          payload: productItem,
         });
         setIsCompared(false);
       }
     },
-    [compareProducts, dispatch]
+    [dispatch]
   );
 
   const handleViewLess = (element) => {
     setIsExpanded((prev) => ({ ...prev, [element]: !prev[element] }));
   };
 
-  const specification = product?.specifications[0] || null;
+  const renderGalleryImages = () => {
+    if (colorOptions?.imageGallery?.length > 0) {
+      return colorOptions.imageGallery;
+    }
+    return product?.image_gallery || [];
+  };
+
+  const renderMainImageSrc = () => {
+    return mainImage || colorOptions?.product_image || product?.productImage;
+  };
+
+  const renderActionButtons = (className) => {
+    const outOfStock = product?.stock_quantity === 0;
+
+    return (
+      <div className={className}>
+        {product.isCart ? (
+          <Link to="/cart" className="product-page__btn product-page__btn--cart">
+            <i className="fas fa-shopping-cart px-2" /> Go to Cart
+          </Link>
+        ) : (
+          <button
+            type="button"
+            className="product-page__btn product-page__btn--cart"
+            onClick={() => handeaddtoCart(product._id)}
+          >
+            {buttonLoader.addtocart ? (
+              <div className="spinner" />
+            ) : (
+              <>
+                <i className="fas fa-shopping-cart px-2" /> Add to Cart
+              </>
+            )}
+          </button>
+        )}
+        <button
+          type="button"
+          className={`product-page__btn product-page__btn--buy ${
+            outOfStock ? "product-page__btn--disabled" : ""
+          }`}
+          onClick={() => !outOfStock && handleBuynow()}
+          disabled={outOfStock}
+        >
+          {buttonLoader.buynow ? (
+            <div className="spinner" />
+          ) : (
+            <>
+              <i className="fas fa-bolt px-2" /> Buy Now
+            </>
+          )}
+        </button>
+      </div>
+    );
+  };
+
+  const specification = product?.specifications?.[0] || null;
+  const galleryImages = product ? renderGalleryImages() : [];
+  const displayName = colorOptions?.productName || product?.product_name;
+  const discountPercent = product
+    ? (
+        ((product.mrp_price - product.selling_price) / product.mrp_price) *
+        100
+      ).toFixed(1)
+    : 0;
 
   return (
     <>
-      <section className="container-fluid py-3">
-        <div className={css.pdetailRow}>
-          {product ? (
-            <>
-              <div className="col-lg-5  col-sm-12 justify-content-sm-center align-items-sm-center ">
-                <div className="position-lg-sticky top-0 ">
-                  <div
-                    className={`${css.mobilePicContainer} positions-relative mx-auto`}
-                  >
-                    <div
-                      className={css.moblieheartContianer}
-                      style={{
-                        position: "absolute",
-                        color: "gray",
-                        fontSize: "24px",
-                        cursor: "pointer",
+      <section className="product-page">
+        <div className="product-page__container">
+          {!product ? (
+            <div className="product-page__loader">
+              <div className="loader" />
+            </div>
+          ) : (
+            <div className="product-page__layout">
+              <div className="product-page__gallery">
+                <div className="product-page__mobile-gallery">
+                  <div className="product-page__wishlist">
+                    <HeartButton
+                      productId={product._id}
+                      check={product.isWishlist}
+                    />
+                  </div>
+                  {galleryImages.length > 1 ? (
+                    <Slider {...sliderSettings}>
+                      {galleryImages.map((item, index) => (
+                        <img
+                          key={index}
+                          className={css.mobileImg}
+                          src={item}
+                          alt={displayName}
+                        />
+                      ))}
+                    </Slider>
+                  ) : (
+                    <img
+                      className={css.mobileImg}
+                      src={renderMainImageSrc()}
+                      alt={displayName}
+                    />
+                  )}
+                  {renderActionButtons("product-page__actions product-page__actions--mobile")}
+                </div>
+
+                <div className="product-page__gallery-inner">
+                  <div className="product-page__thumbs d-none d-md-flex">
+                    {galleryImages.map((image, index) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt=""
+                        onClick={() => handleImageClick(image)}
+                        className={`product-page__thumb ${
+                          renderMainImageSrc() === image ? "is-active" : ""
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="product-page__main-image">
+                    <ReactImageMagnify
+                      {...{
+                        smallImage: {
+                          alt: displayName,
+                          isFluidWidth: true,
+                          src: renderMainImageSrc(),
+                        },
+                        largeImage: {
+                          src: renderMainImageSrc(),
+                        },
+                        enlargedImagePosition: "beside",
+                        enlargedImageContainerStyle: { zIndex: 20 },
                       }}
-                    >
+                    />
+                    <div className="product-page__wishlist d-none d-md-block">
                       <HeartButton
                         productId={product._id}
                         check={product.isWishlist}
                       />
                     </div>
-                    <div>
-                      {colorOptions ? (
-                        colorOptions.imageGallery.length > 1 ? (
-                          <Slider {...sliderSettings}>
-                            {colorOptions.imageGallery.map((item, index) => (
-                              <img
-                                className={css.mobileImg}
-                                key={index}
-                                src={item}
-                                alt=""
-                              />
-                            ))}
-                          </Slider>
+                  </div>
+                </div>
+
+                {renderActionButtons("product-page__actions")}
+              </div>
+
+              <div className="product-page__info">
+                <div className="product-page__compare">
+                  <label htmlFor="compare">Compare Product</label>
+                  <input
+                    type="checkbox"
+                    name="compare"
+                    id="compare"
+                    checked={isCompared}
+                    onChange={(e) => addtoCompareList(e, product)}
+                  />
+                </div>
+
+                <p className="product-page__breadcrumb">
+                  {product.category}
+                  {product.sub_category ? ` › ${product.sub_category}` : ""}
+                </p>
+
+                <h1 className="product-page__title">{displayName}</h1>
+
+                <div className="product-page__price-row">
+                  <span className="product-page__price">
+                    ₹{formatNumberWithCommas(product.selling_price)}
+                  </span>
+                  <del className="product-page__mrp">
+                    ₹{formatNumberWithCommas(product.mrp_price)}
+                  </del>
+                  <span className="product-page__discount">{discountPercent}% off</span>
+                </div>
+                <p className="product-page__tax-note">Inclusive of all taxes</p>
+
+                <div className="product-page__qty">
+                  <button type="button" onClick={handleDecrease} aria-label="Decrease quantity">
+                    <FontAwesomeIcon icon={faMinus} />
+                  </button>
+                  <input type="text" value={quantity} readOnly aria-label="Quantity" />
+                  <button type="button" onClick={handleIncrease} aria-label="Increase quantity">
+                    <FontAwesomeIcon icon={faPlus} />
+                  </button>
+                </div>
+
+                <div className="product-page__block">
+                  <h2 className="product-page__heading">Check Delivery</h2>
+                  <input
+                    type="text"
+                    value={pincode}
+                    className="product-page__delivery-input"
+                    onChange={handlePincodeChange}
+                    placeholder="Enter pincode"
+                    maxLength={6}
+                    onBlur={() => setPincodeError("")}
+                  />
+                  {pincodeError && (
+                    <span className="text-danger d-block mt-1">{pincodeError}</span>
+                  )}
+                  {pincode.length === 6 && (
+                    <p
+                      className={`mt-2 mb-0 ${
+                        deliveryData ? "text-success" : "text-danger"
+                      }`}
+                      style={{ fontSize: "0.85rem" }}
+                    >
+                      {pincodeMessage}
+                    </p>
+                  )}
+                </div>
+
+                {product.stock_quantity != null && (
+                  <p
+                    className={`product-page__stock ${
+                      product.stock_quantity < 10
+                        ? "product-page__stock--low"
+                        : "product-page__stock--ok"
+                    }`}
+                  >
+                    {product.stock_quantity < 10
+                      ? `Only ${product.stock_quantity} left in stock`
+                      : `${product.stock_quantity} available`}
+                  </p>
+                )}
+
+                {product.colorOption?.length > 0 && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">Variants</h2>
+                    <div className="product-page__variants">
+                      {product.colorOption.map((item) => (
+                        <button
+                          type="button"
+                          key={item._id || item.product_image}
+                          className={`product-page__variant ${
+                            colorOptions?._id === item._id ? "is-selected" : ""
+                          }`}
+                          onClick={() => handleColorOptions(item)}
+                        >
+                          <img src={item.product_image} alt="" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {product.description && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">Description</h2>
+                    <p className="mb-0" style={{ color: "var(--oluxe-gray)", lineHeight: 1.7 }}>
+                      {isExpanded.description
+                        ? `${product.description.substring(0, 200)}${
+                            product.description.length > 200 ? "..." : ""
+                          }`
+                        : product.description}
+                    </p>
+                    {product.description.length > 200 && (
+                      <button
+                        type="button"
+                        className="product-page__toggle"
+                        onClick={() => handleViewLess("description")}
+                      >
+                        {isExpanded.description ? (
+                          <>
+                            Read more <IoIosArrowDown size={15} />
+                          </>
                         ) : (
-                          <img
-                            className={css.mobileImg}
-                            src={
-                              colorOptions?.product_image ||
-                              product.productImage
-                            }
-                            alt=""
-                          />
-                        )
-                      ) : product.image_gallery.length > 1 ? (
-                        <Slider {...sliderSettings}>
-                          {product.image_gallery.map((item, index) => (
-                            <img
-                              className={css.mobileImg}
-                              key={index}
-                              src={item}
-                              alt=""
-                            />
-                          ))}
-                        </Slider>
-                      ) : (
-                        <img
-                          className={css.mobileImg}
-                          src={
-                            colorOptions?.product_image || product.productImage
-                          }
-                          alt=""
-                        />
-                      )}
-                    </div>
-                    <div className={` ${css.moblilepDetailButtonContainer}`}>
-                      {product.isCart ? (
-                        <Link
-                          to={"/cart"}
-                          className={`${css.buttons} me-2 text-white`}
-                          style={{ background: "#FF9F00" }}
-                        >
-                          <i className="fas fa-shopping-cart px-2"></i> Go to
-                          Cart
-                        </Link>
-                      ) : (
-                        <button
-                          className={`${css.buttons} me-2 text-white`}
-                          onClick={() => handeaddtoCart(product._id)}
-                          style={{ background: "#FF9F00" }}
-                        >
-                          {buttonLoader.addtocart ? (
-                            <div className="spinner"></div>
-                          ) : (
-                            <>
-                              <i className="fas fa-shopping-cart px-2"></i> ADD
-                              TO CART
-                            </>
-                          )}
-                        </button>
-                      )}
-                      <button
-                        className={`${css.buttons} me-2 text-white`}
-                        style={{
-                          background:
-                            product.stock_quantity === 0 ? "gray" : "#FB641B",
-                        }}
-                      >
-                        <button
-                          className="text-white"
-                          onClick={(e) =>
-                            product.stock_quantity === 0 ? "" : handleBuynow(e)
-                          }
-                          disabled={product.stock_quantity - 100 === 10}
-                        >
-                          {buttonLoader.buynow ? (
-                            <div className="spinner"></div>
-                          ) : (
-                            <>
-                              <i className="fas fa-bolt px-2"></i> BUY NOW
-                            </>
-                          )}
-                        </button>
-                      </button>
-                    </div>
-                  </div>
-                  <div className={`d-flex  ${css.picsMainContainer}`}>
-                    <section className="">
-                    <div
-                      className={`${css.picGrid} d-none d-md-flex  flex-column gap-1 justify-content-between`}
-                    >
-                      {colorOptions && colorOptions.imageGallery.length > 0
-                        ? colorOptions.imageGallery.map((image, index) => (
-                            <img
-                              key={index}
-                              src={image}
-                              alt=""
-                              onClick={() => handleImageClick(image)}
-                              style={{ height: "80px", width: "80px" }}
-                              className={`border d-flex justify-content-center `}
-                            />
-                          ))
-                        : product.image_gallery &&
-                          product.image_gallery.map((image, index) => (
-                            <img
-                              key={index}
-                              src={image}
-                              alt=""
-                              onClick={() => handleImageClick(image)}
-                              style={{ height: "80px", width: "80px" }}
-                              className={`border d-flex justify-content-center `}
-                            />
-                          ))}
-                    </div>
-
-                    </section>
-                    <section className={css.pDetailsImageSectionwithButton}>
-                    <div
-                      className={css.imageMagnifyContainer}
-                      style={{
-                        position: "relative",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        border: "1px solid #d0cece",
-                      }}
-                    >
-                      <ReactImageMagnify
-                        {...{
-                          smallImage: {
-                            alt: "e-commerce",
-                            isFluidWidth: true,
-                            src: mainImage || product.productImage,
-                          },
-                          largeImage: {
-                            src: mainImage || product.productImage,
-                            style: { borderRadius: "10px" },
-                          },
-                          enlargedImagePosition: "beside",
-                          enlargedImageContainerStyle: { zIndex: 20 },
-                          enlargedImageContainerDimensions: {
-                            width: "100%",
-                            height: "100%",
-                          },
-                        }}
-                      />
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "30px",
-                          right: "10px",
-                          color: "gray",
-                          fontSize: "24px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <HeartButton
-                          productId={product._id}
-                          check={product.isWishlist}
-                        />
-                      </div>
-                    </div>     
-                    <div
-                      className={`d-flex justify-content-lg-start justify-content-md-center mt-2 align-items-center ${css.pDetailButtonContainer}`}
-                    >
-                      {product.isCart ? (
-                        <Link
-                          to={"/cart"}
-                          className="px-4 py-3 me-2 text-white"
-                          style={{ background: "#FF9F00" }}
-                        >
-                          <i className="fas fa-shopping-cart px-2"></i> Go to Cart
-                        </Link>
-                      ) : (
-                        <button
-                          className={`${css.buttons} me-2 text-white`}
-                          onClick={() => handeaddtoCart(product._id)}
-                          style={{ background: "#FF9F00" }}
-                        >
-                          {buttonLoader.addtocart ? (
-                            <div className="spinner"></div>
-                          ) : (
-                            <>
-                              <i className="fas fa-shopping-cart px-2"></i> ADD TO
-                              CART
-                            </>
-                          )}
-                        </button>
-                      )}
-                      <button
-                        className={`${css.buttons} me-2 text-white`}
-                        style={{
-                          background:
-                            product.stock_quantity === 0 ? "gray" : "#FB641B",
-                        }}
-                        disabled={product.stock_quantity === 10}
-                      >
-                        <button
-                          className="text-white "
-                          onClick={(e) =>
-                            product.stock_quantity === 0 ? "" : handleBuynow(e)
-                          }
-                        >
-                          {buttonLoader.buynow ? (
-                            <div className="spinner"></div>
-                          ) : (
-                            <>
-                              <i className="fas fa-bolt px-2"></i> BUY NOW
-                            </>
-                          )}
-                        </button>
-                      </button>
-                    </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-7 pl-1 ">
-                <div>
-                  <section className="px-4" style={{ position: "static" }}>
-                    <div>
-                      <div className="d-flex align-items-center justify-content-end gap-3 mt-2 mt-lg-0">
-                        <label htmlFor="compare">Compare Product</label>
-                        <input
-                          type="checkbox"
-                          name="compare"
-                          id="compare"
-                          className="px-2 py-2"
-                          checked={isCompared}
-                          onChange={(e) => addtoCompareList(e, product)}
-                        />
-                      </div>
-
-                      <h3>
-                        {colorOptions
-                          ? colorOptions.productName
-                          : product.product_name}
-                      </h3>
-                      <span style={{ fontSize: "12px" }}>
-                        {product.category} &#62; {product.sub_category}
-                      </span>
-                    </div>
-
-                    <div>
-                      <div className="d-flex justify-content-start">
-                        <span className="fs-4" style={{ fontWeight: "500" }}>
-                          ₹{formatNumberWithCommas(product.selling_price)}
-                        </span>
-                        <del
-                          className="px-2 py-1"
-                          style={{ fontWeight: "500", color: "gray" }}
-                        >
-                          ₹{product.mrp_price}
-                        </del>
-                        <span
-                          className="px-2 py-2 text-success"
-                          style={{ fontWeight: "500", fontSize: "12px" }}
-                        >
-                          {(
-                            ((product.mrp_price - product.selling_price) /
-                              product.mrp_price) *
-                            100
-                          ).toFixed(1)}
-                          % off
-                        </span>
-                      </div>
-                      <span style={{ fontSize: "12px" }}>
-                        include of all taxes
-                      </span>
-                    </div>
-                    <div className="qty-container mt-2">
-                      <button
-                        className="qty-btn-minus btn-light bg-light rounded"
-                        type="button"
-                        onClick={handleDecrease}
-                      >
-                        <FontAwesomeIcon icon={faMinus} />
-                      </button>
-                      <input
-                        type="text"
-                        value={quantity}
-                        className="input-qty text-center mx-2"
-                        readOnly
-                      />
-                      <button
-                        className="qty-btn-plus btn-light rounded bg-light"
-                        type="button"
-                        onClick={handleIncrease}
-                      >
-                        <FontAwesomeIcon icon={faPlus} />
-                      </button>
-                    </div>
-                    <section className="mt-2 position-static">
-                      <div className="delivery-section">
-                        <h6 className={css.SubHeads}>Check Delivery</h6>
-                        <div>
-                          <input
-                            type="text"
-                            value={pincode}
-                            className={css.picodeInput}
-                            onChange={handlePincodeChange}
-                            placeholder="Enter Pincode"
-                            maxLength={6}
-                            onBlur={() => setPincodeError("")}
-                          />
-                          {pincodeError && (
-                            <span className="text-danger d-block">
-                              {pincodeError}
-                            </span>
-                          )}
-                        </div>
-                        {pincode.length === 6 && (
-                          <div>
-                            <p
-                              className={
-                                deliveryData ? "text-success" : "text-danger"
-                              }
-                              style={{ fontSize: ".8rem" }}
-                            >
-                              {pincodeMessage}
-                            </p>
-                          </div>
+                          <>
+                            View less <IoIosArrowUp size={15} />
+                          </>
                         )}
-                      </div>
-                    </section>
-                  </section>
-                  <section className="mt-2 position-static">
-                    <div className="container m-0 p-0 px-4">
-                      <div className="row">
-                        <div className="col-12 pt-1">
-                          {product.stock_quantity && (
-                            <p
-                              className={
-                                product.stock_quantity < 10
-                                  ? "text-danger"
-                                  : "text-success"
-                              }
-                              style={{
-                                fontWeight: 500,
-                                lineHeight: "15px",
-                                margin: "0px",
-                              }}
-                            >
-                              {product.stock_quantity < 10
-                                ? `!! Hurry Only ${product.stock_quantity}  Left`
-                                : `!! Available stocks of ${product.stock_quantity} `}
-                            </p>
-                          )}
-                          {product.colorOption.length > 0 && (
-                            <section className="mt-2 position-static">
-                              <div className="container m-0 p-0 px-0">
-                                <div className="row">
-                                  <div className="col-12 pt-1">
-                                    <h6 className={css.SubHeads}>Variants</h6>
-                                    {product.colorOption.length > 0 && (
-                                      <div
-                                        className={`${css.pdetailscolorOptions} `}
-                                      >
-                                        {product.colorOption.length > 0 &&
-                                          product.colorOption.map((item, i) => (
-                                            <div
-                                              className={
-                                                css.colorOptionsimgContainer
-                                              }
-                                              onClick={() =>
-                                                handleColorOptions(item)
-                                              }
-                                            >
-                                              <img
-                                                src={item.product_image}
-                                                alt=""
-                                              />
-                                              {/* <span>{item.colorName}</span> */}
-                                            </div>
-                                          ))}
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </section>
-                          )}
+                      </button>
+                    )}
+                  </div>
+                )}
 
-                          <h6 className={css.SubHeads}>Description</h6>
-                          <p className="m-0 mt-2 ">
-                            {isExpanded.description
-                              ? product.description.substring(0, 200)
-                              : product.description}
-                          </p>
-                          <div
-                            onClick={() => handleViewLess("description")}
-                            className="text-center"
-                          >
-                            {isExpanded.description ? (
-                              <div
-                                className="text-center  p-1 rounded"
-                                style={{
-                                  width: "max-content",
-                                  fontSize: ".8rem",
-                                  fontWeight: 500,
-                                }}
-                              >
-                              { product.description.toString().length > 100 &&(
-                                <>
-                               <IoIosArrowDown size={15} /> 
-                               </>
-                            )}
-                              </div>
-                            ) : (
-                              <div
-                                className="p-1 rounded"
-                                style={{
-                                  width: "max-content",
-                                  fontSize: ".8rem",
-                                  fontWeight: 500,
-                                }}
-                              >
-                                  { product.description.toString().length > 100 && (
-                                <>
-                                <small>view less</small> <IoIosArrowUp size={15}  /> 
-                               </>
-                            )}
-                              </div>
-                            )}{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
+                {product.return_policy?.length > 0 && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">Return Policy</h2>
+                    <ul className="product-page__list">
+                      {product.return_policy.map((item, index) => {
+                        if (!isExpanded.returnPolicy && index >= 3) return null;
+                        return <li key={index}>{item}</li>;
+                      })}
+                    </ul>
+                    {product.return_policy.length > 3 && (
+                      <button
+                        type="button"
+                        className="product-page__toggle"
+                        onClick={() => handleViewLess("returnPolicy")}
+                      >
+                        {isExpanded.returnPolicy ? (
+                          <>
+                            View more <IoIosArrowDown size={15} />
+                          </>
+                        ) : (
+                          <>
+                            View less <IoIosArrowUp size={15} />
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                )}
 
-                  {product.return_policy.length > 0 && (
-                    <section className="mt-2 position-static">
-                      <div className="container m-0 p-0 px-4">
-                        <div className="row">
-                          <div className="col-12 pt-1">
-                            <h6 className={css.SubHeads}>Return Policy</h6>
+                {product.highlight?.length > 0 && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">Highlights</h2>
+                    <ul className="product-page__list">
+                      {product.highlight.map((item, index) => {
+                        if (!isExpanded.highlight && index >= 3) return null;
+                        return <li key={index}>{item}</li>;
+                      })}
+                    </ul>
+                    {product.highlight.length > 3 && (
+                      <button
+                        type="button"
+                        className="product-page__toggle"
+                        onClick={() => handleViewLess("highlight")}
+                      >
+                        {isExpanded.highlight ? (
+                          <>
+                            View more <IoIosArrowDown size={15} />
+                          </>
+                        ) : (
+                          <>
+                            View less <IoIosArrowUp size={15} />
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                )}
 
-                            <ul className={`${css.highlightul} px-4`}>
-                              {product.return_policy.map((item, index) => {
-                                // If expanded, show all items, otherwise show only the first 3
-                                if ( !isExpanded.returnPolicy || index < 3) {
-                                  return <li key={index}>{item}</li>;
-                                }
-                                return null; // Return null when not showing the item
-                              })}
-
-                              {/* Toggle button to view more or less */}
-                              <div
-                                onClick={() => handleViewLess("returnPolicy")}
-                                className="text-center"
-                              >
-                                {isExpanded.returnPolicy    ? (
-                                  <div
-                                    className="text-center p-1 rounded"
-                                    style={{
-                                      width: "max-content",
-                                      fontSize: ".8rem",
-                                      fontWeight: 500,
-                                    }}
-                                  >
-                                  {product.return_policy.length > 3 && (
-                                    <>
-                                      <IoIosArrowDown size={15}/>
-                                    </>
-                                  ) }
-                                  </div>
-                                ) : (
-                                  <div
-                                    className="p-1 rounded"
-                                    style={{
-                                      width: "max-content",
-                                      fontSize: ".8rem",
-                                    }}
-                                  >
-                                       {product.return_policy.length > 3 && (
-                                    <>
-                                    <small>View less</small>  <IoIosArrowUp size={15} /> 
-                                    </>
-                                  ) }
-                                  </div>
-                                )}
-                              </div>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  )}
-
-                  {product.highlight.length > 0 && (
-                    <section className="mt-2 position-static">
-                      <div className="container m-0 p-0 px-4">
-                        <div className="row">
-                          <div className="col-12 pt-1">
-                            <h6 className={css.SubHeads}>Highlights</h6>
-
-                            <ul className={`${css.highlightul} px-4`}>
-                              {product.highlight.map((item, index) => {
-                                // Show all items if expanded, otherwise limit to first 3
-                                if (!isExpanded.highlight || index < 3) {
-                                  return <li key={index}>{item}</li>;
-                                }
-                                return null; // Return null when not showing the item
-                              })}
-
-                              {/* Toggle button to view more or less */}
-                              <div
-                                onClick={() => handleViewLess("highlight")}
-                                className="text-center"
-                              >
-                                {isExpanded.highlight ? (
-                                  <div
-                                    className="text-center p-1 rounded"
-                                    style={{
-                                      width: "max-content",
-                                      fontSize: ".8rem",
-                                      fontWeight: 500,
-                                    }}
-                                  >
-                                        {product.highlight.length > 3 && (
-                                    <>
-                                      <IoIosArrowDown size={15} /> 
-                                    </>
-                                  ) }
-                                  </div>
-                                ) : (
-                                  <div
-                                    className="p-1 rounded"
-                                    style={{
-                                      width: "max-content",
-                                      fontSize: ".8rem",
-                                    }}
-                                  >
-                                        {product.highlight.length > 3 && (
-                                    <>
-                                    <small>View less</small>  <IoIosArrowUp size={15}  /> 
-                                    </>
-                                  ) }
-                                  </div>
-                                )}
-                              </div>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  )}
-
-                  <section className="mt-2 position-static">
-                    <div className="container m-0 p-0 px-4">
-                      <div className="row">
-                        <div className="col-12 pt-1">
-                          <h6 className={css.SubHeads}>Specifications</h6>
-                          <table className={css.specificationTable}>
-                            <tbody>
-                              {specification &&
-                                Object.entries(specification).map(
-                                  ([key, value], index) => (
-                                    <tr key={index}>
-                                      <th>{key}</th>
-                                      <td>{value}</td>
-                                    </tr>
-                                  )
-                                )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
+                {specification && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">Specifications</h2>
+                    <table className="product-page__spec-table">
+                      <tbody>
+                        {Object.entries(specification).map(([key, value], index) => (
+                          <tr key={index}>
+                            <th>{key}</th>
+                            <td>{value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
-            </>
-          ) : (
-            <div className="loader"></div>
+            </div>
           )}
         </div>
-      </section>
-      {product && (
-        <ReviewComments product={product} setUpdatepage={setUpdatepage} />
-      )}
 
-      {compareProducts && compareProducts.products.length > 0 && (
+        {product && (
+          <section className="product-page__reviews">
+            <div className="product-page__container product-reviews">
+              <h2 className="product-page__reviews-title">Customer Reviews</h2>
+              <ReviewComments product={product} setUpdatepage={setUpdatepage} />
+            </div>
+          </section>
+        )}
+      </section>
+
+      {compareProducts?.products?.length > 0 && (
         <ComparePOPup products={compareProducts.products} />
       )}
-      {/* {local && localError &&
-      <CompareError error={localError}/>
-      } */}
+
       <Excusivecategory />
     </>
   );

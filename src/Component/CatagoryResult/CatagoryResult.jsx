@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterProducts } from '../../action/filterAction';
 import { getCategory } from '../../action/categoryAction';
@@ -8,14 +8,14 @@ import {
   getCategoriesList,
 } from '../../utils/categoryUtils';
 import ProductCard from '../Home/ProductCard';
+import ShopFilters from '../Shop/ShopFilters';
 import ComparePOPup from '../comparePOPup/ComparePOPup';
-import FilterSidebar from '../sidebar/FilterSidebar';
 import '../Shop/shop.css';
-import '../SearchResult/searchResult.css';
 
 const CategoryResult = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const categoriesState = useSelector((state) => state.categories);
@@ -26,10 +26,25 @@ const CategoryResult = () => {
   const products = useSelector((state) => state.filteredProducts?.products?.products);
   const compareProducts = useSelector((state) => state.compare.data);
   const loading = useSelector((state) => state.filteredProducts?.loading);
-  const opensidebar = useSelector((state) => state.filterData.sidebarOpen);
 
   const subCategoryParam = searchParams.get('sub_category');
   const pageTitle = subCategoryParam || id;
+
+  const selectedCategories = useMemo(() => {
+    if (!id) return [];
+
+    const filter = buildCatalogFilter({
+      category: id,
+      subCategory: subCategoryParam,
+      categories,
+    });
+
+    if (filter.category) {
+      return Array.isArray(filter.category) ? filter.category : [filter.category];
+    }
+
+    return [decodeURIComponent(id)];
+  }, [id, subCategoryParam, categories]);
 
   useEffect(() => {
     if (!categories.length) {
@@ -51,12 +66,34 @@ const CategoryResult = () => {
     }
   }, [id, subCategoryParam, categories, dispatch]);
 
+  const handleCategoryChange = useCallback(
+    (nextCategories) => {
+      if (nextCategories.length === 1) {
+        navigate(`/category/${encodeURIComponent(nextCategories[0])}`);
+        return;
+      }
+
+      if (nextCategories.length > 1) {
+        navigate(`/shop?category=${nextCategories.map(encodeURIComponent).join(',')}`);
+        return;
+      }
+
+      navigate('/shop');
+    },
+    [navigate]
+  );
+
   return (
     <section className="shop-page">
-      <div className="shop-page__container shop-page__container--category">
-        {opensidebar && <FilterSidebar />}
+      <div className="shop-page__container">
+        <aside className="shop-page__sidebar">
+          <ShopFilters
+            selectedCategories={selectedCategories}
+            onCategoryChange={handleCategoryChange}
+          />
+        </aside>
 
-        <div className="shop-page__main shop-page__main--full">
+        <div className="shop-page__main">
           <div className="shop-page__header">
             <h1 className="shop-page__title">{pageTitle}</h1>
             {!loading && (

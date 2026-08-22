@@ -1,0 +1,403 @@
+@import url('../Home/homeTheme.css');
+
+.product-page {
+  background: var(--oluxe-cream);
+  padding: 32px 0 0;
+}
+
+.product-page__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.product-page__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--oluxe-border);
+  padding: 32px;
+}
+
+.product-page__gallery {
+  position: sticky;
+  top: 24px;
+}
+
+.product-page__gallery-inner {
+  display: flex;
+  gap: 16px;
+}
+
+.product-page__thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.product-page__thumb {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border: 1px solid var(--oluxe-border);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.product-page__thumb:hover,
+.product-page__thumb.is-active {
+  border-color: var(--oluxe-black);
+}
+
+.product-page__main-image {
+  flex: 1;
+  position: relative;
+  border: 1px solid var(--oluxe-border);
+  background: #fff;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-page__main-image .image-magnify-container,
+.product-page__main-image > div {
+  width: 100%;
+}
+
+.product-page__wishlist {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 5;
+}
+
+.product-page__mobile-gallery {
+  display: none;
+}
+
+.product-page__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.product-page__actions--mobile {
+  display: none;
+}
+
+.product-page__btn {
+  flex: 1;
+  padding: 14px 24px;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--oluxe-black);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.product-page__btn--cart {
+  background: var(--oluxe-black);
+  color: #fff;
+}
+
+.product-page__btn--cart:hover {
+  background: transparent;
+  color: var(--oluxe-black);
+}
+
+.product-page__btn--buy {
+  background: transparent;
+  color: var(--oluxe-black);
+}
+
+.product-page__btn--buy:hover {
+  background: var(--oluxe-black);
+  color: #fff;
+}
+
+.product-page__btn:disabled,
+.product-page__btn--disabled {
+  background: #ccc;
+  border-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.product-page__info {
+  font-family: 'Lato', sans-serif;
+  color: var(--oluxe-black);
+}
+
+.product-page__breadcrumb {
+  font-size: 0.8rem;
+  color: var(--oluxe-gray);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.product-page__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.product-page__compare {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--oluxe-gray);
+  margin-bottom: 8px;
+}
+
+.product-page__price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.product-page__price {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.product-page__mrp {
+  color: var(--oluxe-gray);
+  text-decoration: line-through;
+  font-size: 1rem;
+}
+
+.product-page__discount {
+  color: #2d6a4f;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.product-page__tax-note {
+  font-size: 0.75rem;
+  color: var(--oluxe-gray);
+  margin-bottom: 20px;
+}
+
+.product-page__qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--oluxe-border);
+  margin-bottom: 24px;
+}
+
+.product-page__qty button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--oluxe-cream);
+  cursor: pointer;
+}
+
+.product-page__qty input {
+  width: 48px;
+  height: 40px;
+  border: none;
+  border-left: 1px solid var(--oluxe-border);
+  border-right: 1px solid var(--oluxe-border);
+  text-align: center;
+  background: #fff;
+}
+
+.product-page__block {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--oluxe-border);
+}
+
+.product-page__block:last-child {
+  border-bottom: none;
+}
+
+.product-page__heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.product-page__delivery-input {
+  width: 100%;
+  max-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid var(--oluxe-border);
+  font-size: 0.9rem;
+}
+
+.product-page__stock {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.product-page__stock--low {
+  color: #b42318;
+}
+
+.product-page__stock--ok {
+  color: #2d6a4f;
+}
+
+.product-page__variants {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.product-page__variant {
+  flex-shrink: 0;
+  border: 1px solid var(--oluxe-border);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.product-page__variant:hover,
+.product-page__variant.is-selected {
+  border-color: var(--oluxe-black);
+}
+
+.product-page__variant img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-page__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--oluxe-gold);
+  cursor: pointer;
+  margin-top: 8px;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.product-page__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--oluxe-gray);
+  line-height: 1.7;
+}
+
+.product-page__spec-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-page__spec-table th,
+.product-page__spec-table td {
+  border: 1px solid var(--oluxe-border);
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.product-page__spec-table th {
+  background: var(--oluxe-cream);
+  font-weight: 600;
+  width: 35%;
+}
+
+.product-page__reviews {
+  padding: 64px 0;
+  background: #fff;
+  border-top: 1px solid var(--oluxe-border);
+  margin-top: 48px;
+}
+
+.product-page__reviews-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.product-page__loader {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reviews — Oluxe overrides */
+.product-reviews .card {
+  background: var(--oluxe-cream);
+  border: 1px solid var(--oluxe-border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.product-reviews .rating-box h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--oluxe-black);
+}
+
+.product-reviews .bar-fill {
+  background: var(--oluxe-gold);
+}
+
+.product-reviews .star-active {
+  color: var(--oluxe-gold);
+}
+
+.product-reviews .blue-text {
+  color: var(--oluxe-black);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+@media (max-width: 992px) {
+  .product-page__layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .product-page__gallery {
+    position: static;
+  }
+
+  .product-page__gallery-inner {
+    display: none;
+  }
+
+  .product-page__mobile-gallery {
+    display: block;
+    position: relative;
+  }
+
+  .product-page__actions {
+    display: none;
+  }
+
+  .product-page__actions--mobile {
+    display: flex;
+    margin-top: 16px;
+  }
+}
