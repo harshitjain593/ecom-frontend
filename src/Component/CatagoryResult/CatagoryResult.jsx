@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterProducts } from '../../action/filterAction';
@@ -12,21 +12,27 @@ import {
 } from '../../utils/categoryUtils';
 import ProductCard from '../Home/ProductCard';
 import ShopFilters from '../Shop/ShopFilters';
+import CatalogPagination from '../Shop/CatalogPagination';
 import ComparePOPup from '../comparePOPup/ComparePOPup';
 import '../Shop/shop.css';
+
+const PAGE_LIMIT = 12;
 
 const CategoryResult = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [page, setPage] = useState(1);
 
   const categoriesState = useSelector((state) => state.categories);
   const categories = useMemo(
     () => getCategoriesList(categoriesState),
     [categoriesState]
   );
-  const products = useSelector((state) => state.filteredProducts?.products?.products);
+  const filteredPayload = useSelector((state) => state.filteredProducts?.products);
+  const products = filteredPayload?.products;
+  const totalProducts = filteredPayload?.totalProducts || 0;
   const compareProducts = useSelector((state) => state.compare.data);
   const loading = useSelector((state) => state.filteredProducts?.loading);
 
@@ -72,10 +78,29 @@ const CategoryResult = () => {
       categories,
     });
 
+    setPage(1);
+
     if (Object.keys(filter).length > 0) {
-      dispatch(filterProducts(filter));
+      dispatch(filterProducts({ ...filter, page: 1, limit: PAGE_LIMIT }));
     }
   }, [id, subCategoryParam, categories, dispatch]);
+
+  const handlePageChange = useCallback(
+    (nextPage) => {
+      if (!id) return;
+
+      const filter = buildCatalogFilter({
+        category: id,
+        subCategory: subCategoryParam,
+        categories,
+      });
+
+      setPage(nextPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      dispatch(filterProducts({ ...filter, page: nextPage, limit: PAGE_LIMIT }));
+    },
+    [id, subCategoryParam, categories, dispatch]
+  );
 
   const handleCategoryChange = useCallback(
     (nextCategories) => {
@@ -111,7 +136,7 @@ const CategoryResult = () => {
             <h1 className="shop-page__title">{pageTitle}</h1>
             {!loading && (
               <p className="shop-page__count">
-                {products?.length || 0} product{(products?.length || 0) !== 1 ? 's' : ''}
+                {totalProducts} product{totalProducts !== 1 ? 's' : ''}
               </p>
             )}
             {subcategories.length > 0 && currentCategory && (
@@ -152,11 +177,19 @@ const CategoryResult = () => {
               <div className="loader" />
             </div>
           ) : products && products.length > 0 ? (
-            <div className="shop-page__grid">
-              {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
+            <>
+              <div className="shop-page__grid">
+                {products.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+              <CatalogPagination
+                page={page}
+                totalProducts={totalProducts}
+                limit={PAGE_LIMIT}
+                onPageChange={handlePageChange}
+              />
+            </>
           ) : (
             <div className="shop-page__empty">
               <p>No products found in this category.</p>

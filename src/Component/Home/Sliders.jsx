@@ -11,11 +11,13 @@ const Sliders = ({ products }) => {
     };
 
     const setting = {
-        infinite: products?.length > 4,
+        infinite: products?.length > 1,
         speed: 400,
-        autoplay: false,
+        autoplay: products?.length > 1,
+        autoplaySpeed: 3500,
+        pauseOnHover: true,
         slidesToShow: getSlidesToShow(1440),
-        arrows: products?.length > 4,
+        arrows: products?.length > 1,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         slidesToScroll: 1,

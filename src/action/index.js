@@ -19,12 +19,14 @@ export const fetchImages = () => {
 };
 
 
-export const fetchProduct = () => {
+export const fetchProduct = (page = 1, limit = 12) => {
   return async (dispatch) => {
     try {
       // Public storefront catalog — same endpoint category/shop filters use.
       // Avoid /admin/product/products: it rejects customer/expired tokens with 401.
+      // API defaults to limit=10; pass page/limit so the catalog can paginate.
       const response = await axios.get(`${API_URL}/mobileApi/product/filter-product`, {
+        params: { page, limit },
         headers: { 'Content-Type': 'application/json' },
       });
       const { statusCode, result } = response.data || {};
@@ -34,6 +36,8 @@ export const fetchProduct = () => {
           payload: {
             result: {
               products: result?.products || [],
+              totalProducts: result?.totalProducts || 0,
+              currentPage: result?.currentPage || page,
             },
           },
         });

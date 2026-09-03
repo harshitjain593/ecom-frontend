@@ -2,24 +2,25 @@ import { API_URL } from "../service/api";
 import { toast } from "react-toastify";
 import { FILTER_PRODUCTS } from "./actionType";
 
-export const filterProducts = (base) => {
+export const filterProducts = (base = {}) => {
     return async dispatch => {
-        let endpoint  ;
-        console.log('base ',base)
-        if (base) {
-            // Convert the base object to a query string
-            endpoint = Object.entries(base)
-                .map(([key, value]) => {
-                    // Check if the value is an array
-                    if (Array.isArray(value)) {
-                        // Join the array into a comma-separated string
-                        value = value.join(',');
-                    }
-                    // Properly encode key and value
-                   const endcode =`${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
-                   return decodeURIComponent(endcode)
-                }).join('&');
-        }
+        // API defaults to page=1, limit=10 — always send explicit pagination.
+        const query = {
+            page: 1,
+            limit: 12,
+            ...base,
+        };
+        console.log('base ', query);
+        const endpoint = Object.entries(query)
+            .filter(([, value]) => value !== undefined && value !== null && value !== '')
+            .map(([key, value]) => {
+                if (Array.isArray(value)) {
+                    value = value.join(',');
+                }
+                const endcode = `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+                return decodeURIComponent(endcode);
+            })
+            .join('&');
         try {
             const response = await fetch(`${API_URL}/mobileApi/product/filter-product?${endpoint}`, {
                 method: 'GET',

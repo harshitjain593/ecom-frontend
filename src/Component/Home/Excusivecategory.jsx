@@ -20,21 +20,23 @@ function Excusivecategory() {
     const productList = products?.result?.products || [];
 
     const setting = {
-        infinite: productList.length > 4,
+        infinite: productList.length > 1,
         speed: 400,
         dots: true,
-        autoplay: false,
-        slidesToShow: 4,
-        arrows: true,
+        autoplay: productList.length > 1,
+        autoplaySpeed: 3500,
+        pauseOnHover: true,
+        slidesToShow: Math.min(4, productList.length),
+        arrows: productList.length > 1,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         slidesToScroll: 1,
         responsive: [
-            { breakpoint: 1440, settings: { slidesToShow: 4, slidesToScroll: 1 } },
-            { breakpoint: 1294, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-            { breakpoint: 900, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-            { breakpoint: 675, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-            { breakpoint: 480, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+            { breakpoint: 1440, settings: { slidesToShow: Math.min(4, productList.length), slidesToScroll: 1 } },
+            { breakpoint: 1294, settings: { slidesToShow: Math.min(3, productList.length), slidesToScroll: 1 } },
+            { breakpoint: 900, settings: { slidesToShow: Math.min(3, productList.length), slidesToScroll: 1 } },
+            { breakpoint: 675, settings: { slidesToShow: Math.min(2, productList.length), slidesToScroll: 1 } },
+            { breakpoint: 480, settings: { slidesToShow: Math.min(2, productList.length), slidesToScroll: 1 } },
         ],
     };
 

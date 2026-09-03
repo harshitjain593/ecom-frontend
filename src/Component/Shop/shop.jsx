@@ -7,19 +7,25 @@ import { getCategory } from '../../action/categoryAction';
 import { buildCatalogFilter, getCategoriesList } from '../../utils/categoryUtils';
 import ProductCard from '../Home/ProductCard';
 import ShopFilters from './ShopFilters';
+import CatalogPagination from './CatalogPagination';
 import './shop.css';
+
+const PAGE_LIMIT = 12;
 
 function Shop() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const allProducts = useSelector(
-    (state) => state.productData?.data?.result?.products || []
-  );
+  const productResult = useSelector((state) => state.productData?.data?.result);
+  const allProducts = productResult?.products || [];
+  const allTotal = productResult?.totalProducts || 0;
+
   const filteredPayload = useSelector((state) => state.filteredProducts?.products);
   const filteredProducts = filteredPayload?.products || [];
+  const filteredTotal = filteredPayload?.totalProducts || 0;
   const isLoading = useSelector((state) => state.filteredProducts?.loading);
   const categories = useSelector((state) => getCategoriesList(state.categories));
 
@@ -28,7 +34,6 @@ function Shop() {
 
   useEffect(() => {
     dispatch(getCategory());
-    dispatch(fetchProduct());
   }, [dispatch]);
 
   useEffect(() => {
@@ -51,29 +56,64 @@ function Shop() {
             : []
       );
       setIsFiltering(true);
-      dispatch(filterProducts(filter));
+      setPage(1);
+      dispatch(filterProducts({ ...filter, page: 1, limit: PAGE_LIMIT }));
       return;
     }
 
     setIsFiltering(false);
     setSelectedCategories([]);
+    setPage(1);
+    dispatch(fetchProduct(1, PAGE_LIMIT));
   }, [categoryFromUrl, subCategoryFromUrl, categories, dispatch]);
 
   const handleCategoryChange = useCallback(
     (categories) => {
       setSelectedCategories(categories);
+      setPage(1);
 
       if (categories.length > 0) {
         setIsFiltering(true);
-        dispatch(filterProducts({ category: categories }));
+        dispatch(filterProducts({ category: categories, page: 1, limit: PAGE_LIMIT }));
         setSearchParams({ category: categories.join(',') });
       } else {
         setIsFiltering(false);
         setSearchParams({});
-        dispatch(fetchProduct());
       }
     },
     [dispatch, setSearchParams]
+  );
+
+  const handlePageChange = useCallback(
+    (nextPage) => {
+      setPage(nextPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (isFiltering || selectedCategories.length > 0) {
+        const filter = buildCatalogFilter({
+          category: selectedCategories.length ? selectedCategories : categoryFromUrl,
+          subCategory: subCategoryFromUrl,
+          categories,
+        });
+
+        if (selectedCategories.length && !filter.category) {
+          filter.category = selectedCategories;
+        }
+
+        dispatch(filterProducts({ ...filter, page: nextPage, limit: PAGE_LIMIT }));
+        return;
+      }
+
+      dispatch(fetchProduct(nextPage, PAGE_LIMIT));
+    },
+    [
+      isFiltering,
+      selectedCategories,
+      categoryFromUrl,
+      subCategoryFromUrl,
+      categories,
+      dispatch,
+    ]
   );
 
   const displayProducts = useMemo(() => {
@@ -83,7 +123,10 @@ function Shop() {
     return allProducts;
   }, [allProducts, filteredProducts, isFiltering, selectedCategories.length]);
 
-  const loading = isFiltering ? isLoading : !allProducts.length;
+  const totalProducts =
+    isFiltering || selectedCategories.length > 0 ? filteredTotal : allTotal;
+
+  const loading = isFiltering ? isLoading : !allProducts.length && page === 1;
 
   return (
     <section className="shop-page">
@@ -99,7 +142,7 @@ function Shop() {
           <div className="shop-page__header">
             <h1 className="shop-page__title">Shop All Rugs</h1>
             <p className="shop-page__count">
-              {displayProducts.length} product{displayProducts.length !== 1 ? 's' : ''}
+              {totalProducts} product{totalProducts !== 1 ? 's' : ''}
             </p>
           </div>
 
@@ -108,11 +151,19 @@ function Shop() {
               <div className="loader" />
             </div>
           ) : displayProducts.length > 0 ? (
-            <div className="shop-page__grid">
-              {displayProducts.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
+            <>
+              <div className="shop-page__grid">
+                {displayProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+              <CatalogPagination
+                page={page}
+                totalProducts={totalProducts}
+                limit={PAGE_LIMIT}
+                onPageChange={handlePageChange}
+              />
+            </>
           ) : (
             <div className="shop-page__empty">
               <p>No products found for the selected filters.</p>
