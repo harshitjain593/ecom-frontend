@@ -76,9 +76,25 @@
 .wishlist-list table tbody tr td img{
     width: 6rem !important;
     height: 6rem;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: #f8f6f2;
+}
+
+.wishlist-img-fallback {
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f6f2;
+    border: 1px solid #e8e4de;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    color: #6b6b6b;
+    text-align: center;
+    padding: 4px;
 }
 .wishlist-list table tbody tr td button {
     color: #6B5B73;
@@ -124,48 +140,37 @@
     background-color: #f8f9fa;
 }
 
-.min-xl,.min-lg,.min-sm,.max-sm{
-    display: none;
+.min-xl,
+.min-lg,
+.min-sm {
+    display: table-cell;
 }
 
-
+.max-sm {
+    display: none;
+}
 
 @media (min-width:1200px) {
     .min-xl{
         display: table-cell;
     }
-
-    
 }
 
-@media (min-width:1000px) {
-    .min-lg{
+@media (max-width:999px) {
+    .min-lg,
+    .min-xl,
+    .min-sm {
+        display: none;
+    }
+
+    .max-sm {
         display: table-cell;
     }
-    
-    
-}
 
-@media (max-width:1000px) {
     .wishlist-list table thead tr th , .wishlist-list table tbody tr td{
         font-weight: 700;
         font-size: 1.2rem;
         text-transform: uppercase;
-    }
-    
-}
-
-@media (min-width:760px) {
-    .min-sm{
-        display: table-cell;
-    }
-    
-}
-
-@media (max-width:1000px) {
-    .max-sm{
-        display: table-cell;
-     
     }
 
     .max-sm div{
@@ -180,7 +185,6 @@
         text-align: start;
         color: rgb(16, 57, 43);
         font-style: normal;
-
     }
 
     .wishlist-list table tbody tr td button {
@@ -191,7 +195,6 @@
         margin: 0 !important;
         padding: 0 !important;
     }
-
 
     .wish-banner{
         background-image: url('/public/img/wishlist-img-bg.jpg');
@@ -207,7 +210,6 @@
         width: 95%;
         margin: 3rem auto;
     }
-    
 }
 
 @media (max-width:750px) {

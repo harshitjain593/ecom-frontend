@@ -1,14 +1,13 @@
 import { API_URL } from '../service/api';
 import axios from 'axios';
 import {
-  ADD_TO_CART,
   BEST_PRODUCTS,
   GET_PRODUCT_DETAILS,
-  UPDATE_CART,
 } from './actionType';
-import { ToastContainer, toast } from 'react-toastify';
-import { getCart } from './getCartAction';
+import { toast } from 'react-toastify';
+import { getCart, removeFromCart } from './getCartAction';
 import { getWishlist } from './wishListAciton';
+import { findCartItem } from '../utils/cartUtils';
 
 export const addWishList = (productId) => {
   return async (dispatch, getState) => {
@@ -52,97 +51,169 @@ export const addWishList = (productId) => {
 };
 
 
-export const addtoCart = ( productId,colorId=null, quantity=1 ) => {
-  return async dispatch => {
+export const updateCart = ({ productId, colorId = null, quantity }) => {
+  return async (dispatch) => {
     try {
-    
-     console.log('color', colorId)
       const token = localStorage.getItem('token');
       if (!token) {
-        // toast.error("User is not authenticated");
-        return;
+        return { success: false };
       }
       const requestBody = {
-        productId: productId,
-        quantity: quantity,
-        ...(colorId&&{colorOptionId:colorId})
+        productId,
+        quantity,
+        ...(colorId ? { colorOptionId: colorId } : { colorOptionId: null }),
       };
-      const response = await fetch(`${API_URL}/mobileApi/cart/add-to-cart/${productId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const response = await fetch(
+        `${API_URL}/mobileApi/cart/update-cart/${productId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        const { message, statusCode, result } = data;
+        const { message, statusCode } = data;
 
         if (statusCode === 200) {
           await dispatch(getCart());
-          // toast.success(message);
-        } else {
-          toast.error("Failed to add to Cart: " + message);
+          return { success: true };
         }
-      } else {
-        const errorData = await response.json();
-        console.log('data', errorData);
-        toast.error(errorData.message || 'An unexpected error occurred');
+        toast.error('Failed to update cart: ' + message);
+        return { success: false };
       }
+
+      const errorData = await response.json();
+      toast.error(errorData.message || 'An unexpected error occurred');
+      return { success: false };
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      toast.error("An unexpected error occurred");
+      toast.error('An unexpected error occurred');
+      return { success: false };
     }
   };
 };
 
+/**
+ * Set absolute quantity for a product in cart.
+ * Clears duplicate lines for the same product/color first, then adds the desired qty.
+ */
+export const setCartQuantity = ({ productId, colorId = null, quantity }) => {
+  return async (dispatch, getState) => {
+    const qty = Number(quantity) || 0;
 
+    let guard = 0;
+    while (guard++ < 15) {
+      const items = getState()?.CartData?.data?.cartItems ?? [];
+      if (!findCartItem(items, productId, colorId)) break;
+      await dispatch(removeFromCart({ productId, colorId }));
+    }
 
+    if (qty <= 0) {
+      return { success: true };
+    }
 
-export const updateCart = ({productId,colorId,quantity}) => {
-  return async dispatch => {
     try {
       const token = localStorage.getItem('token');
-      console.log('this token from addtocart',token)
-      if (!token) {
-        // toast.error("User is not authenticated");
-        return;
-      }
+      if (!token) return { success: false };
+
       const requestBody = {
-        productId: productId,
-        quantity:quantity,
-        colorOptionId:colorId
+        productId,
+        quantity: qty,
+        ...(colorId && { colorOptionId: colorId }),
       };
-      console.log(requestBody, 'from the reqbody of update cart')
-      const response = await fetch(`${API_URL}/mobileApi/cart/update-cart/${productId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const response = await fetch(
+        `${API_URL}/mobileApi/cart/add-to-cart/${productId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        const { message, statusCode, result } = data;
+        if (data.statusCode === 200) {
+          await dispatch(getCart());
+          return { success: true };
+        }
+        toast.error(data.message || 'Failed to update cart');
+        return { success: false };
+      }
+
+      const errorData = await response.json();
+      toast.error(errorData.message || 'Failed to update cart');
+      return { success: false };
+    } catch (error) {
+      console.error(error);
+      toast.error('An unexpected error occurred');
+      return { success: false };
+    }
+  };
+};
+
+/** Add to cart, or bump quantity if the product is already in the cart. */
+export const addtoCart = (productId, colorId = null, quantity = 1) => {
+  return async (dispatch, getState) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return { success: false };
+      }
+
+      const cartItems = getState()?.CartData?.data?.cartItems ?? [];
+      const existing = findCartItem(cartItems, productId, colorId);
+      if (existing) {
+        const nextQty =
+          (Number(existing.quantity) || 0) + (Number(quantity) || 1);
+        return dispatch(
+          updateCart({ productId, colorId, quantity: nextQty })
+        );
+      }
+
+      const requestBody = {
+        productId,
+        quantity,
+        ...(colorId && { colorOptionId: colorId }),
+      };
+      const response = await fetch(
+        `${API_URL}/mobileApi/cart/add-to-cart/${productId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const { message, statusCode } = data;
 
         if (statusCode === 200) {
           await dispatch(getCart());
-          // toast.success(message);
-        } else {
-          toast.error("Failed to add to Cart: " + message);
+          return { success: true };
         }
-      } else {
-        const errorData = await response.json();
-        console.log('data', errorData);
-        toast.error(errorData.message || 'An unexpected error occurred ');
+        toast.error('Failed to add to Cart: ' + message);
+        return { success: false };
       }
+
+      const errorData = await response.json();
+      toast.error(errorData.message || 'An unexpected error occurred');
+      return { success: false };
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      toast.error("An unexpected error occurred");
+      toast.error('An unexpected error occurred');
+      return { success: false };
     }
   };
 };

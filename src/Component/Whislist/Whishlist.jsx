@@ -3,17 +3,21 @@ import React, { useCallback, useEffect, useState } from "react";
 import './whishlist.css'
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { getWishlist, moveToCart, removeFromWishlist } from "../../action/wishListAciton";
-import { useNavigate } from "react-router-dom";
+import { getWishlist, removeFromWishlist } from "../../action/wishListAciton";
+import { Link, useNavigate } from "react-router-dom";
 import { API_URL } from "../../service/api";
 import { MOVE_TO_CART } from "../../action/actionType";
 import { toast } from "react-toastify";
 import { checkUser } from "../../assest/js/checker";
+import { findCartItem } from "../../utils/cartUtils";
+import { getCart } from "../../action/getCartAction";
+
 const Whishlist = () => {
     const navigate = useNavigate()
     const [loggedIn , setLoggedIn] = useState(checkUser())    
     console.log(checkUser(),'user') 
     const wishlistData = useSelector(state =>state?.WishlistData?.data )
+    const cartItems = useSelector(state => state?.CartData?.data?.cartItems)
     const dispatch = useDispatch()
     
     const RemoveFromWishlist = useCallback((productId)=>{
@@ -22,6 +26,9 @@ const Whishlist = () => {
 
   useEffect(()=>{
    dispatch(getWishlist())
+   if (checkUser()) {
+     dispatch(getCart())
+   }
   },[dispatch])
 
   const MoveToCarts = useCallback(async(productId)=>{
@@ -49,8 +56,7 @@ const Whishlist = () => {
                      type: MOVE_TO_CART,
                      payload: productId
                  })
-                 // toast.success(message + 'successfully move to cart');
-                 
+                 dispatch(getCart());
              } else {
                  toast.error('error in check wishlist', result);
              }
@@ -62,16 +68,15 @@ const Whishlist = () => {
          toast.error(error.message);
          console.log(error);
      }
-   })
+   }, [dispatch])
 
   const handleMoveToCart = useCallback((id)=>{
     MoveToCarts(id)
-    // navigate('/cart')
-  },[dispatch])
+  },[MoveToCarts])
 
   const handleNavigate = useCallback(()=>{
     navigate('/login')
-  })
+  }, [navigate])
   
  
 
@@ -104,23 +109,41 @@ const Whishlist = () => {
                   </tr>
               </thead>
               <tbody className="table-group-divider">
-                  {wishlistData && wishlistData.products.map((product)  => (
+                  {wishlistData.products.map((product)  => {
+                      const inCart = Boolean(findCartItem(cartItems, product._id, null));
+                      return (
                       <tr className="align-middle tr" key={product._id}>
                           <td><MdClose size={25}  className="x-close"  onClick={()=>RemoveFromWishlist(product._id)}/></td>
-                          <td><img style={{width:'14rem'}} src={product.productImage} alt="" /></td>
+                          <td>
+                            {product.productImage ? (
+                              <img style={{width:'14rem'}} src={product.productImage} alt={product.product_name || ''} />
+                            ) : (
+                              <div className="wishlist-img-fallback">No image</div>
+                            )}
+                          </td>
                           <td className="max-sm">
                               <div>
-                                  <p>{product.product_name}</p>
-                                  <p>₹{product.selling_price}</p>
-                                  <button onClick={()=>handleMoveToCart(product._id)}>Add to Cart &rarr;</button>
+                                  <p>{product.product_name || 'Product unavailable'}</p>
+                                  <p>₹{product.selling_price ?? '—'}</p>
+                                  {inCart ? (
+                                    <Link to="/cart">In cart — Go to Cart &rarr;</Link>
+                                  ) : (
+                                    <button onClick={()=>handleMoveToCart(product._id)}>Add to Cart &rarr;</button>
+                                  )}
                               </div>
                           </td>
-                          <td className="min-lg">{product.product_name}</td>
-                          <td className="min-lg">₹{product.selling_price}</td>
-                          <td className="min-xl">{ product.remaining_quantity >0 ? 'In stock' : 'not available'}</td>
-                          <td className="min-lg"><button onClick={()=>handleMoveToCart(product._id)}>Add to Cart <span className="btn-arrow">&rarr;</span></button></td>
+                          <td className="min-lg">{product.product_name || 'Product unavailable'}</td>
+                          <td className="min-lg">₹{product.selling_price ?? '—'}</td>
+                          <td className="min-xl">{ product.stock_quantity > 0 || product.remaining_quantity > 0 ? 'In stock' : 'not available'}</td>
+                          <td className="min-lg">
+                            {inCart ? (
+                              <Link to="/cart">In cart <span className="btn-arrow">&rarr;</span></Link>
+                            ) : (
+                              <button onClick={()=>handleMoveToCart(product._id)}>Add to Cart <span className="btn-arrow">&rarr;</span></button>
+                            )}
+                          </td>
                       </tr>
-                  ))}
+                  )})}
                 
               </tbody>
             </table>

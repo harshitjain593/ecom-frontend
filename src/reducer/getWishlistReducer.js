@@ -11,15 +11,19 @@ const initialState = {
 
 const getWhishlistReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_WISHLIST:
-      return { 
-        ...state, 
+    case GET_WISHLIST: {
+      const products = (action.payload?.products || []).filter(
+        (product) => product && typeof product === "object" && product._id
+      );
+      return {
+        ...state,
         data: {
-          products: action.payload.products,
-          totalItem: action.payload.totalItem
-        }, 
-        loading: false 
+          products,
+          totalItem: action.payload?.totalItem ?? products.length,
+        },
+        loading: false,
       };
+    }
 
     case ADD_TO_WISHLIST:
       return {

@@ -6,7 +6,7 @@ import ReactImageMagnify from "react-image-magnify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { addtoCart, getProductDetails } from "../../action/productdetailaction";
+import { addtoCart, getProductDetails, setCartQuantity, updateCart } from "../../action/productdetailaction";
 import { addWishList } from "../../action/productdetailaction";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { addRecentProduct } from "../../action/recentProductAction";
@@ -22,6 +22,8 @@ import {
 import { checkcompare } from "../../service/checkCompareproduct";
 import ComparePOPup from "../comparePOPup/ComparePOPup";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { findCartItem } from "../../utils/cartUtils";
+import { getCart } from "../../action/getCartAction";
 
 const normalizeImageSrc = (img) => {
   if (!img) return null;
@@ -36,6 +38,7 @@ function Productdetail() {
   const [pincodeError, setPincodeError] = useState("");
   const [timeOutId, setTimeoutId] = useState("");
   const product = useSelector((state) => state.productDetails.product);
+  const cartItems = useSelector((state) => state.CartData?.data?.cartItems);
   const [quantity, setQuantity] = useState(1);
   const [pincode, setPincode] = useState("");
   const params = useParams();
@@ -55,11 +58,20 @@ function Productdetail() {
   const [buttonLoader, setButtonLoader] = useState({
     addtocart: false,
     buynow: false,
+    cartQty: false,
   });
   const checkDeliveryData = useSelector(
     (state) => state.checkDelivery?.data?.delivery_codes
   );
   const compareProducts = useSelector((state) => state.compare.data);
+
+  const cartItem = findCartItem(
+    cartItems,
+    product?._id,
+    colorOptions?._id || null
+  );
+  const isInCart = Boolean(cartItem);
+  const cartQuantity = Number(cartItem?.quantity) || 0;
 
   useEffect(() => {
     if (product && compareProducts.products.length > 0) {
@@ -73,6 +85,7 @@ function Productdetail() {
     setColorOptions(null);
     setMainImage(null);
     setActiveSlide(0);
+    setQuantity(1);
     if (mobileTrackRef.current) {
       mobileTrackRef.current.scrollLeft = 0;
     }
@@ -81,13 +94,22 @@ function Productdetail() {
   useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(addRecentProduct(id));
-  }, [dispatch, id, buttonLoader.addtocart, updatepage]);
+    if (checkUser()) {
+      dispatch(getCart());
+    }
+  }, [dispatch, id, updatepage]);
 
   useEffect(() => {
     if (product) {
       setMainImage(product.productImage);
     }
   }, [product]);
+
+  useEffect(() => {
+    if (cartItem) {
+      setQuantity(cartQuantity);
+    }
+  }, [cartItem, cartQuantity]);
 
   const handleImageClick = useCallback((image) => {
     setMainImage(image);
@@ -131,6 +153,43 @@ function Productdetail() {
       });
     },
     [quantity, dispatch, colorOptions, navigate]
+  );
+
+  const handleCartQuantityChange = useCallback(
+    async (nextQty) => {
+      if (!checkUser()) {
+        navigate("/login");
+        return;
+      }
+      if (!product?._id) return;
+
+      const qty = Math.max(0, Number(nextQty) || 0);
+      setButtonLoader((prev) => ({ ...prev, cartQty: true }));
+      try {
+        if (qty <= 0) {
+          await dispatch(
+            setCartQuantity({
+              productId: product._id,
+              colorId: colorOptions?._id || null,
+              quantity: 0,
+            })
+          );
+          setQuantity(1);
+        } else {
+          await dispatch(
+            updateCart({
+              productId: product._id,
+              colorId: colorOptions?._id || null,
+              quantity: qty,
+            })
+          );
+          setQuantity(qty);
+        }
+      } finally {
+        setButtonLoader((prev) => ({ ...prev, cartQty: false }));
+      }
+    },
+    [dispatch, navigate, product, colorOptions]
   );
 
   const handleBuynow = useCallback(async () => {
@@ -266,10 +325,15 @@ function Productdetail() {
 
     return (
       <div className={className}>
-        {product.isCart ? (
-          <Link to="/cart" className="product-page__btn product-page__btn--cart">
-            <i className="fas fa-shopping-cart px-2" /> Go to Cart
-          </Link>
+        {isInCart ? (
+          <div className="product-page__in-cart">
+            <span className="product-page__in-cart-label">
+              In cart · {cartQuantity}
+            </span>
+            <Link to="/cart" className="product-page__btn product-page__btn--cart">
+              <i className="fas fa-shopping-cart px-2" /> Go to Cart
+            </Link>
+          </div>
         ) : (
           <button
             type="button"
@@ -445,13 +509,41 @@ function Productdetail() {
                 <p className="product-page__tax-note">Inclusive of all taxes</p>
 
                 <div className="product-page__qty">
-                  <button type="button" onClick={handleDecrease} aria-label="Decrease quantity">
+                  <button
+                    type="button"
+                    disabled={buttonLoader.cartQty}
+                    onClick={() =>
+                      isInCart
+                        ? handleCartQuantityChange(cartQuantity - 1)
+                        : handleDecrease()
+                    }
+                    aria-label="Decrease quantity"
+                  >
                     <FontAwesomeIcon icon={faMinus} />
                   </button>
-                  <input type="text" value={quantity} readOnly aria-label="Quantity" />
-                  <button type="button" onClick={handleIncrease} aria-label="Increase quantity">
+                  <input
+                    type="text"
+                    value={quantity}
+                    readOnly
+                    aria-label="Quantity"
+                  />
+                  <button
+                    type="button"
+                    disabled={buttonLoader.cartQty}
+                    onClick={() =>
+                      isInCart
+                        ? handleCartQuantityChange(cartQuantity + 1)
+                        : handleIncrease()
+                    }
+                    aria-label="Increase quantity"
+                  >
                     <FontAwesomeIcon icon={faPlus} />
                   </button>
+                  {isInCart && (
+                    <span className="product-page__in-cart-hint">
+                      Already in cart — adjust quantity here
+                    </span>
+                  )}
                 </div>
 
                 <div className="product-page__block">

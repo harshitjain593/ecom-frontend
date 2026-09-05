@@ -5,9 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { CgCloseR } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
 import { REMOVE_COMPARE_PRODUCTS } from "../../action/actionType";
-import { addtoCart } from "../../action/productdetailaction";
+import { addtoCart, setCartQuantity, updateCart } from "../../action/productdetailaction";
 import { addSingleToOrderSummary } from "../../action/orderSummaryAction";
 import { checkUser } from "../../assest/js/checker";
+import { findCartItem } from "../../utils/cartUtils";
 
 const SkeletonBox = ({category}) => {
   console.log('skel',category)
@@ -209,7 +210,11 @@ const CompSpecifications = ({ props }) => {
 const CompLastBox = ({ props }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState({ cart: false, buy: false });
+  const [loading, setLoading] = useState({ cart: false, buy: false, qty: false });
+  const cartItems = useSelector((state) => state.CartData?.data?.cartItems);
+  const cartItem = findCartItem(cartItems, props?._id, null);
+  const isInCart = Boolean(cartItem);
+  const cartQuantity = Number(cartItem?.quantity) || 0;
 
   const handleAddToCart = useCallback(async () => {
     if (!props?._id || props.placeholder) return;
@@ -224,6 +229,40 @@ const CompLastBox = ({ props }) => {
       setLoading((prev) => ({ ...prev, cart: false }));
     }
   }, [dispatch, navigate, props]);
+
+  const handleCartQty = useCallback(
+    async (nextQty) => {
+      if (!props?._id || props.placeholder) return;
+      if (!checkUser()) {
+        navigate("/login");
+        return;
+      }
+      const qty = Math.max(0, Number(nextQty) || 0);
+      setLoading((prev) => ({ ...prev, qty: true }));
+      try {
+        if (qty <= 0) {
+          await dispatch(
+            setCartQuantity({
+              productId: props._id,
+              colorId: null,
+              quantity: 0,
+            })
+          );
+        } else {
+          await dispatch(
+            updateCart({
+              productId: props._id,
+              colorId: null,
+              quantity: qty,
+            })
+          );
+        }
+      } finally {
+        setLoading((prev) => ({ ...prev, qty: false }));
+      }
+    },
+    [dispatch, navigate, props]
+  );
 
   const handleBuyNow = useCallback(async () => {
     if (!props?._id || props.placeholder) return;
@@ -269,14 +308,42 @@ const CompLastBox = ({ props }) => {
               <i className="fas fa-bolt px-2 kill"></i>
               {loading.buy ? "Processing..." : "BUY NOW"}
             </button>
-            <button
-              type="button"
-              className="comp-buttons comp-btn-cart"
-              onClick={handleAddToCart}
-              disabled={loading.cart}
-            >
-              {loading.cart ? "Processing..." : "ADD TO CART"}
-            </button>
+            {isInCart ? (
+              <div className="comp-in-cart">
+                <span className="comp-in-cart-label">In cart</span>
+                <div className="comp-qty">
+                  <button
+                    type="button"
+                    disabled={loading.qty}
+                    onClick={() => handleCartQty(cartQuantity - 1)}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <span>{cartQuantity}</span>
+                  <button
+                    type="button"
+                    disabled={loading.qty}
+                    onClick={() => handleCartQty(cartQuantity + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+                <Link to="/cart" className="comp-go-cart">
+                  Go to cart
+                </Link>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="comp-buttons comp-btn-cart"
+                onClick={handleAddToCart}
+                disabled={loading.cart}
+              >
+                {loading.cart ? "Processing..." : "ADD TO CART"}
+              </button>
+            )}
           </div>
         </>
       )}

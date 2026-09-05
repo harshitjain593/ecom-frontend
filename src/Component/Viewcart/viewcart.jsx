@@ -3,12 +3,13 @@ import "./viewcart.css";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "../../action/productdetailaction";
+import { setCartQuantity } from "../../action/productdetailaction";
 import { getCart, removeFromCart } from "../../action/getCartAction";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { CartToOrderSummary } from "../../action/orderSummaryAction";
 import { checkUser, formatNumberWithCommas } from "../../assest/js/checker";
 import { CheckUserComponent } from "../Auth/checkComponent/CheckUserComponent";
+import { getCartItemKey } from "../../utils/cartUtils";
 
 export default function Viewcart() {
   const isLoggedIn = checkUser();
@@ -54,57 +55,57 @@ export default function Viewcart() {
   useEffect(() => {
     if (cartData?.cartItems) {
       const initialQuantities = {};
-      cartData.cartItems.forEach((item) => {
+      cartData.cartItems.forEach((item, index) => {
         if (item.product) {
-          initialQuantities[item.colorOptionId] = item.quantity;
+          initialQuantities[getCartItemKey(item, index)] = item.quantity;
         }
       });
       setQuantities(initialQuantities);
     }
   }, [cartData]);
 
-  const handleIncrease = (colorOptionId) => {
+  const handleIncrease = (itemKey) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [colorOptionId]: prevQuantities[colorOptionId] + 1,
+      [itemKey]: (prevQuantities[itemKey] || 1) + 1,
     }));
     setUpdateQ((prevUpdateQ) => ({
       ...prevUpdateQ,
-      [colorOptionId]: true,
+      [itemKey]: true,
     }));
   };
 
-  const handleDecrease = (colorOptionId) => {
+  const handleDecrease = (itemKey) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [colorOptionId]: prevQuantities[colorOptionId] > 1 ? prevQuantities[colorOptionId] - 1 : 1,
+      [itemKey]: prevQuantities[itemKey] > 1 ? prevQuantities[itemKey] - 1 : 1,
     }));
     setUpdateQ((prevUpdateQ) => ({
       ...prevUpdateQ,
-      [colorOptionId]: true,
+      [itemKey]: true,
     }));
   };
 
-  const handleUpdateCart = (productId, colorId) => {
-    const quantity = quantities[colorId];
-    dispatch(updateCart({ productId, colorId, quantity }))
+  const handleUpdateCart = (productId, colorId, itemKey) => {
+    const quantity = quantities[itemKey];
+    dispatch(setCartQuantity({ productId, colorId, quantity }))
       .then(() => fetchCartData())
       .then(() => {
         setUpdateQ((prevUpdateQ) => ({
           ...prevUpdateQ,
-          [colorId]: false,
+          [itemKey]: false,
         }));
       });
   };
 
-  const handleQuantityChange = (colorId, value) => {
+  const handleQuantityChange = (itemKey, value) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [colorId]: Number(value),
+      [itemKey]: Number(value),
     }));
     setUpdateQ((prevUpdateQ) => ({
       ...prevUpdateQ,
-      [colorId]: true,
+      [itemKey]: true,
     }));
   };
 
@@ -127,10 +128,10 @@ export default function Viewcart() {
           <div className="cards">
             {cartData?.cartItems && cartData.cartItems.length > 0 ? (
               cartData.cartItems.map(
-                (item) =>
+                (item, index) =>
                   item.product && (
                     <section
-                      key={item.colorOptionId}
+                      key={getCartItemKey(item, index)}
                       className="cartcard-container"
                     >
                       <div className="cartcard">
@@ -166,20 +167,23 @@ export default function Viewcart() {
                               % off
                             </p>
                           </div>
-                          <div className="cartcard-buttons visible-lg">
+                          <div className="cartcard-buttons">
                             <div className="quantity-buttons">
                               <CiCircleMinus
                                 size={35}
                                 onClick={() =>
-                                  handleDecrease(item.colorOptionId)
+                                  handleDecrease(getCartItemKey(item, index))
                                 }
                               />
                               <input
                                 type="number"
-                                value={quantities[item.colorOptionId] || item.quantity}
+                                value={
+                                  quantities[getCartItemKey(item, index)] ||
+                                  item.quantity
+                                }
                                 onChange={(e) =>
                                   handleQuantityChange(
-                                    item.colorOptionId,
+                                    getCartItemKey(item, index),
                                     e.target.value
                                   )
                                 }
@@ -193,11 +197,12 @@ export default function Viewcart() {
                               <CiCirclePlus
                                 size={35}
                                 onClick={() =>
-                                  handleIncrease(item.colorOptionId)
+                                  handleIncrease(getCartItemKey(item, index))
                                 }
                               />
                             </div>
                             <button
+                              type="button"
                               onClick={() =>
                                 removeCartProduct(
                                   item.product._id,
@@ -208,13 +213,15 @@ export default function Viewcart() {
                             >
                               Remove
                             </button>
-                            {updateq[item.colorOptionId] && (
+                            {updateq[getCartItemKey(item, index)] && (
                               <button
+                                type="button"
                                 className="card-button"
                                 onClick={() =>
                                   handleUpdateCart(
                                     item.product._id,
-                                    item.colorOptionId
+                                    item.colorOptionId,
+                                    getCartItemKey(item, index)
                                   )
                                 }
                               >

@@ -155,12 +155,12 @@
 
 
 .cartcard-buttons{
-  display: none;
+  display: flex;
   justify-content: start;
   align-items: center;
   gap: 2rem;
   margin-top: 1rem;
-
+  flex-wrap: wrap;
 }
 .cartcard-buttons > button{
   padding: 0;
@@ -537,6 +537,11 @@
   .visible-lg{
     display: none;
   }
+
+  .cartcard-buttons {
+    display: flex;
+  }
+
   .cards{
     padding: 0;
   }
