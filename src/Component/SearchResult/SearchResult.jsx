@@ -23,7 +23,7 @@ const SearchResult = () => {
         }
 
     },[compareProductsmain])
-    const resultProducts = useSelector(state => state.filteredProducts?.products?.products || []);
+    const resultProducts = useSelector(state => state.filteredProducts?.products?.products) || [];
     console.log(resultProducts)
    if(resultProducts.length<1){
     return(

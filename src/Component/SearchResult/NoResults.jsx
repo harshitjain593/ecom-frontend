@@ -1,16 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import './searchResult.css'
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSearchResult } from "../../action/searchResultAction";
 import { fetchProduct } from "../../action";
 import { filterProducts } from "../../action/filterAction";
 import { FILTER_UPDATE_STATE } from "../../action/actionType";
 const NoResults = () => {
     const dispatch = useDispatch();
     const [query, setQuery] = useState('');
-    const products = useSelector((state) => state.productData.data?.result?.products || [] );
-    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredProducts] = useState([]);
     const [active, setActive] = useState(false);
     const navigate = useNavigate();
 

@@ -2,18 +2,14 @@ import React, { useCallback, useEffect, useState, useRef } from "react";
 import Sidebar from "./sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionsList from "./SuggestionList";
-import { fetchProduct } from "../../../action";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getSearchResult } from "../../../action/searchResultAction";
 import UseTypewriterEffect from "../../UserTyperwriter/UseTypewriterEffect";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { filterProducts } from "../../../action/filterAction";
 import { FILTER_UPDATE_STATE } from "../../../action/actionType";
 
 export function SearchBar({ SidebarOpen, handleCloseSidebar }) {
     const dispatch = useDispatch();
     const [query, setQuery] = useState('');
-    const products = useSelector((state) => state.productData.data?.result?.products || [] );
     // const [filteredProducts, setFilteredProducts] = useState([]);
     const [active, setActive] = useState(false);
     const navigate = useNavigate();

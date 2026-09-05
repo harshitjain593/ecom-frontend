@@ -1,6 +1,9 @@
+const EMPTY_CATEGORIES = [];
+
 export const getCategoriesList = (categoriesState) => {
   const list = categoriesState?.categories?.category;
-  return Array.isArray(list) ? list : [];
+  // Stable empty reference — a fresh [] here re-triggers useSelector/useEffect loops.
+  return Array.isArray(list) ? list : EMPTY_CATEGORIES;
 };
 
 export const isActiveCatalogItem = (item) => {

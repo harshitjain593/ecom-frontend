@@ -27,7 +27,11 @@ function Shop() {
   const filteredProducts = filteredPayload?.products || [];
   const filteredTotal = filteredPayload?.totalProducts || 0;
   const isLoading = useSelector((state) => state.filteredProducts?.loading);
-  const categories = useSelector((state) => getCategoriesList(state.categories));
+  const categoriesState = useSelector((state) => state.categories);
+  const categories = useMemo(
+    () => getCategoriesList(categoriesState),
+    [categoriesState]
+  );
 
   const categoryFromUrl = searchParams.get('category');
   const subCategoryFromUrl = searchParams.get('sub_category');

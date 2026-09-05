@@ -21,21 +21,7 @@ import {
 } from "../../action/actionType";
 import { checkcompare } from "../../service/checkCompareproduct";
 import ComparePOPup from "../comparePOPup/ComparePOPup";
-import Slider from "react-slick";
-import { CatNextArrow, CatPrevArrow } from "../Home/CatArrows";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-
-const sliderSettings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: false,
-  arrows: true,
-  nextArrow: <CatNextArrow />,
-  prevArrow: <CatPrevArrow />,
-};
 
 function Productdetail() {
   const [pincodeMessage, setPincodeMessage] = useState("");
@@ -293,24 +279,11 @@ function Productdetail() {
                       check={product.isWishlist}
                     />
                   </div>
-                  {galleryImages.length > 1 ? (
-                    <Slider {...sliderSettings}>
-                      {galleryImages.map((item, index) => (
-                        <img
-                          key={index}
-                          className={css.mobileImg}
-                          src={item}
-                          alt={displayName}
-                        />
-                      ))}
-                    </Slider>
-                  ) : (
-                    <img
-                      className={css.mobileImg}
-                      src={renderMainImageSrc()}
-                      alt={displayName}
-                    />
-                  )}
+                  <img
+                    className={css.mobileImg}
+                    src={renderMainImageSrc()}
+                    alt={displayName}
+                  />
                   {renderActionButtons("product-page__actions product-page__actions--mobile")}
                 </div>
 
@@ -337,8 +310,11 @@ function Productdetail() {
                           isFluidWidth: true,
                           src: renderMainImageSrc(),
                         },
+                        // width/height are required so hover math maps cursor → zoom region
                         largeImage: {
                           src: renderMainImageSrc(),
+                          width: 1200,
+                          height: 1200,
                         },
                         enlargedImagePosition: "beside",
                         enlargedImageContainerStyle: { zIndex: 20 },
