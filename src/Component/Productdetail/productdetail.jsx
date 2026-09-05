@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import css from "./productdetails.module.css";
 import "./productTheme.css";
 import Excusivecategory from "../Home/Excusivecategory";
@@ -23,6 +23,12 @@ import { checkcompare } from "../../service/checkCompareproduct";
 import ComparePOPup from "../comparePOPup/ComparePOPup";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
+const normalizeImageSrc = (img) => {
+  if (!img) return null;
+  if (typeof img === "string") return img;
+  return img.url || img.src || img.location || img.product_image || null;
+};
+
 function Productdetail() {
   const [pincodeMessage, setPincodeMessage] = useState("");
   const navigate = useNavigate();
@@ -37,6 +43,8 @@ function Productdetail() {
   const [updatepage, setUpdatepage] = useState(false);
   const [mainImage, setMainImage] = useState(null);
   const [colorOptions, setColorOptions] = useState(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const mobileTrackRef = useRef(null);
   const dispatch = useDispatch();
   const [isCompared, setIsCompared] = useState(false);
   const [isExpanded, setIsExpanded] = useState({
@@ -62,6 +70,15 @@ function Productdetail() {
   }, [product, compareProducts]);
 
   useEffect(() => {
+    setColorOptions(null);
+    setMainImage(null);
+    setActiveSlide(0);
+    if (mobileTrackRef.current) {
+      mobileTrackRef.current.scrollLeft = 0;
+    }
+  }, [id]);
+
+  useEffect(() => {
     dispatch(getProductDetails(id));
     dispatch(addRecentProduct(id));
   }, [dispatch, id, buttonLoader.addtocart, updatepage]);
@@ -79,6 +96,10 @@ function Productdetail() {
   const handleColorOptions = useCallback((obj) => {
     setColorOptions(obj);
     handleImageClick(obj.product_image);
+    setActiveSlide(0);
+    if (mobileTrackRef.current) {
+      mobileTrackRef.current.scrollLeft = 0;
+    }
   }, [handleImageClick]);
 
   const handleIncrease = useCallback(() => {
@@ -197,15 +218,48 @@ function Productdetail() {
   };
 
   const renderGalleryImages = () => {
-    if (colorOptions?.imageGallery?.length > 0) {
-      return colorOptions.imageGallery;
-    }
-    return product?.image_gallery || [];
+    const main = normalizeImageSrc(
+      colorOptions?.product_image || product?.productImage
+    );
+    const rawList =
+      colorOptions?.imageGallery?.length > 0
+        ? colorOptions.imageGallery
+        : product?.image_gallery || [];
+    const extras = (Array.isArray(rawList) ? rawList : [])
+      .map(normalizeImageSrc)
+      .filter(Boolean);
+
+    const images = [];
+    if (main) images.push(main);
+    extras.forEach((src) => {
+      if (!images.includes(src)) images.push(src);
+    });
+    return images;
   };
 
   const renderMainImageSrc = () => {
-    return mainImage || colorOptions?.product_image || product?.productImage;
+    return (
+      mainImage ||
+      colorOptions?.product_image ||
+      product?.productImage ||
+      null
+    );
   };
+
+  const handleMobileGalleryScroll = useCallback(() => {
+    const track = mobileTrackRef.current;
+    if (!track || !track.clientWidth) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    setActiveSlide(index);
+    const src = track.querySelectorAll("img")[index]?.getAttribute("src");
+    if (src) setMainImage(src);
+  }, []);
+
+  const scrollMobileGalleryTo = useCallback((index) => {
+    const track = mobileTrackRef.current;
+    if (!track) return;
+    track.scrollTo({ left: track.clientWidth * index, behavior: "smooth" });
+  }, []);
 
   const renderActionButtons = (className) => {
     const outOfStock = product?.stock_quantity === 0;
@@ -279,11 +333,39 @@ function Productdetail() {
                       check={product.isWishlist}
                     />
                   </div>
-                  <img
-                    className={css.mobileImg}
-                    src={renderMainImageSrc()}
-                    alt={displayName}
-                  />
+                  <div
+                    className="product-page__swipe"
+                    ref={mobileTrackRef}
+                    onScroll={handleMobileGalleryScroll}
+                  >
+                    {(galleryImages.length > 0
+                      ? galleryImages
+                      : [renderMainImageSrc()].filter(Boolean)
+                    ).map((image, index) => (
+                      <img
+                        key={`${image}-${index}`}
+                        className={`product-page__swipe-img ${css.mobileImg}`}
+                        src={image}
+                        alt={`${displayName || "Product"} ${index + 1}`}
+                        draggable={false}
+                      />
+                    ))}
+                  </div>
+                  {galleryImages.length > 1 && (
+                    <div className="product-page__swipe-dots">
+                      {galleryImages.map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          className={`product-page__swipe-dot${
+                            activeSlide === index ? " is-active" : ""
+                          }`}
+                          aria-label={`Go to image ${index + 1}`}
+                          onClick={() => scrollMobileGalleryTo(index)}
+                        />
+                      ))}
+                    </div>
+                  )}
                   {renderActionButtons("product-page__actions product-page__actions--mobile")}
                 </div>
 
@@ -291,7 +373,7 @@ function Productdetail() {
                   <div className="product-page__thumbs d-none d-md-flex">
                     {galleryImages.map((image, index) => (
                       <img
-                        key={index}
+                        key={`${image}-${index}`}
                         src={image}
                         alt=""
                         onClick={() => handleImageClick(image)}

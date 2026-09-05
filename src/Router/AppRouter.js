@@ -1,6 +1,6 @@
 // src/router/AppRouter.js
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Home from '../Component/Home';
 import About from '../Component/About';
 import NotFound from '../Component/NotFound/404NotFound';
@@ -35,9 +35,20 @@ import ContactUs from '../Component/contact me/ContactUs';
 import ComaparePage from '../Component/Compare page/ComaparePage';
 import OrderTracking from '../Component/trackingOrder/OrderTracking';
 
+function ScrollToTop() {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+}
+
 function AppRouter() {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
