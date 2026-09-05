@@ -24,7 +24,7 @@ function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [SidebarOpen, setSidebarOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const {pathname }= useLocation();
+  const {pathname, search }= useLocation();
   const cartQuantity = useSelector(state=>state?.CartData?.data?.totalQuantity)
   const wishListQuantity = useSelector(state=>state?.WishlistData?.data?.totalItem)
   const currentURL = pathname;
@@ -53,7 +53,10 @@ function Header() {
       setActiveFilter(false);
       setSidebarOpen(false)
     }
-  }, [pathname]);
+
+    // Close mobile category sidebar on any navigation (path or query)
+    setIsSidebarOpen(false);
+  }, [pathname, search]);
   
  useEffect(() => {
   if (checkUser()) {
@@ -215,32 +218,39 @@ function Header() {
 
         {/* Mobile Sidebar - appears on all pages */}
         {isSidebarOpen && (
-          <div className="sidebar">
-            <button onClick={toggleSidebar} className="close-btn">&times;</button>
-            <nav>
-              <MobileCategoryMenu categoriesState={categoriesState} />
-              <ul>
-                { user ? (
-                  <>
-                    <li><Link to="/profile"><i className="fa-regular fa-user me-2"></i>Profile</Link></li>
-                    <li><Link to="/user/orders"><i className="fa-solid fa-box me-2"></i>Orders</Link></li>
-                    <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
-                    <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
-                    <li><Link to="/logout"><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</Link></li>
-                  </>
+          <>
+            <div
+              className="sidebar-overlay"
+              onClick={() => setIsSidebarOpen(false)}
+              aria-hidden="true"
+            />
+            <div className="sidebar" role="dialog" aria-modal="true">
+              <button onClick={toggleSidebar} className="close-btn" aria-label="Close menu">&times;</button>
+              <nav>
+                <MobileCategoryMenu categoriesState={categoriesState} />
+                <ul>
+                  { user ? (
+                    <>
+                      <li><Link to="/profile"><i className="fa-regular fa-user me-2"></i>Profile</Link></li>
+                      <li><Link to="/user/orders"><i className="fa-solid fa-box me-2"></i>Orders</Link></li>
+                      <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
+                      <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
+                      <li><Link to="/logout"><i className="fa-solid fa-sign-out-alt me-2"></i>Logout</Link></li>
+                    </>
 
-                ) :(
-                  <>
-                    <li><Link to="/login"><i className="fa-solid fa-sign-in-alt me-2"></i>Login</Link></li>
-                    <li><Link to="/register"><i className="fa-solid fa-user-plus me-2"></i>Register</Link></li>
-                    <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
-                    <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
-                  </>
-                )}
-             
-              </ul>
-            </nav>
-          </div>
+                  ) :(
+                    <>
+                      <li><Link to="/login"><i className="fa-solid fa-sign-in-alt me-2"></i>Login</Link></li>
+                      <li><Link to="/register"><i className="fa-solid fa-user-plus me-2"></i>Register</Link></li>
+                      <li><Link to="/wishlist"><i className="fa-regular fa-heart me-2"></i>Wishlist</Link></li>
+                      <li><Link to="/cart"><i className="fa-solid fa-cart-shopping me-2"></i>Cart</Link></li>
+                    </>
+                  )}
+               
+                </ul>
+              </nav>
+            </div>
+          </>
         )}
 
         <div className="gi-header-bottom d-lg-block">
