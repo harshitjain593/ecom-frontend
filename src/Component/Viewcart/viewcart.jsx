@@ -9,7 +9,7 @@ import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { CartToOrderSummary } from "../../action/orderSummaryAction";
 import { checkUser, formatNumberWithCommas } from "../../assest/js/checker";
 import { CheckUserComponent } from "../Auth/checkComponent/CheckUserComponent";
-import { getCartItemKey } from "../../utils/cartUtils";
+import { getCartItemKey, resolveStoredColorId } from "../../utils/cartUtils";
 
 export default function Viewcart() {
   const isLoggedIn = checkUser();
@@ -88,7 +88,13 @@ export default function Viewcart() {
 
   const handleUpdateCart = (productId, colorId, itemKey) => {
     const quantity = quantities[itemKey];
-    dispatch(setCartQuantity({ productId, colorId, quantity }))
+    dispatch(
+      setCartQuantity({
+        productId,
+        colorId: resolveStoredColorId(productId, colorId),
+        quantity,
+      })
+    )
       .then(() => fetchCartData())
       .then(() => {
         setUpdateQ((prevUpdateQ) => ({

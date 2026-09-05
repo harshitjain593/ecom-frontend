@@ -1,8 +1,27 @@
-/** Stable key for a product + optional color variant. */
-export const getProductCartKey = (productId, colorOptionId = null) =>
-  `${productId}-${colorOptionId || "default"}`;
+/**
+ * Backend stores productId as colorOptionId when no color variant is chosen.
+ * Real color options are distinct ObjectIds on product.colorOption.
+ */
+export const isRealColorOption = (productId, colorOptionId) =>
+  Boolean(colorOptionId) && String(colorOptionId) !== String(productId);
 
-/** Stable unique key for a cart line (prefers product+color after merge). */
+/** Color id the cart APIs expect (update/remove) for a line item. */
+export const resolveStoredColorId = (productId, colorOptionId = null) => {
+  if (isRealColorOption(productId, colorOptionId)) {
+    return colorOptionId;
+  }
+  return productId;
+};
+
+/** Stable key for a product + optional color variant. */
+export const getProductCartKey = (productId, colorOptionId = null) => {
+  const colorKey = isRealColorOption(productId, colorOptionId)
+    ? String(colorOptionId)
+    : "default";
+  return `${productId}-${colorKey}`;
+};
+
+/** Stable unique key for a cart line. */
 export const getCartItemKey = (item, index = 0) => {
   const productId = item?.product?._id || item?.productId;
   if (productId) {
@@ -14,14 +33,13 @@ export const getCartItemKey = (item, index = 0) => {
 /** Find a cart line for a product (and optional color). */
 export const findCartItem = (cartItems, productId, colorOptionId = null) => {
   if (!Array.isArray(cartItems) || !productId) return null;
-  const targetColor = colorOptionId || null;
+  const targetKey = getProductCartKey(productId, colorOptionId);
 
   return (
     cartItems.find((item) => {
       const id = item?.product?._id || item?.productId;
-      if (id !== productId) return false;
-      const itemColor = item?.colorOptionId || null;
-      return itemColor === targetColor;
+      if (!id || String(id) !== String(productId)) return false;
+      return getProductCartKey(id, item?.colorOptionId) === targetKey;
     }) || null
   );
 };
@@ -49,6 +67,8 @@ export const mergeCartItems = (cartItems = []) => {
       map.set(key, {
         ...item,
         productId,
+        // Keep the stored color id the APIs need (often productId itself).
+        colorOptionId: resolveStoredColorId(productId, item.colorOptionId),
         quantity: qty,
       });
     }
@@ -88,4 +108,47 @@ export const normalizeCartPayload = (result) => {
     totalPayablePrice: cart.totalPayablePrice ?? 0,
     totalDiscountedPrice: cart.totalDiscountedPrice ?? 0,
   };
+};
+
+/** Normalize wishlist API products into a consistent shape for the UI. */
+export const normalizeWishlistProducts = (payload) => {
+  const raw =
+    payload?.products ||
+    payload?.wishlist?.products ||
+    (Array.isArray(payload) ? payload : []);
+
+  return (Array.isArray(raw) ? raw : [])
+    .map((item) => {
+      if (!item) return null;
+      const product =
+        item.product && typeof item.product === "object" ? item.product : item;
+      if (!product || typeof product !== "object") return null;
+
+      const id = product._id || item._id || item.productId;
+      if (!id) return null;
+
+      return {
+        ...product,
+        _id: id,
+        product_name:
+          product.product_name ||
+          product.productName ||
+          product.name ||
+          "Product",
+        productImage:
+          product.productImage ||
+          product.product_image ||
+          product.image ||
+          "",
+        selling_price:
+          product.selling_price ?? product.sellingPrice ?? null,
+        mrp_price: product.mrp_price ?? product.mrpPrice ?? null,
+        stock_quantity:
+          product.stock_quantity ??
+          product.remaining_quantity ??
+          product.stock ??
+          0,
+      };
+    })
+    .filter(Boolean);
 };

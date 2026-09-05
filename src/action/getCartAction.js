@@ -1,7 +1,7 @@
 import { API_URL } from "../service/api";
 import { DELETE_FROM_CART, GET_CART } from "./actionType";
 import { toast } from "react-toastify";
-import { normalizeCartPayload } from "../utils/cartUtils";
+import { normalizeCartPayload, resolveStoredColorId } from "../utils/cartUtils";
 
 const authHeaders = () => {
   const token = localStorage.getItem("token");
@@ -56,9 +56,11 @@ export const removeFromCart = (props) => {
       return { success: false };
     }
 
+    const storedColorId = resolveStoredColorId(productId, colorId);
+
     try {
       const response = await fetch(
-        `${API_URL}/mobileApi/cart/remove-cart-product/${productId}/${colorId}`,
+        `${API_URL}/mobileApi/cart/remove-cart-product/${productId}/${storedColorId}`,
         {
           method: "PUT",
           headers,

@@ -7,7 +7,11 @@ import {
 import { toast } from 'react-toastify';
 import { getCart, removeFromCart } from './getCartAction';
 import { getWishlist } from './wishListAciton';
-import { findCartItem } from '../utils/cartUtils';
+import {
+  findCartItem,
+  isRealColorOption,
+  resolveStoredColorId,
+} from '../utils/cartUtils';
 
 export const addWishList = (productId) => {
   return async (dispatch, getState) => {
@@ -58,10 +62,12 @@ export const updateCart = ({ productId, colorId = null, quantity }) => {
       if (!token) {
         return { success: false };
       }
+      // Backend looks up cart lines by colorOptionId, and stores productId
+      // as colorOptionId when the product has no color variant.
       const requestBody = {
         productId,
         quantity,
-        ...(colorId ? { colorOptionId: colorId } : { colorOptionId: null }),
+        colorOptionId: resolveStoredColorId(productId, colorId),
       };
       const response = await fetch(
         `${API_URL}/mobileApi/cart/update-cart/${productId}`,
@@ -100,62 +106,22 @@ export const updateCart = ({ productId, colorId = null, quantity }) => {
 
 /**
  * Set absolute quantity for a product in cart.
- * Clears duplicate lines for the same product/color first, then adds the desired qty.
+ * Uses update (not remove+re-add) so items are not wiped on color mismatches.
  */
 export const setCartQuantity = ({ productId, colorId = null, quantity }) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const qty = Number(quantity) || 0;
-
-    let guard = 0;
-    while (guard++ < 15) {
-      const items = getState()?.CartData?.data?.cartItems ?? [];
-      if (!findCartItem(items, productId, colorId)) break;
-      await dispatch(removeFromCart({ productId, colorId }));
-    }
+    const storedColorId = resolveStoredColorId(productId, colorId);
 
     if (qty <= 0) {
-      return { success: true };
-    }
-
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return { success: false };
-
-      const requestBody = {
-        productId,
-        quantity: qty,
-        ...(colorId && { colorOptionId: colorId }),
-      };
-      const response = await fetch(
-        `${API_URL}/mobileApi/cart/add-to-cart/${productId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestBody),
-        }
+      return dispatch(
+        removeFromCart({ productId, colorId: storedColorId })
       );
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.statusCode === 200) {
-          await dispatch(getCart());
-          return { success: true };
-        }
-        toast.error(data.message || 'Failed to update cart');
-        return { success: false };
-      }
-
-      const errorData = await response.json();
-      toast.error(errorData.message || 'Failed to update cart');
-      return { success: false };
-    } catch (error) {
-      console.error(error);
-      toast.error('An unexpected error occurred');
-      return { success: false };
     }
+
+    return dispatch(
+      updateCart({ productId, colorId: storedColorId, quantity: qty })
+    );
   };
 };
 
@@ -174,14 +140,21 @@ export const addtoCart = (productId, colorId = null, quantity = 1) => {
         const nextQty =
           (Number(existing.quantity) || 0) + (Number(quantity) || 1);
         return dispatch(
-          updateCart({ productId, colorId, quantity: nextQty })
+          updateCart({
+            productId,
+            colorId: existing.colorOptionId || colorId,
+            quantity: nextQty,
+          })
         );
       }
 
       const requestBody = {
         productId,
         quantity,
-        ...(colorId && { colorOptionId: colorId }),
+        // Only send a real color option id — never the productId sentinel.
+        ...(isRealColorOption(productId, colorId) && {
+          colorOptionId: colorId,
+        }),
       };
       const response = await fetch(
         `${API_URL}/mobileApi/cart/add-to-cart/${productId}`,
