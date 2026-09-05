@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import './compare.css';
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CgCloseR } from "react-icons/cg";
-import useLocal from "../../service/compare";
 import { useDispatch, useSelector } from "react-redux";
 import { REMOVE_COMPARE_PRODUCTS } from "../../action/actionType";
-import { useSet } from "@uidotdev/usehooks";
-
+import { addtoCart } from "../../action/productdetailaction";
+import { addSingleToOrderSummary } from "../../action/orderSummaryAction";
+import { checkUser } from "../../assest/js/checker";
 
 const SkeletonBox = ({category}) => {
   console.log('skel',category)
@@ -207,13 +207,48 @@ const CompSpecifications = ({ props }) => {
 
 // Component for Last Box
 const CompLastBox = ({ props }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState({ cart: false, buy: false });
+
+  const handleAddToCart = useCallback(async () => {
+    if (!props?._id || props.placeholder) return;
+    if (!checkUser()) {
+      navigate("/login");
+      return;
+    }
+    setLoading((prev) => ({ ...prev, cart: true }));
+    try {
+      await dispatch(addtoCart(props._id, null, 1));
+    } finally {
+      setLoading((prev) => ({ ...prev, cart: false }));
+    }
+  }, [dispatch, navigate, props]);
+
+  const handleBuyNow = useCallback(async () => {
+    if (!props?._id || props.placeholder) return;
+    if (!checkUser()) {
+      navigate("/login");
+      return;
+    }
+    setLoading((prev) => ({ ...prev, buy: true }));
+    try {
+      const result = await dispatch(addSingleToOrderSummary(props._id, 1, null));
+      if (result?.success) {
+        navigate("/cart/ordersummary");
+      }
+    } finally {
+      setLoading((prev) => ({ ...prev, buy: false }));
+    }
+  }, [dispatch, navigate, props]);
+
   return (
     <section className="comp-box d-flex flex-column justify-content-between">
       {props.placeholder ? (
         <SkeletonLastBox />
       ) : (
         <>
-          <Link to={'/product/id'} className="position-relative">
+          <Link to={props._id ? `/productdetail/${props._id}` : '/'} className="position-relative">
             <img src={props.productImage || "/img/pottery4.jpg"} alt="" className="compbox-img" />
           </Link>
           <div className="comp-box-productdetails">
@@ -225,12 +260,22 @@ const CompLastBox = ({ props }) => {
             <span>{Math.ceil(((props.mrp_price - props.selling_price) / props.mrp_price) * 100)}%</span>
           </div>
           <div className="px-4 d-flex flex-column justify-content-end align-items-center gap-2">
-            <button className="comp-buttons comp-btn-buy">
+            <button
+              type="button"
+              className="comp-buttons comp-btn-buy"
+              onClick={handleBuyNow}
+              disabled={loading.buy || props.stock_quantity === 0}
+            >
               <i className="fas fa-bolt px-2 kill"></i>
-              BUY NOW
+              {loading.buy ? "Processing..." : "BUY NOW"}
             </button>
-            <button className="comp-buttons comp-btn-cart">
-              ADD TO CART
+            <button
+              type="button"
+              className="comp-buttons comp-btn-cart"
+              onClick={handleAddToCart}
+              disabled={loading.cart}
+            >
+              {loading.cart ? "Processing..." : "ADD TO CART"}
             </button>
           </div>
         </>
