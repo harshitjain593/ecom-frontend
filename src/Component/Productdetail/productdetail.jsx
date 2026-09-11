@@ -24,6 +24,7 @@ import ComparePOPup from "../comparePOPup/ComparePOPup";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { findCartItem } from "../../utils/cartUtils";
 import { getCart } from "../../action/getCartAction";
+import { toast } from "react-toastify";
 
 const normalizeImageSrc = (img) => {
   if (!img) return null;
@@ -46,6 +47,7 @@ function Productdetail() {
   const [updatepage, setUpdatepage] = useState(false);
   const [mainImage, setMainImage] = useState(null);
   const [colorOptions, setColorOptions] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const mobileTrackRef = useRef(null);
   const dispatch = useDispatch();
@@ -68,7 +70,8 @@ function Productdetail() {
   const cartItem = findCartItem(
     cartItems,
     product?._id,
-    colorOptions?._id || null
+    colorOptions?._id || null,
+    selectedSize
   );
   const isInCart = Boolean(cartItem);
   const cartQuantity = Number(cartItem?.quantity) || 0;
@@ -83,6 +86,7 @@ function Productdetail() {
 
   useEffect(() => {
     setColorOptions(null);
+    setSelectedSize(null);
     setMainImage(null);
     setActiveSlide(0);
     setQuantity(1);
@@ -132,19 +136,36 @@ function Productdetail() {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   }, []);
 
+  const hasSizes = Array.isArray(product?.sizes) && product.sizes.length > 0;
+
+  const requireSizeSelection = useCallback(() => {
+    if (hasSizes && !selectedSize) {
+      toast.error("Please select a size");
+      return false;
+    }
+    return true;
+  }, [hasSizes, selectedSize]);
+
   const handeaddtoCart = useCallback(
     async (productId) => {
       if (!checkUser()) {
         navigate("/login");
         return;
       }
+      if (!requireSizeSelection()) return;
+
       setButtonLoader((prevState) => ({
         ...prevState,
         addtocart: true,
       }));
 
       await dispatch(
-        addtoCart(productId, colorOptions && colorOptions._id, quantity)
+        addtoCart(
+          productId,
+          colorOptions && colorOptions._id,
+          quantity,
+          selectedSize
+        )
       ).then(() => {
         setButtonLoader((prevState) => ({
           ...prevState,
@@ -152,7 +173,7 @@ function Productdetail() {
         }));
       });
     },
-    [quantity, dispatch, colorOptions, navigate]
+    [quantity, dispatch, colorOptions, navigate, selectedSize, requireSizeSelection]
   );
 
   const handleCartQuantityChange = useCallback(
@@ -172,6 +193,7 @@ function Productdetail() {
               productId: product._id,
               colorId: colorOptions?._id || null,
               quantity: 0,
+              size: selectedSize,
             })
           );
           setQuantity(1);
@@ -181,6 +203,7 @@ function Productdetail() {
               productId: product._id,
               colorId: colorOptions?._id || null,
               quantity: qty,
+              size: selectedSize,
             })
           );
           setQuantity(qty);
@@ -189,7 +212,7 @@ function Productdetail() {
         setButtonLoader((prev) => ({ ...prev, cartQty: false }));
       }
     },
-    [dispatch, navigate, product, colorOptions]
+    [dispatch, navigate, product, colorOptions, selectedSize]
   );
 
   const handleBuynow = useCallback(async () => {
@@ -197,6 +220,8 @@ function Productdetail() {
       navigate("/login");
       return;
     }
+    if (!requireSizeSelection()) return;
+
     setButtonLoader((prevState) => ({
       ...prevState,
       buynow: true,
@@ -205,7 +230,8 @@ function Productdetail() {
       addSingleToOrderSummary(
         product._id,
         quantity,
-        colorOptions && colorOptions._id
+        colorOptions && colorOptions._id,
+        selectedSize
       )
     ).then(() => {
       setButtonLoader((prevState) => ({
@@ -214,7 +240,15 @@ function Productdetail() {
       }));
       navigate("/cart/ordersummary");
     });
-  }, [dispatch, navigate, product, quantity, colorOptions]);
+  }, [
+    dispatch,
+    navigate,
+    product,
+    quantity,
+    colorOptions,
+    selectedSize,
+    requireSizeSelection,
+  ]);
 
   const handlePincodeChange = useCallback(
     (e) => {
@@ -600,6 +634,36 @@ function Productdetail() {
                           onClick={() => handleColorOptions(item)}
                         >
                           <img src={item.product_image} alt="" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {hasSizes && (
+                  <div className="product-page__block">
+                    <h2 className="product-page__heading">
+                      Size
+                      {selectedSize ? (
+                        <span className="product-page__size-selected">
+                          {" "}
+                          · {selectedSize}
+                        </span>
+                      ) : null}
+                    </h2>
+                    <div className="product-page__sizes" role="listbox" aria-label="Available sizes">
+                      {product.sizes.map((size) => (
+                        <button
+                          type="button"
+                          key={size}
+                          role="option"
+                          aria-selected={selectedSize === size}
+                          className={`product-page__size ${
+                            selectedSize === size ? "is-selected" : ""
+                          }`}
+                          onClick={() => setSelectedSize(size)}
+                        >
+                          {size}
                         </button>
                       ))}
                     </div>

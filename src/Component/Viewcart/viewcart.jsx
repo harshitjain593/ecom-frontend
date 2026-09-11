@@ -86,13 +86,14 @@ export default function Viewcart() {
     }));
   };
 
-  const handleUpdateCart = (productId, colorId, itemKey) => {
+  const handleUpdateCart = (productId, colorId, itemKey, size = null) => {
     const quantity = quantities[itemKey];
     dispatch(
       setCartQuantity({
         productId,
         colorId: resolveStoredColorId(productId, colorId),
         quantity,
+        size,
       })
     )
       .then(() => fetchCartData())
@@ -159,6 +160,9 @@ export default function Viewcart() {
                             <p className="text-muted text-capitalize m-0">
                               {item.product.category}
                             </p>
+                            {item.size && (
+                              <p className="text-muted m-0">Size: {item.size}</p>
+                            )}
                           </div>
                           <div className="cartcardPrice-sec">
                             <p>₹{item.product.mrp_price}</p>
@@ -227,7 +231,8 @@ export default function Viewcart() {
                                   handleUpdateCart(
                                     item.product._id,
                                     item.colorOptionId,
-                                    getCartItemKey(item, index)
+                                    getCartItemKey(item, index),
+                                    item.size
                                   )
                                 }
                               >

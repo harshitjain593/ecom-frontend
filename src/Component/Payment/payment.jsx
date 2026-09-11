@@ -113,17 +113,17 @@ function Payment() {
   };
 
   const handleDirect = useCallback(() => {
-    setDirect(true)
+    setDirect(true);
     clearTimeout(timeOutId);
     const id = setTimeout(() => {
-      navigate("/");
-    }, 1500);
+      navigate("/user/orders");
+    }, 2500);
     setTimeoutId(id);
-  }, []);
+  }, [navigate, timeOutId]);
 
   useEffect(() => {
-    return clearTimeout(timeOutId);
-  }, []);
+    return () => clearTimeout(timeOutId);
+  }, [timeOutId]);
 
   const handleReqBody = useCallback(() => {
     let products = [];
@@ -136,6 +136,7 @@ function Payment() {
           obj.payable_price = product.selling_price; // Fixed key
           obj.discount = product.discounting_price; // Fixed key
           obj.colorOptionId= product.colorOptionId;
+          if (product.size) obj.size = product.size;
           products.push(obj);
         });
         return {
@@ -153,6 +154,7 @@ function Payment() {
         obj.payable_price = product.selling_price; // Fixed key
         obj.discount =product.discounted_price; // Fixed key
         obj.colorOptionId = product.colorOptionId
+        if (product.size) obj.size = product.size;
         products.push(obj);
       });
       return {
@@ -358,14 +360,23 @@ function Payment() {
   if (direct) {
     return (
       <div
-        className="d-flex flex-column justify-content-center align-items-center mx-auto "
+        className="d-flex flex-column justify-content-center align-items-center mx-auto text-center px-3"
         style={{ margin: "10% 0", fontSize: "1.3rem", fontWeight: 600 }}
       >
         <div>
           Thank you for choosing Oluxe, your order has been placed{" "}
           <MdVerifiedUser color="green" size={30} />
         </div>
-        <p style={{ fontSize: ".7rem" }}>you will be redirected shortly</p>
+        <p style={{ fontSize: ".85rem", fontWeight: 400, marginTop: "0.75rem" }}>
+          Redirecting to your orders…
+        </p>
+        <Link
+          to="/user/orders"
+          className="btn btn-primary mt-3"
+          style={{ fontSize: "0.9rem", fontWeight: 500 }}
+        >
+          View my orders
+        </Link>
       </div>
     );
   }

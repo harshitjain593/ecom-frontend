@@ -55,7 +55,7 @@ export const addWishList = (productId) => {
 };
 
 
-export const updateCart = ({ productId, colorId = null, quantity }) => {
+export const updateCart = ({ productId, colorId = null, quantity, size = null }) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
@@ -68,6 +68,7 @@ export const updateCart = ({ productId, colorId = null, quantity }) => {
         productId,
         quantity,
         colorOptionId: resolveStoredColorId(productId, colorId),
+        ...(size && { size }),
       };
       const response = await fetch(
         `${API_URL}/mobileApi/cart/update-cart/${productId}`,
@@ -108,7 +109,12 @@ export const updateCart = ({ productId, colorId = null, quantity }) => {
  * Set absolute quantity for a product in cart.
  * Uses update (not remove+re-add) so items are not wiped on color mismatches.
  */
-export const setCartQuantity = ({ productId, colorId = null, quantity }) => {
+export const setCartQuantity = ({
+  productId,
+  colorId = null,
+  quantity,
+  size = null,
+}) => {
   return async (dispatch) => {
     const qty = Number(quantity) || 0;
     const storedColorId = resolveStoredColorId(productId, colorId);
@@ -120,13 +126,18 @@ export const setCartQuantity = ({ productId, colorId = null, quantity }) => {
     }
 
     return dispatch(
-      updateCart({ productId, colorId: storedColorId, quantity: qty })
+      updateCart({
+        productId,
+        colorId: storedColorId,
+        quantity: qty,
+        size,
+      })
     );
   };
 };
 
 /** Add to cart, or bump quantity if the product is already in the cart. */
-export const addtoCart = (productId, colorId = null, quantity = 1) => {
+export const addtoCart = (productId, colorId = null, quantity = 1, size = null) => {
   return async (dispatch, getState) => {
     try {
       const token = localStorage.getItem('token');
@@ -135,7 +146,7 @@ export const addtoCart = (productId, colorId = null, quantity = 1) => {
       }
 
       const cartItems = getState()?.CartData?.data?.cartItems ?? [];
-      const existing = findCartItem(cartItems, productId, colorId);
+      const existing = findCartItem(cartItems, productId, colorId, size);
       if (existing) {
         const nextQty =
           (Number(existing.quantity) || 0) + (Number(quantity) || 1);
@@ -144,6 +155,7 @@ export const addtoCart = (productId, colorId = null, quantity = 1) => {
             productId,
             colorId: existing.colorOptionId || colorId,
             quantity: nextQty,
+            size: existing.size || size,
           })
         );
       }
@@ -155,6 +167,7 @@ export const addtoCart = (productId, colorId = null, quantity = 1) => {
         ...(isRealColorOption(productId, colorId) && {
           colorOptionId: colorId,
         }),
+        ...(size && { size }),
       };
       const response = await fetch(
         `${API_URL}/mobileApi/cart/add-to-cart/${productId}`,

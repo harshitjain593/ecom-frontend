@@ -381,6 +381,40 @@
   display: block;
 }
 
+.product-page__sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-page__size {
+  min-width: 72px;
+  padding: 10px 14px;
+  border: 1px solid var(--oluxe-border);
+  background: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.product-page__size:hover,
+.product-page__size.is-selected {
+  border-color: var(--oluxe-black);
+}
+
+.product-page__size.is-selected {
+  background: var(--oluxe-black);
+  color: #fff;
+}
+
+.product-page__size-selected {
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--oluxe-gray);
+}
+
 .product-page__toggle {
   display: inline-flex;
   align-items: center;

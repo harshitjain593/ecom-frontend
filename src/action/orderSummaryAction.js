@@ -16,7 +16,12 @@ const authHeaders = () => {
   };
 };
 
-export const addSingleToOrderSummary = (productId, quantity, colorID = null) => {
+export const addSingleToOrderSummary = (
+  productId,
+  quantity,
+  colorID = null,
+  size = null
+) => {
   return async (dispatch) => {
     const headers = authHeaders();
     if (!headers) {
@@ -25,7 +30,11 @@ export const addSingleToOrderSummary = (productId, quantity, colorID = null) => 
     }
 
     try {
-      const reqBody = { quantity, ...(colorID && { colorOptionId: colorID }) };
+      const reqBody = {
+        quantity,
+        ...(colorID && { colorOptionId: colorID }),
+        ...(size && { size }),
+      };
       const response = await fetch(
         `${API_URL}/mobileApi/summary/order-summary/${productId}`,
         {

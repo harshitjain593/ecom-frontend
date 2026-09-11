@@ -39,6 +39,7 @@ const OrderSummaryItem = ({
             <div className={css.productnames}>
               <p>{product.product_name}</p>
               {product.category && <p>{product.category}</p>}
+              {item.size && <p>Size: {item.size}</p>}
             </div>
           </main>
         </div>

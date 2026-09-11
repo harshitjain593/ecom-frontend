@@ -13,39 +13,51 @@ export const resolveStoredColorId = (productId, colorOptionId = null) => {
   return productId;
 };
 
-/** Stable key for a product + optional color variant. */
-export const getProductCartKey = (productId, colorOptionId = null) => {
+/** Stable key for a product + optional color variant + optional size. */
+export const getProductCartKey = (
+  productId,
+  colorOptionId = null,
+  size = null
+) => {
   const colorKey = isRealColorOption(productId, colorOptionId)
     ? String(colorOptionId)
     : "default";
-  return `${productId}-${colorKey}`;
+  const sizeKey = size ? String(size) : "default";
+  return `${productId}-${colorKey}-${sizeKey}`;
 };
 
 /** Stable unique key for a cart line. */
 export const getCartItemKey = (item, index = 0) => {
   const productId = item?.product?._id || item?.productId;
   if (productId) {
-    return getProductCartKey(productId, item?.colorOptionId);
+    return getProductCartKey(productId, item?.colorOptionId, item?.size);
   }
   return item?._id || `item-${index}`;
 };
 
-/** Find a cart line for a product (and optional color). */
-export const findCartItem = (cartItems, productId, colorOptionId = null) => {
+/** Find a cart line for a product (and optional color / size). */
+export const findCartItem = (
+  cartItems,
+  productId,
+  colorOptionId = null,
+  size = null
+) => {
   if (!Array.isArray(cartItems) || !productId) return null;
-  const targetKey = getProductCartKey(productId, colorOptionId);
+  const targetKey = getProductCartKey(productId, colorOptionId, size);
 
   return (
     cartItems.find((item) => {
       const id = item?.product?._id || item?.productId;
       if (!id || String(id) !== String(productId)) return false;
-      return getProductCartKey(id, item?.colorOptionId) === targetKey;
+      return (
+        getProductCartKey(id, item?.colorOptionId, item?.size) === targetKey
+      );
     }) || null
   );
 };
 
 /**
- * Collapse duplicate lines of the same product (+ color) into one row
+ * Collapse duplicate lines of the same product (+ color + size) into one row
  * with summed quantity.
  */
 export const mergeCartItems = (cartItems = []) => {
@@ -57,7 +69,7 @@ export const mergeCartItems = (cartItems = []) => {
     const productId = item.product._id || item.productId;
     if (!productId) return;
 
-    const key = getProductCartKey(productId, item.colorOptionId);
+    const key = getProductCartKey(productId, item.colorOptionId, item.size);
     const qty = Number(item.quantity) || 0;
 
     if (map.has(key)) {
@@ -69,6 +81,7 @@ export const mergeCartItems = (cartItems = []) => {
         productId,
         // Keep the stored color id the APIs need (often productId itself).
         colorOptionId: resolveStoredColorId(productId, item.colorOptionId),
+        size: item.size || null,
         quantity: qty,
       });
     }
